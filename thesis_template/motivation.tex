@@ -1,0 +1,40 @@
+%!TEX root = thesis.tex
+
+\chapter{Motivation}
+
+\section{Problem statement} % add 
+What is generally known as Speech Recognition is actually comprised of several smaller subtasks, i.e. recording the raw sound, voice activation detection and the actual speech recognition, as well as additional, related tasks, such as sound source localisation, sound filtering, beamforming, speaker recognition, addresser detection or emotion detection. %eher abstract?
+
+Speech recognition solutions tend to incorporate their basic subtasks into a single process. This tends to entangle these subtasks to a point where code reusability is unfeasable and switching out individual subtasks is a time consuming and complex matter.
+
+- speech recognition and additional tasks may take a while, especially on weaker hardware
+
+- synchronisation between recognized speech and other information gathered by sound anylysis may be tricky
+
+- to resolve synchronisation issues down the line (NLP/ NLU), recognized speech should already be annotated with SSL results etc.
+
+Establishing a stable and comprehensive interface outside and inside the pipeline makes development of new components easy. 
+Evaluation of new components and benchmarking of and with existing ones can thus be greatly accelerated and encouraged.% eher auswertung?!
+
+\subsection{Latency}
+Latency is one of the top concerns in audio frameworks such as gstreamer and jackaudio, but arguablly rather unimportant in speech recognition. 
+	
+Speech recognition tasks typically are bound by computationally intensive calculations, which will inherently produce a measuarable latency/ delay between audio recording and recognized speech.  
+	
+For example, to recognize speech on a dynamically beamformed signal (as is a typical use case with microphone arrays present on modern robots), one has to firstly calculate sound source localisation, after which the beamformed signal can be calculated.
+If a voice activation detection is employed, it then needs to be calculated. 
+After a voice was picked up by it, it needs to determine when the phrase ends, which typically takes a significant fraction of a second, and thus potentially adds to the latency. 
+	
+Because of the calculations and inherent delays, the latency introduced by the framework will almost always be rather insignificant and probably not be noticable. 
+This holds especially true, if the point in time at which the result of the speech recognition is known can only be observed indirectly, e.g. the reation of a robot to a spoken sentence given by a human will always be slightly delayed, just as a human typically needs a short time to react to new information, given to it verbally or otherwise.
+
+\subsection{Continuous Audio Signal}
+On the other hand, the possibility to lose audio frames introduces a significant problem to automated speech recognition.
+Lost audio frames result in artifacts found at the edges of neighboring frames. 
+These artifacts in turn result in unusual frequencies, which will cause problems in every step of a speech recognition pipeline which is not prepared for these to show up. 
+
+Frequency based voice activation detections and speech recognizers may not be trained with such corrupted data and produce undefined results.
+Sound source localisation or beamforming solutions are particularly susceptible as they rely on several channels of audio, and if even one of them is missing, the others recorded at the same time may be unusable.
+Techniques to cope with potentially ensuing synchronisation issues may also be needed to avoid undefined results.
+	
+Thus one might come to the conclusion that having a complete, discontinuity-free speech signal is more important than latency. 

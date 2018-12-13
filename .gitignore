@@ -1,3 +1,6 @@
+## texmaker files:
+*.tks
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof

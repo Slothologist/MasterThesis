@@ -1,0 +1,92 @@
+\newglossaryentry{handle}{
+	name=Handle,
+	plural=Handles,
+	description={Eine GPU-Hardwareadresse. In mancher Literatur wird der Begriff Handle auch für die \gls{glid} benutzt, in dieser Arbeit werden jedoch die Begrifflichkeiten der offiziellen Spezifikationen genutzt}
+}
+\newglossaryentry{glid}{
+	name=Object Name,
+	plural=Object Names,
+	description={Der eindeutige Name, mit dem OpenGL einen Buffer o.Ä. identifiziert. Für gewöhnlich ein unsigned integer}
+}
+\newglossaryentry{ubum}{
+	name=UBUM,
+	plural=UBUMs,
+	description={Uniform Buffer Unified Memory. Eine OpenGL-Erweiterung von Nvidia, die es ermöglicht, \glspl{ubo} bindless zu benutzen}
+}
+\newglossaryentry{ubo}{
+	name=UBO,
+	plural=UBOs,
+	description={Uniform Buffer Object. Eine in OpenGL 3.1 eingeführte Technik, die die Verwendung von persistenten Uniforms mit Hilfe von Buffern ermöglicht}
+}
+\newglossaryentry{vbum}{
+	name=VBUM,
+	plural=VBUMs,
+	description={Vertex Buffer Unified Memory. Eine OpenGL-Erweiterung von Nvidia, die es ermöglicht, Vertexattribute bindless zu benutzen}
+}
+\newglossaryentry{vbo}{
+	name=VBO,
+	plural=VBOs,
+	description={Vertex Buffer Object. Eine in OpenGL x.x eingeführte Technik. Muss seit OpenGL y.y zwangsweise mit \glspl{vao} verwendet werden}
+}
+\newglossaryentry{vao}{
+	name=VAO,
+	plural=VAOs,
+	description={Vertex Array Object. Eine Datenstruktur, welche Metainformationen zur Verwendung von \glspl{vbo} enthält}
+}
+\newglossaryentry{bind}{
+	name=bind,
+	plural=binden,
+	description={Ein essentieller Vorgang in OpenGL. Durch das Binden einer Datenstruktur wird OpenGL angewiesen, diese für \glspl{dc} zu nutzen}
+}
+\newglossaryentry{dc}{
+	name=Drawcall,
+	plural=Drawcalls,
+	description={Ein essentieller Vorgang in OpenGL. Ein Drawcall weisst OpenGL an, ein Objekt mit Hilfe eines Shaders unter Berücksichtigung von Uniforms, Vertexattributen und Texturen zu zeichnen}
+}
+\newglossaryentry{culling}{
+	name=Culling,
+	description={Eine Technik, bei der Objekte, die sich nicht im Frustum befinden und damit nicht im Bild auftauchen werden, OpenGL nicht zum Zeichnen übergeben werden, um eine höhere Performance zu erreichen}
+}
+\newglossaryentry{ft}{
+	name=Frametime,
+	description={Die Zeit, die ein Renderer benötigt, um ein einzelnes Bild zu zeichnen, das Inverse von \gls{fps}}
+}
+\newglossaryentry{lft}{
+	name=LFT,
+	description={Longest Frame Time. Die maximale Zeit, die ein Renderer benötigt, um ein einzelnes Bild zu zeichnen}
+}
+\newglossaryentry{target}{
+	name=Target,
+	description={Ein Target ist ein besonderer Binding Point für Buffer, da er nur \todo{stuff}}
+}
+\newglossaryentry{vertexattrib}{
+	name=Vertexattribut,
+	plural=Vertexattribute,
+	description={Ein Vertexattribut kann alles sein, was einen Vertex definiert, etwa seine Position, Normalenvektor oder Farbe}
+}
+\newglossaryentry{cl}{
+	name=Clientstate,
+	description={Ein Clientstate ist ein bestimmter Zustand, den \todo{stuff}}
+}
+\newglossaryentry{bindless}{
+	name=Bindless,
+	description={Bindless ist ein {azdo}-Ansatz, bei dem Objekte (\glspl{ubo}, \glspl{vbo}, \etc) nicht mehr gebunden, sondern nurnoch den Shadern ,,verfügbar gemacht`` werden}
+}
+\newglossaryentry{azdo}{
+	name=AZDO,
+	description={,,Approaching Zero Driver Overhead`` hat zum Ziel, besonders CPU-lastige Szenen zu beschleunigen, indem Abstraktion von der Hardware verringert oder sogar aufgehoben wird}
+}
+\newglossaryentry{resident}{
+	name=resident,
+	description={Eine \gls{handle} oder ein Objekt resident zu machen bedeutet, OpenGL mitzuteilen, dass dieses Objekt in naher Zukunft gebraucht wird und deshalb in den Speicher geladen und dort vorgehalten werden sollte. Eine \gls{handle} oder ein Objekt nonresident zu machen bedeutet hingegen, dass OpenGL freigestellt wird, dieses Objekt aus dem Speicher zu entfernen, etwa um Platz für andere, gerade benötigte Objekte zu machen}
+}
+\newglossaryentry{fps}{
+	name=FPS,
+	description={Frames per Second - die Anzahl an Bildern die ein Programm innerhalb einer Sekunde zeichnet}
+}
+\newglossaryentry{texunit}{
+	name=Texture Unit,
+	plural=Texture Units,
+	description={Eine Texture Unit ist ein Platz, an dem eine Textur auf der GPU gespeichert werden kann. Die Anzahl der Texture Units ist stark begrenzt}
+}
+

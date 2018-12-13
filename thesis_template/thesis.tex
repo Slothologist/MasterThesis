@@ -1,0 +1,68 @@
+\documentclass[a4paper,11pt]{memoir}
+
+\ifpdf
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\fi
+
+%\usepackage{german}
+%\usepackage[english]{babel}
+%\usepackage[german]{translator}
+%\usepackage{hyperref}
+
+% This is the only file needed for actually using the smart-thesis style.
+\input{style}
+
+% Contains some packages which are commonly used in a thesis.
+% Note that these are optional.
+\input{common-packages}
+
+% Contains some macros which are commonly used in a thesis.
+% Note that these are optional.
+\input{common-macros}
+
+% These packages are only used in the demo and not necessarily
+% required for smart-thesis.
+%\usepackage{blindtext}
+
+% Loads bibliography for citations.
+\addbibresource{thesis-bibliography.bib}
+
+% Starts creation of a glossary.
+\makeglossaries
+\input{thesis-glossary}
+
+% Define all the metadata to be listed in \smarttitle and \smartcopyright
+\thesistype{Master Thesis}
+\discipline{Intelligent Systems}
+\title{TBD Master Thesis Title}
+\author{Robert Feldhans}
+\institution{University of Bielefeld,Technical Faculty,AG TBD}
+\supervisors{Prof.\@~Dr.\@~TDB,M.Sc.\@~Birte Carlmeyer,M.Sc.\@~Florian Flier}
+%\internalid{M13}
+
+\begin{document}
+
+\frontmatter
+
+\smarttitle
+
+%\input{abstract}
+
+\newpage
+
+\tableofcontents
+
+\mainmatter
+\input{motivation}
+\input{related_work}
+%\input{statement}
+
+\backmatter
+%\printglossaries
+\printbibliography[heading=bibintoc]
+
+%\appendix
+%\input{app_a}
+
+\end{document}

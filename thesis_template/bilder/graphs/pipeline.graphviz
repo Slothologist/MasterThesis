@@ -1,0 +1,46 @@
+strict digraph G {
+	splines=compound;
+	node [shape=box];
+
+	subgraph cluster_1 {
+		label="optional information gathering"
+		labelloc=b;
+		ssl [label="SSL"];
+		gender [label="Gender-Detection"];
+		emotion [label="Emotion-Detection"];
+		{rank=same; emotion; gender;}
+	}
+
+	subgraph cluster_2 {
+		rankdir=tb;
+		label="optional signal enhancing"
+		labelloc=b;
+		beamforming [label="Beamforming"];
+		filtering [label="Filtering"];
+
+		{rank=same; beamforming; filtering; ssl;}
+	}
+
+	recording [label="Recording",group=a];
+	audio [shape=diamond,  label="Audio"]
+	vad [label="VAD",group=a];
+	sr [label="Speech Recognition",group=a];
+	end_msg [shape=octagon, label="Outside Interface"];
+
+	{rank=min; recording; vad; sr; end_msg;}
+
+
+	vad -> sr;
+	{recording, beamforming, filtering}  -> audio -> {vad, ssl, filtering, beamforming, gender, emotion};
+
+
+
+	gender -> end_msg [style=dashed];
+	emotion -> end_msg [style=dashed];
+	ssl -> {end_msg beamforming} [style=dashed];
+	sr -> end_msg [style=dashed];
+}
+
+// build via "dot -Tpng pipeline.graphviz -o pipeline.png"
+// normal lines represent the audio flow
+// dashed lines represent other, diverse information, such as recognized speech, ssl or gender information

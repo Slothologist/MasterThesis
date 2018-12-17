@@ -27,15 +27,15 @@ strict digraph G {
 		filtering -> vad [style=invis lhead=cluster_11 ltail=cluster_12];
 	}
 
-	master [shape=record label="{Master | - aggregates information of nodes\n - calculates audioflow and resampling points\n - determines if pipeline is invalid\n - warns if undesired behaviour is possible (e.g. too many and extreme resamples)\n - starts components based on config}"]
+	master [shape=record label="{Orchestrator | - aggregates information of nodes\n - calculates audioflow and resampling points\n - determines if pipeline is invalid\n - warns if undesired behaviour is possible (e.g. too many and extreme resamples)\n - starts components based on config}"]
 	end_msg [shape=octagon, label="Outside Interface"];
 	
 	{rank=min end_msg}
 	{rank=same end_msg master}
 
 
-	master -> end_msg [label="aggregated information" style=dashed];
-	filtering -> master [label="information\n(ssl, gender, ...)\nfor syncing" style=dashed  ltail=cluster_1];
+	master -> end_msg [label="aggregated information" style=dotted];
+	filtering -> master [label="information\n(ssl, gender, ...)\nfor syncing" style=dotted  ltail=cluster_1];
 	sr -> master [label="registering of audio\nins and outs +\ntheir preferred format" ltail=cluster_1];
 	master -> ssl [label="determined\nformat" lhead=cluster_1];
 }

@@ -25,9 +25,10 @@ strict digraph G {
 	audio [shape=diamond,  label="Audio"]
 	vad [label="VAD",group=a];
 	sr [label="Speech Recognition",group=a];
+	mast [label="Orchestrator"]
 	end_msg [shape=octagon, label="Outside Interface"];
 
-	{rank=min; recording; vad; sr; end_msg;}
+	{rank=min; recording; vad; sr; mast; end_msg;}
 
 
 	vad -> sr;
@@ -35,10 +36,8 @@ strict digraph G {
 
 
 
-	gender -> end_msg [style=dashed];
-	emotion -> end_msg [style=dashed];
-	ssl -> {end_msg beamforming} [style=dashed];
-	sr -> end_msg [style=dashed];
+	ssl -> beamforming [style=dotted];
+	{gender emotion sr ssl} -> mast -> end_msg [style=dotted];
 }
 
 // build via "dot -Tpng pipeline.graphviz -o pipeline.png"

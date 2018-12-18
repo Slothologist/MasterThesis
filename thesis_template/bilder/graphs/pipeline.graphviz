@@ -21,17 +21,17 @@ strict digraph G {
 		{rank=same; beamforming; filtering; ssl;}
 	}
 
-	recording [label="Recording",group=a];
+	recording [label="Recording"];
 	audio [shape=diamond,  label="Audio"]
-	vad [label="VAD",group=a];
-	sr [label="Speech Recognition",group=a];
+	vad [label="VAD"];
+	sr [label="Speech Recognition"];
 	mast [label="Orchestrator"]
 	end_msg [shape=octagon, label="Outside Interface"];
 
 	{rank=min; recording; vad; sr; mast; end_msg;}
 
 
-	vad -> sr;
+	vad -> {sr audio};
 	{recording, beamforming, filtering}  -> audio -> {vad, ssl, filtering, beamforming, gender, emotion};
 
 

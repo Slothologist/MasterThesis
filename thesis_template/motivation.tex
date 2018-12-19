@@ -2,12 +2,16 @@
 
 \chapter{Motivation}
 
-\section{Problem statement} % add 
+\section{Problem statement} 
 What is generally known as Speech Recognition is actually comprised of several smaller subtasks, i.e. recording the raw sound, voice activation detection and the actual speech recognition, as well as additional, related tasks, such as sound source localization, sound filtering, beamforming, speaker recognition, addresser detection or emotion detection. %eher abstract?
 
-Speech recognition solutions tend to incorporate their basic subtasks into a single process. This tends to entangle these subtasks to a point where code reusability is unfeasible and switching out individual subtasks is a time consuming and complex matter.
+Speech recognition solutions tend to incorporate their basic subtasks into a single process.\todo{modularisierung eingener abschnitt?}
+This tends to entangle these subtasks to a point where code reusability is unfeasible and switching out individual subtasks is a time consuming and complex matter.
 
-- speech recognition and additional tasks may take a while, especially on weaker hardware
+\section{Synchronization of speech recognition results and related information}
+
+Speech recognition and related tasks (e.g. SSL) may take a while, especially on weaker hardware. 
+This poses a problem for systems relying on more than one of those types of data. 
 
 - synchronization between recognized speech and other information gathered by sound analysis may be tricky
 
@@ -16,8 +20,9 @@ Speech recognition solutions tend to incorporate their basic subtasks into a sin
 Establishing a stable and comprehensive interface outside and inside the pipeline makes development of new components easy. 
 Evaluation of new components and benchmarking of and with existing ones can thus be greatly accelerated and encouraged.% eher auswertung?!
 
-\subsection{Latency}
-Latency is one of the top concerns in audio frameworks such as gstreamer and jackaudio, but arguably rather unimportant in speech recognition. 
+\section{Latency}
+\todo{latency vs continuous audio signal eher in den hauptteil?}
+Latency is one of the top concerns in audio frameworks such as GStreamer and JACK (JACK Audio Connection Kit), but arguably rather unimportant in dedicated speech recognition tasks. 
 	
 Speech recognition tasks typically are bound by computationally intensive calculations, which will inherently produce a measurable latency/ delay between audio recording and recognized speech.  
 	
@@ -28,7 +33,7 @@ After a voice was picked up by it, it needs to determine when the phrase ends, w
 Because of the calculations and inherent delays, the latency introduced by the framework will almost always be rather insignificant and probably not be noticeable. 
 This holds especially true, if the point in time at which the result of the speech recognition is known can only be observed indirectly, e.g. the reaction of a robot to a spoken sentence given by a human will always be slightly delayed, just as a human typically needs a short time to react to new information, given to it verbally or otherwise.
 
-\subsection{Continuous Audio Signal}
+\section{Continuous Audio Signal}
 On the other hand, the possibility to lose audio frames introduces a significant problem to automated speech recognition.
 Lost audio frames result in artifacts found at the edges of neighboring frames. 
 These artifacts in turn result in unusual frequencies, which will cause problems in every step of a speech recognition pipeline which is not prepared for these to show up. 
@@ -37,4 +42,13 @@ Frequency based voice activation detections and speech recognizers may not be tr
 Sound source localization or beamforming solutions are particularly susceptible as they rely on several channels of audio, and if even one of them is missing, the others recorded at the same time may be unusable.
 Techniques to cope with potentially ensuing synchronization issues may also be needed to avoid undefined results.
 	
-Thus one might come to the conclusion that having a complete, discontinuity-free speech signal is more important than latency. 
+Thus one might come to the conclusion that having a complete, discontinuity-free speech signal is more important than having a low latency. 
+
+\section{Target Audience}
+
+This work is predominantly targeted at researchers who develop new components related to speech recognition (e.g. SSL, VAD, beamforming, filtering). 
+Re-implementation of software slows down research so a framework, which allows them to easily incorporate a new algorithm/ technique into a existing pipeline of state of the art components for testing and benchmarking purposes, should improve the research speed and quality.
+
+Additional beneficiaries of this pipeline are developers who want to make use of speech recognition but do not have the resources to create their own pipeline.
+A typical user of this kind would come from the fields of robotics, which tends to be a rather interdisciplinary field, integrating more specialized fields into theirs, like speech recognition, AI, or human machine interaction.
+Giving them the opportunity to fast prototype and evaluate individual components and their interaction together in a standardized way 

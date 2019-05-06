@@ -6,7 +6,7 @@
 What is generally known as Speech Recognition is actually comprised of several smaller subtasks, i.e. recording the raw sound, voice activation detection and the actual speech recognition, as well as additional, related tasks, such as sound source localization, sound filtering, beamforming, speaker recognition, addresser detection or emotion detection. %eher abstract?
 
 Speech recognition solutions tend to incorporate their basic subtasks into a single process.\todo{modularisierung eingener abschnitt?}
-This tends to entangle these subtasks to a point where code reusability is unfeasible and switching out individual subtasks is a time consuming and complex matter.
+This tends to entangle these subtasks to a point where code re-usability is unfeasible and switching out individual subtasks is a time consuming and complex matter.
 
 \section{Synchronization of speech recognition results and related information}
 
@@ -42,7 +42,18 @@ Frequency based voice activation detections and speech recognizers may not be tr
 Sound source localization or beamforming solutions are particularly susceptible as they rely on several channels of audio, and if even one of them is missing, the others recorded at the same time may be unusable.
 Techniques to cope with potentially ensuing synchronization issues may also be needed to avoid undefined results.
 	
-Thus one might come to the conclusion that having a complete, discontinuity-free speech signal is more important than having a low latency. 
+Thus one might come to the conclusion that having a complete, discontinuity-free speech signal is more important than having a low latency.\todo{diese erkenntnis ist allerdings relativ wichtig für die motivation}
+
+\section{Sound analysis in the context of social robotics}
+Robotics in general depend heavily on human robot interaction. Speech is one of (if not) the most important form of communication between humans. As such is no surprise that speech recognition is also one of the main methods of human robot communication.
+
+While other specialized fields of robotics or human robot interaction can come by with just speech recognition, social robots require more information.\todo{no single sentence paragraph}
+
+Humans are able to gather a plethora of information in in simple conversations which have next to nothing to do with what was actually said. Just by hearing a voice, one may determine a person’s emotional state, gender, or even where a person may be from, e.g. from an accent. A robot perceiving these information and addressing them if appropriately may lead a person interacting with the robot to feel better recognized as a person and such increase the persons acceptance of the robot.
+
+Several key features are relevant to take part in a conversation: The ability to match a voice/ spoken word to a (e.g. visually) perceived person, which in turn at least partially requires to recognize a voice and track the direction from where it is coming. Understanding whether or not a sentence or utterance was directed towards oneself.
+
+Meta information about the processes involved in speech recognition may prove useful in enabling the robot to give a user feedback on why something took longer than expected or otherwise improve interaction quality e.g. by shutting down non-essential nodes or downsampling audio data for transmission in situations where the robot is severely handicapped by low computational power or a high latency/ low throughput network respectively.
 
 \section{Target Audience}
 

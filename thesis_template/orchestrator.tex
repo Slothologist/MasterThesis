@@ -5,8 +5,24 @@
 
 \chapter{Orchestrator}
 
-- manages all participating nodes
+\begin{itemize}
+	\item manages all participating nodes
+	\item determines used audio formats for transmission
+	\item handles synchronization task
+	\item handles meta data accumulation, introspection and acts on anomalies
+\end{itemize}
 
-- optimizes audio 
+meta information gathering:
 
-- handles synchronization task
+\begin{itemize}
+	\item how the orchestrator gathers meta information and what exactly he gathers
+	\item how this information is then used
+\end{itemize}
+
+algorithms implemented for the orchestrator
+
+\begin{itemize}
+	\item minimizing amount of resampling
+	\item how is synchronization/ fusion solved?
+	\item feedback to user if a non-optimal configuration is found (algorithm on how to find those)
+\end{itemize}

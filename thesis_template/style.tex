@@ -458,6 +458,9 @@
 \newcommand\internalid[1]{\renewcommand\@internalid{#1}}
 \newcommand\@internalid{}
 
+\newcommand\subtitle[1]{\renewcommand\@subtitle{#1}}
+\newcommand\@subtitle{}
+
 \newcommand{\applytolist}[3][{,\\\vspace{0.1cm}}]{%
 	\def\nextitem{\def\nextitem{#1}}%
 	\@for \el:=#3\do{\nextitem{#2{\el}}}%
@@ -472,7 +475,9 @@
 {\LARGE \spacedallcaps{\@thesistype} \\}
 {\Large \spacedlowsmallcaps{\@discipline}\\}
 \vfill
-{\Huge \textcolor{smartred}{\spacedallcaps{\@title}}\\}
+{\huge \textcolor{smartred}{\spacedallcaps{\@title}}\\}
+\vspace{3mm}
+{\LARGE \textcolor{smartred}{\spacedallcaps{\@subtitle}}\\}
 \vfill
 {\LARGE \applytolist{\spacedallcaps}{\@author}\\}
 \vfill

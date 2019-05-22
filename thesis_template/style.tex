@@ -452,6 +452,9 @@
 \newcommand\supervisors[1]{\renewcommand\@supervisors{#1}}
 \newcommand\@supervisors{}
 
+\newcommand\reviewers[1]{\renewcommand\@reviewers{#1}}
+\newcommand\@reviewers{}
+
 \newcommand\internalid[1]{\renewcommand\@internalid{#1}}
 \newcommand\@internalid{}
 
@@ -475,12 +478,16 @@
 \vfill
 {\Large \applytolist{\itshape}{\@institution}}
 \vfill
+{\Large \spacedlowsmallcaps{Reviewed by}\\}
+\vspace{0.1cm}
+{\large \applytolist{\spacedallcaps}{\@reviewers}}
+\vfill
 {\Large \spacedlowsmallcaps{Supervised by}\\}
 \vspace{0.1cm}
 {\large \applytolist{\spacedallcaps}{\@supervisors}}
 \vfill
 \vfill
-{\Large \spacedlowsmallcaps{TBD 2019} \hfill \spacedlowsmallcaps{\@internalid}}
+{\Large \spacedlowsmallcaps{20th September 2019} \hfill \spacedlowsmallcaps{\@internalid}}
 \vfill
 \makeatother
 \endgroup}}

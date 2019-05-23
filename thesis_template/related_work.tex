@@ -5,7 +5,7 @@
 In this chapter a number of frameworks and libraries for audio transmission and their merit for speech recognition will be discussed.
 
 \section{ALSA/ PulseAudio}
-The Advanced Linux Sound Architecture (ALSA) 
+The Advanced Linux Sound Architecture (ALSA) and PulseAudio 
 
 \begin{itemize}
 	\item 
@@ -14,7 +14,7 @@ The Advanced Linux Sound Architecture (ALSA)
 %-------------------------------------------------------------------------------------
 \section{JACK Audio}
 
-The Jack audio connection kit (JACK) is a protocol for audio transmission between components with the explicit requirement for a low latency, to enable real time capture, playback and editing of sound. 
+The Jack audio connection kit \cite{JACK} is a protocol for audio transmission between components with the explicit requirement for a low latency, to enable real time capture, playback and editing of sound. 
 It provides an API to transmit audio between programs. 
 
 Several implementations of JACK servers exist, notably JACK1 and JACK2. 
@@ -40,6 +40,10 @@ For speech recognition purposes however, this audio frame dropping produces a se
 For once, transitions between audio frames become non-steady, which results in artifacts when frequency analysis or other feature extraction is employed.
 Feature extraction algorithms using deep learning for example may not have been trained with audio which misses frames, and produce incomprehensible or unexpected results.
 
+Furthermore, dropping audio frames poses the more fundamental problem of loosing information, which complicates recognition and worses results. 
+To counter this, developers using JACK must take special care of reading and writing audio, which creates an additional requirement.
+This leads to JACK being rather unsuitable as a middleware for a number of speech recognition applications, especially in a research context, where components are often exchanged.
+
 
 %-------------------------------------------------------------------------------------
 \section{Gstreamer}
@@ -51,9 +55,11 @@ Feature extraction algorithms using deep learning for example may not have been 
 %-------------------------------------------------------------------------------------
 
 \section{Interoperability between presented Frameworks}
+
+Most of the presented frameworks can be used alongside each other, as they oftentimes have interfaces for each other.
+
 \begin{itemize}
-	\item most if not all of these frameworks can be used alongside each other and often have interfaces to each other
-	\item 
+	\item A combination of the presented frameworks may come to mind but most of the discussed problems will just add up instead of cancel each other out
 \end{itemize}
 
 

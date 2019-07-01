@@ -1,0 +1,52 @@
+%!TEX root = ../thesis.tex
+
+\section{JACK Audio}
+
+The Jack audio connection kit \cite{JACK} is a protocol for audio transmission between components with the explicit requirement for a low latency, to enable real time capture, playback and editing of sound. 
+It provides an API to transmit audio between programs. 
+
+Several implementations of JACK servers exist, notably JACK1 and JACK2. 
+Differences between implementations are quite small and boil down to a handful of optional features and support for some operating systems which will most likely not matter for most users. % see https://github.com/jackaudio/jackaudio.github.com/wiki/Q_difference_jack1_jack2
+Since all implementations provide the same interfaces, components are indifferent to the implementation of the JACK server used. 
+
+JACK requires components to use a specific sample rate, sample size and audio format, which can however be adjusted before starting the JACK server. 
+As such, any component which requires a different audio format has to handle resampling and converting on its own. 
+
+JACK does not allow for additional information to transmitted with the raw audio it transports, so any additionally information must be transmitted and synchronized separately with another middleware. 
+
+JACK is able to transmit audio over network, but generally requires all participating computers to run an instance of the same server implementation. 
+An additional piece of software is needed to then create the connection between the different server instances. 
+This complexity results in a moderate amount of setup and maintenance time required to handle an ever changing setup of computers and components a robot, especially in a research context, requires.
+
+JACK requires all components which use its API to process audio in a specific and rather short time. 
+Audio is written to and read from JACK via buffers, which will be in turn read and written by JACK in specific intervals.
+If a component is not able to read or produce audio fast enough, JACK will overwrite or read old audio respectively, so audio is lost. 
+This is important for applications which result in humans hearing the transmitted audio directly, to reduce latency and negate long or at least noticeable periods of silence.
+
+\subsection{Problems regarding distributed Speech recognition applications}
+For speech recognition purposes however, this audio frame dropping produces a series of problems. 
+For once, transitions between audio frames become non-steady, which results in artifacts when frequency analysis or other feature extraction is employed.
+Feature extraction algorithms using deep learning for example may not have been trained with audio which misses frames, and produce incomprehensible or unexpected results.
+
+Furthermore, dropping audio frames poses the more fundamental problem of loosing information, which complicates recognition and worses results. 
+To counter this, developers using JACK must take special care of reading and writing audio, which creates an additional requirement.
+This leads to JACK being rather unsuitable as a middleware for a number of speech recognition applications, especially in a research context, where components are often exchanged.
+
+\subsection{Gstreamer \& ALSA/ PulseAudio}
+
+Here we will briefly discuss three other audio frameworks, namely ALSA, Pulseaudio and Gstreamer.
+
+The Advanced Linux Sound Architecture (ALSA) 
+It provides drivers and access to hardware sound sources and sinks, typically -but not limited to- microphones and speakers.
+
+PulseAudio builds on top of ALSA and provides an abstraction layer as well as additional interfaces and features, such as seamless resampling and audio transmission over network.
+
+Gstreamer \cite{Gstreamer}
+
+\begin{itemize}
+	\item de facto standard on every linux machine, but available on several other operating systems
+	\item provides access to hardware sound sources and sinks
+\end{itemize}
+
+Most of the presented frameworks can be used alongside each other, as they oftentimes have interfaces for each other. 
+A combination of the presented frameworks may come to mind but most of the discussed problems will just add up instead of cancel each other out.

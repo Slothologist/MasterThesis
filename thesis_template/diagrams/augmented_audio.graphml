@@ -30,7 +30,7 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="134.5" width="644.0" x="377.25" y="475.0"/>
-          <y:Fill color="#FCFF307F" transparent="false"/>
+          <y:Fill color="#FF2E3D31" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="107.283203125" x="268.3583984375" xml:space="preserve" y="4.0">Meta Information</y:NodeLabel>
           <y:Shape type="rectangle"/>
@@ -41,7 +41,7 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="134.5" width="644.0" x="377.25" y="340.5"/>
-          <y:Fill color="#31CBFF7F" transparent="false"/>
+          <y:Fill color="#31CBFF32" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="173.869140625" x="235.0654296875" xml:space="preserve" y="4.0">Synchronization Information</y:NodeLabel>
           <y:Shape type="rectangle"/>
@@ -52,7 +52,7 @@
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="134.5" width="644.0" x="377.25" y="206.0"/>
-          <y:Fill color="#30FFA47F" transparent="false"/>
+          <y:Fill color="#2FFFA332" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="12" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="17.96875" horizontalTextPosition="center" iconTextGap="4" modelName="internal" modelPosition="t" textColor="#000000" verticalTextPosition="bottom" visible="true" width="156.771484375" x="243.6142578125" xml:space="preserve" y="4.0">Transmission Information</y:NodeLabel>
           <y:Shape type="rectangle"/>

@@ -2,13 +2,12 @@
 
 \chapter{Introduction \& Motivation}
 
-\section{Problem statement} 
-What is generally known as Speech Recognition is actually comprised of several smaller subtasks, i.e. recording the raw sound, voice activation detection and the actual speech recognition, as well as additional, related tasks, such as sound source localization, sound filtering, beamforming, speaker recognition, addresser detection or emotion detection. %eher abstract?
+What is generally known as Speech Recognition is actually comprised of several smaller subtasks, i.e. recording the raw sound, voice activity detection, and the actual speech recognition, as well as related tasks, such as sound source localization, sound filtering, beamforming, speaker recognition and addresser detection or emotion detection. %eher abstract?
 
 Speech recognition solutions tend to incorporate their basic subtasks into a single process.\todo{modularisierung eingener abschnitt?}
-This tends to entangle these subtasks to a point where code re-usability is unfeasible and switching out individual subtasks is a time consuming and complex matter.
+This tends to entangle these subtasks to a point where code re-usability is infeasible and switching out individual subtasks is a time consuming and complex matter.
 
-\section{Synchronization of speech recognition results and related information}
+\section{Synchronization of speech recognition results with related information}
 
 Speech recognition and related tasks (e.g. SSL) may take a while, especially on weaker hardware. 
 This poses a problem for systems relying on more than one of those types of data. 
@@ -26,14 +25,13 @@ Latency is one of the top concerns in audio frameworks such as GStreamer and JAC
 	
 Speech recognition tasks typically are bound by computationally intensive calculations, which will inherently produce a measurable latency/ delay between audio recording and recognized speech.  
 	
-For example, to recognize speech on a dynamically beamformed signal (as is a typical use case with microphone arrays present on modern robots), one has to firstly calculate sound source localization, after which the beamformed signal can be calculated.
-If a voice activation detection is employed, it then needs to be calculated. 
-After a voice was picked up by it, it needs to determine when the phrase ends, which typically takes a significant fraction of a second, and thus potentially adds to the latency. 
+For example, to recognize speech on a dynamically beamformed signal which is a typical use case with microphone arrays present on modern robots, one has to calculate sound source localization first, after which the beamformed signal can be calculated.
+If a voice activation detection is employed, it then needs to determines when a voice was picked up and and when the phrase ends, which typically takes a significant fraction of a second, thus adding to the latency. 
 	
 Because of the calculations and inherent delays, the latency introduced by the framework will almost always be rather insignificant and probably not be noticeable. 
 This holds especially true, if the point in time at which the result of the speech recognition is known can only be observed indirectly, e.g. the reaction of a robot to a spoken sentence given by a human will always be slightly delayed, just as a human typically needs a short time to react to new information, given to it verbally or otherwise.
 
-\section{Continuous Audio Signal}
+\section{Continuous Audio Signals}
 On the other hand, the possibility to lose audio frames introduces a significant problem to automated speech recognition.
 Lost audio frames result in artifacts found at the edges of neighboring frames. 
 These artifacts in turn result in unusual frequencies, which will cause problems in every step of a speech recognition pipeline which is not prepared for these to show up. 
@@ -45,21 +43,26 @@ Techniques to cope with potentially ensuing synchronization issues may also be n
 Thus one might come to the conclusion that having a complete, discontinuity-free speech signal is more important than having a low latency.\todo{diese erkenntnis ist allerdings relativ wichtig für die motivation}
 
 \section{Sound analysis in the context of social robotics}
-Robotics in general depend heavily on human robot interaction. Speech is one of (if not) the most important form of communication between humans. As such is no surprise that speech recognition is also one of the main methods of human robot communication.
+Robotics in general depend heavily on human robot interaction. Speech is one of (if not) the most important form of communication between humans. 
+As such it is no surprise that speech recognition is also one of the main methods of human robot communication.
 
-While other specialized fields of robotics or human robot interaction can come by with just speech recognition, social robots require more information.\todo{no single sentence paragraph}
+While other specialized fields of robotics or human robot interaction can get by just recognizing speech, social robots require more information.\todo{no single sentence paragraph}
 
-Humans are able to gather a plethora of information in in simple conversations which have next to nothing to do with what was actually said. Just by hearing a voice, one may determine a person’s emotional state, gender, or even where a person may be from, e.g. from an accent. A robot perceiving these information and addressing them if appropriately may lead a person interacting with the robot to feel better recognized as a person and such increase the persons acceptance of the robot.
+Humans are able to gather a plethora of information in in simple conversations which have next to nothing to do with what was actually said. 
+Just by hearing a voice, one may determine a person’s emotional state, gender, or even where a person may be from, e.g. from an accent. 
+A robot perceiving these information and addressing them if appropriately may lead a person interacting with the robot to feel better recognized as a person and such increase the persons acceptance of the robot.
 
-Several key features are relevant to take part in a conversation: The ability to match a voice/ spoken word to a (e.g. visually) perceived person, which in turn at least partially requires to recognize a voice and track the direction from where it is coming. Understanding whether or not a sentence or utterance was directed towards oneself.
+Several key features are relevant to take part in a conversation: 
+The ability to match a voice/ spoken word to a (e.g. visually) perceived person, which in turn at least partially requires to recognize a voice and track the direction from where it is coming. 
+Understanding whether or not a sentence or utterance was directed towards oneself.
 
 Meta information about the processes involved in speech recognition may prove useful in enabling the robot to give a user feedback on why something took longer than expected or otherwise improve interaction quality e.g. by shutting down non-essential nodes or downsampling audio data for transmission in situations where the robot is severely handicapped by low computational power or a high latency/ low throughput network respectively.
 
-\section{Target Audience}
+\section{Target Audience/ Fields of Application}
 
 This work is predominantly targeted at researchers who develop new components related to speech recognition (e.g. SSL, VAD, beamforming, filtering). 
 Re-implementation of software slows down research so a framework, which allows them to easily incorporate a new algorithm/ technique into a existing pipeline of state of the art components for testing and benchmarking purposes, should improve the research speed and quality.
 
 Additional beneficiaries of this pipeline are developers who want to make use of speech recognition but do not have the resources to create their own pipeline.
 A typical user of this kind would come from the fields of robotics, which tends to be a rather interdisciplinary field, integrating more specialized fields into theirs, like speech recognition, AI, or human machine interaction.
-Giving them the opportunity to fast prototype and evaluate individual components and their interaction together in a standardized way 
+Giving them the opportunity to prototype and evaluate individual components and their interaction together in a standardized way.

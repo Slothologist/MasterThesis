@@ -10,6 +10,16 @@
 %\usepackage[german]{translator}
 %\usepackage{hyperref}
 
+\usepackage{import}
+\usepackage{xifthen}
+%\usepackage{pdfpages}
+\usepackage{transparent}
+
+\newcommand{\incfig}[1]{%
+	\def\svgwidth{\columnwidth}
+	\import{./bilder/}{#1.pdf_tex}
+}
+
 % This is the only file needed for actually using the smart-thesis style.
 \input{style}
 

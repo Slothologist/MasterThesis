@@ -1,6 +1,12 @@
 %!TEX root = ../thesis.tex
 
-\section{JACK Audio}
+\section{Audio frameworks}
+In this part we will discuss several frameworks used for audio processing.
+JACK Audio (also called JACK for short) will be discussed in greater detail as it provides a good example.
+The three other frameworks we will discuss here, namely ALSA, Pulseaudio and Gstreamer are similar enough to JACK to justify just discussing their differences to JACK.
+
+
+\subsection{JACK Audio}
 
 The Jack audio connection kit \cite{JACK} is a protocol for audio transmission between components with the explicit requirement for a low latency, to enable real time capture, playback and editing of sound. 
 It provides an API to transmit audio between programs. 
@@ -32,21 +38,23 @@ Furthermore, dropping audio frames poses the more fundamental problem of loosing
 To counter this, developers using JACK must take special care of reading and writing audio, which creates an additional requirement.
 This leads to JACK being rather unsuitable as a middleware for a number of speech recognition applications, especially in a research context, where components are often exchanged.
 
-\subsection{Gstreamer \& ALSA/ PulseAudio}
-
-Here we will briefly discuss three other audio frameworks, namely ALSA, Pulseaudio and Gstreamer.
-
-The Advanced Linux Sound Architecture (ALSA) 
-It provides drivers and access to hardware sound sources and sinks, typically -but not limited to- microphones and speakers.
-
-PulseAudio builds on top of ALSA and provides an abstraction layer as well as additional interfaces and features, such as seamless resampling and audio transmission over network.
+\subsection{Gstreamer}
 
 Gstreamer \cite{Gstreamer}
+
+\subsection{ALSA}
+The Advanced Linux Sound Architecture (ALSA) 
+It provides drivers and access to hardware sound sources and sinks, typically -but not limited to- microphones and speakers.
 
 \begin{itemize}
 	\item de facto standard on every linux machine, but available on several other operating systems
 	\item provides access to hardware sound sources and sinks
 \end{itemize}
 
+\subsection{PulseAudio}
+
+PulseAudio builds on top of ALSA and provides an abstraction layer as well as additional interfaces and features, such as seamless resampling and audio transmission over network.
+
+\subsection{Closing remarks}
 Most of the presented frameworks can be used alongside each other, as they oftentimes have interfaces for each other. 
 A combination of the presented frameworks may come to mind but most of the discussed problems will just add up instead of cancel each other out.

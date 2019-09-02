@@ -26,3 +26,34 @@ algorithms implemented for the orchestrator
 	\item how is synchronization/ fusion solved?
 	\item feedback to user if a non-optimal configuration is found (algorithm on how to find those)
 \end{itemize}
+
+\subsection{Meta Information Gathering}
+It is desirable to gather meta information about results delivered by nodes. I.e. probability of a certain result and time to compute. TTC can be used to better predict if a node will deliver a result at all. See synchronisation of results in the orchestrator algorithms chapter.
+
+Method 1: Every results need to be enhanced with meta informations
+
+pro
+
+- relatively easy to implement
+
+con
+
+-nodes need to explicitly keep track on this information and fill them (user unfriendly)
+
+- results bigger than they need to be
+
+- Method 2: TTC can be computed by orchestrator, other meta information included 
+
+pro
+
+-TTC can be expected to always exist and be correct (can not be expected if nodes are expected to calculate it)
+
+-node implementation is not blown up
+
+con
+
+-not all nodes provide results, so beamformer and filter nodes need to provide the meta information explicitly
+
+-how would this work?
+
+-each result message has a timestamp, in combination with the audio flow graph calculated by the orchestrator, the time from one result to the next in line is roughly the time the next node took for computation

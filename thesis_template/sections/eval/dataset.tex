@@ -3,6 +3,7 @@
 
 
 \section{Dataset Evaluation}
+\label{eval:dataset}
 
 In this section, evaluation of the proposed pipeline and an existing solution on a dataset will be presented.
 The goal of this evaluation is to take a closer look on the performance of the proposed pipeline with the explicit focus on computational cost as well as time needed for recognizing speech.
@@ -13,6 +14,7 @@ To further examine the cost, we will in particular inspect the cost different ad
 We will lastly discuss if this additional cost makes using the pipeline unsuitable for real world applications or if the benefits overweight these costs.
 
 \subsubsection{Dataset}
+\label{eval:dataset:dataset}
 
 The dataset used for this evaluation consists of 1723 samples with length between a half and fourteen seconds.
 It incorporates 12 speakers (male and female) speaking 24 phrases. 
@@ -26,6 +28,7 @@ The proposed pipeline was fed each sample individually, but three seconds of sil
 The playtime of the complete dataset including the silence amounted to nearly two hours and fifty minutes.
 
 \subsubsection{Setup}
+\label{eval:dataset:setup}
 
 Two slightly different setups were used for the various configurations of the proposed pipeline on the one hand and the existing solution on the other hand, due to differences in acquiring audio data.
 What the have in common is that all pipeline were tested on the same computer, a Thinkpad Carbon X1 Gen with a Intel(R) Core(TM) i7-7500U, to ensure equality in CPU performance.
@@ -42,7 +45,8 @@ CPU usage was universally recorded using the python library psutil and its cpu\_
 However, psutils reliability can be called into question, as it seems not to take into account modern CPU's capability to increase or decrease their clock speed, depending on load.
 As such, the recorded CPU costs should rather be taken as rough estimates and not as exact measurements.
 We included this data points despite their supposed inaccuracy because apart from the last tested pipeline, all pipelines did not produce enough load on the CPU to cause it to increase its clock speed.
-This is supported by fact that identical components across various pipelines produce nearly identical CPU loads.
+This is supported by fact that identical components across various pipelines produce very similar CPU loads, as seen in figure 
+\ref{table:eval_dataset_detail}.
 
 Speech recognition results were recorded by a ROS node which collected ROS messages published by the proposed pipelines orchestrator respectively the PocketSphinxAdapter.
 
@@ -68,6 +72,7 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 
 
 \begin{figure}[ht]
+	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_1.pdf}
 	\caption{Test scenario for existing pipeline}
 	\label{pic:eval_p1_diag}
@@ -91,13 +96,16 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 
 \begin{figure}[ht]	
 	\centering
-	\subfloat[Test scenario for widened baseline of proposed pipeline]{
-		\includegraphics[height=0.4\textwidth]{diagrams/eval_pipeline_3.pdf}
-		\label{pic:eval_p3_diag}
-	}
-	\subfloat[Test scenario for elongated baseline of proposed pipeline]{
-		\includegraphics[height=0.4\textwidth]{diagrams/eval_pipeline_5.pdf}
-		\label{pic:eval_p5_diag}
+	\resizebox{\textwidth}{!}{
+		\subfloat[Test scenario for widened baseline of proposed pipeline]{
+			\includegraphics[height=0.4\textwidth]{diagrams/eval_pipeline_3.pdf}
+			\label{pic:eval_p3_diag}
+		}
+		\quad
+		\subfloat[Test scenario for elongated baseline of proposed pipeline]{
+			\includegraphics[height=0.4\textwidth]{diagrams/eval_pipeline_5.pdf}
+			\label{pic:eval_p5_diag}
+		}
 	}
 	
 	\caption{Test scenarios for proposed pipeline}
@@ -105,32 +113,47 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 \end{figure}
 
 \begin{figure}[ht]
-	\begin{tabular}{ | l | p{0.3\textwidth} | p{0.3\textwidth} | p{0.3\textwidth} |}
+	\begin{tabular}{ | l | p{0.2\textwidth} | p{0.2\textwidth} | r|}
 		\hline
-		Pipeline & Correctly recognized sentences & Absolute time till result (in seconds) & CPU time (in CPU seconds) \\ \hline
-		Existing & 77.19\% & 1.5596 &  247.44 \\ \hline
-		Proposed & 99.77\% & 1.0141 & 1209.3 \\ \hline
-		Elongated & 99.77\% & 1.0394 & 1399.63 \\ \hline
-		Widened & 99.65\% & 1.0899 & 1665.66 \\ \hline
-		Realistic & 99.48\% & 1.7799 & 37517.13 \\ \hline
+		Pipeline 	& Recognition percentage & Absolute time till result & Sum CPU time \\ \hline
+		Existing 	& 77.19\% & 1.560 sec &   247.44 sec \\ \hline
+		Proposed 	& 99.77\% & 1.014 sec &  1209.30 sec \\ \hline
+		Elongated 	& 99.77\% & 1.039 sec &  1399.63 sec \\ \hline
+		Widened 	& 99.65\% & 1.090 sec &  1665.66 sec \\ \hline
+		Realistic 	& 99.48\% & 1.780 sec & 37517.13 sec \\ \hline
 	\end{tabular}
 	\caption{Results of the pipelines in comparison}
 	\label{table:eval_dataset_results}
 \end{figure}
 
+\begin{figure}[ht]
+	\begin{tabular}{ | l | r | r | r | r | r |}
+		\hline
+		Component 	& Existing 	& Proposed & Elongated & Widened & Realistic\\ \hline
+		Speech Rec 	& 247.44 	& 546.65 & 545.73 & 574.82	 &   285.77 \\ \hline
+		Orchestrator& - 		& 107.66 & 114.69 & 415.73	 &   962.56 \\ \hline
+		Wav Player 	& -			& 380.11 & 378.71 & 405.40	 &   138.22 \\ \hline
+		VAD		 	& - 		& 174.88 & 188.56 & 191.97	 &    51.26 \\ \hline
+		Dummy	 	& - 		& -		 & 171.94 &  77.74	 &        - \\ \hline
+		Gender Rec 	& - 		& -		 & -	  & -	 	 &  5959.50 \\ \hline
+		Emotion Rec	& - 		& -		 & - 	  & -		 & 30119.82 \\ \hline
+	\end{tabular}
+	\caption{Detailed CPU cost}
+	\label{table:eval_dataset_detail}
+\end{figure}
 
-\subsection{Existing Solution}
+\subsection{Pipelines tested}
 
-Little description:
+\subsubsection{Existing Solution}
+
 The existing solution consists only of the PocketSphinxAdapter (PSA), see figure \ref{pic:eval_p1_diag}.
 The PSA grabs audio from a microphone using ALSA, filters the audio using an integrated voice activity detection and finally uses, as its name suggests, PocketSphinx to recognize speech.
-Recognition results are then communicated via ROS.
 
-Goal: provide a baseline
+It is used in this 
 
 What can be seen: 
 
-\subsection{Baseline for proposed Pipeline}
+\subsubsection{Baseline for proposed Pipeline}
 Little description:
 This configuration of the proposed pipeline is intended to reassemble the PSA as closely as possible.
 As seen in figure \ref{pic:eval_p2_diag}, it consists of a voice activity detection, a speech recognizer (using PocketSphinx), the Orchestrator and a Wav file player to feed audio into the pipeline.
@@ -144,37 +167,56 @@ If one compares the results of the pipelines in figure \ref{table:eval_dataset_r
 - results for the proposed pipeline are all virtually identical, 
 
 
-\subsection{Elongated baseline of proposed Pipeline}
+\subsubsection{Elongated baseline of proposed Pipeline}
 This configuration of the proposed pipeline is nearly identical to its baseline, but incorporates a dummy component to evaluate how much overhead in time and CPU cost an additional processing step produces.
 As indicated in figure \ref{pic:eval_p4_diag} and by its name, the dummy node does neither alter nor compute information on the audio data it received, but instead just relays it from the WAV player to the VAD.
 
 If one compares the results of the proposed and elongated pipeline in figure \ref{table:eval_dataset_results}, a slight increase in absolute time per recognition can be seen, as well as a moderate increase in CPU cost.
-The slight increase of 15ms in absolute recognition time can be expected 
-The increase in CPU cost is virtually completely due to the additional dummy component present in this pipeline. 
-Its CPU cost lies a little below the cost of the VAD, which utilizes a computationally very inexpensive algorithm to segment the audio, so it presents a compelling baseline for TODO
+The increase in CPU cost is virtually completely due to the additional dummy component present in this pipeline, as can be extracted from figure \ref{table:eval_dataset_detail}. 
+
+The slight increase of 15ms in absolute recognition time was, as discussed before, expected.
+Considering a very elaborate configuration, where audio would be transmitted through audio grabbing, sound source localization, beamforming, audio enhancement, VAD and speech recognition, the latency introduced by using the proposed pipeline would amount to 90ms.
+This would barely be humanly noticeable and depending on the time taken by the components themselves probably be just a fraction of the absolute recognition time needed.
+%Considering the VAD, which utilizes a computationally very inexpensive algorithm to segment the audio and should introduce only a slightly larger latency into the pipeline.
 
 
-
-What can be seen: overhead cost of adding component is rather small, especially in absolute time needed (2.5 ms), thus negligible
-
-\subsection{Widened baseline of proposed Pipeline}
+\subsubsection{Widened baseline of proposed Pipeline}
 This configuration of the proposed pipeline is nearly identical to its baseline, but incorporates a dummy component to evaluate how much overhead in time and CPU cost an additional information provider produces.
+As indicated in figure \ref{pic:eval_p3_diag} and by its name, the dummy node receives audio data from the VAD and works basically in parallel to the speech recognizer.
+Upon receiving audio data, the dummy node provides hard coded ''information'' to the Orchestrator.
+This way the Orchestrator does not have to wait on receiving the dummy nodes information during its synchronization steps, and can theoretically provide synchronized data as soon as speech recognition results are provided to it.
+
+This is the first discussed configuration in which the Orchestrator has to actually synchronize data. 
+In the baseline and elongated configuration it could take advantage of not having any other information provider and just relay all incoming data.
+The additional computational power required by the Orchestrator can easily be observed in figure \ref{table:eval_dataset_detail}.
+Though this configuration of the pipeline seems to generally have higher computational load, probably due to reasons discussed in section \ref{eval:dataset:setup}, the Orchestrator is responsible for around a quarter of the computational load of the whole pipeline compared to roughly a tenth in the baseline and elongated configuration.
+
+The moderate uptick in absolute recognition time may also be explained by the additional synchronization work the Orchestrator has to contribute. 
+This increase of 86ms on itself should not be particularly noticeable as it increases the absolute recognition time by just around 8 percent, which could be seen as a valuable trade-off for gaining synchronized speech results. 
+However, further tests could be carried out to investigate the scaling of this particular part of the proposed pipeline.
 
 
-
-Goal: get overhead cost of a parallel component
-
-What can be seen: 
-
-\subsection{Realistic version of proposed Pipeline}
-
+\subsubsection{Realistic version of proposed Pipeline}
+This 
 
 Goal: 
 
 What can be seen: 
 
 
-\section{Discussion}
+\subsection{Discussion}
+
+- pocketsphinxes ar enot equal
+
+%---------------- Pipleine 1
+
+%---------------- Pipleine 2
+
+%---------------- Pipleine 3
+
+%---------------- Pipleine 4
+
+%---------------- Pipleine 5
 
 However, it is good to keep in mind that PocketSphinx was designed years ago to work on mobile devices of that time, so it is one of the computational most inexpensive speech recognizers still used. 
 More modern speech recognizers can generally be divided into offline and cloud services.

@@ -1,21 +1,60 @@
 %!TEX root = thesis.tex
 %=============================================================================
 
+
+
+
 \section{Robocup Speech Recognition Test}
-In this section, an evaluation of the proposed pipeline in a real work scenario will be presented.
-The goal of this evaluation is to evaluate if using the proposed pipeline leads to improved recognition results, in this particular case to better sound source localization results.
-
-This evaluation will be based on the Speech \& Person Recognition task of RoboCup@home 2018,\cite{speechrec_2018}, although some minor modifications will be made to the setup.
-
-\subsubsection{Software Setup}
-Two distinct solutions will be benchmarked:
-The existing RoboCup setup and a reimplementation of it within the proposed pipeline.
 
 
-\subsubsection{Modification to the RoboCup@home task}
+\begin{figure}[ht]	
+	\centering
+	\subfloat[Scenario for baseline of proposed pipeline]{
+		\includegraphics[width=0.5\textwidth]{diagrams/robocup_task_t.pdf}
+	}
+	\subfloat[Scenario for elongated baseline of proposed pipeline]{
+		\includegraphics[width=0.5\textwidth]{diagrams/robocup_task_t1.pdf}
+	}
+	
+	\caption{Test scenario for the RoboCup task}
+	\label{pic:eval_task}
+\end{figure}
 
+\begin{figure}[ht]
+	\begin{tabular}{ | l | l | l | l |}
+		\hline
+		Run & Correctly recognized sentences & Points & Points by SSL \\ \hline
+		1 & 50\% & 45 & 0 \\ \hline
+		2 & 50\% & 40 & 10 \\ \hline
+		4 & 35\% & 25 &  0 \\ \hline
+		5 & 40\% & 30 & 10 \\ \hline
+		6 & 45\% & 40 & 10 \\ \hline
+		7 & 60\% & 50 & 10 \\ \hhline{|=|=|=|=|} 
+		Avg & 46.7\% & 38.3 & 6.7 \\
+		\hline
+	\end{tabular}
+	\caption{Results of the existing pipeline in the RoboCup task}
+	\label{pic:eval_task_results_old}
+\end{figure}
 
+\begin{figure}[ht]
+	\begin{tabular}{ | l | l | l | l |}
+		\hline
+		Run & Correctly recognized sentences & Points & Points by SSL \\ \hline
+		1 & 65\% & 50 &  0 \\ \hline
+		2 & 55\% & 70 & 20 \\ \hline
+		4 & 55\% & 35 &  0 \\ \hline
+		5 & 55\% & 50 & 20 \\ \hline
+		6 & 60\% & 60 &  0 \\ \hline
+		7 & 60\% & 60 & 10 \\ \hhline{|=|=|=|=|} 
+		Avg & 58.3\% & 54.2 & 8.3\\
+		\hline
+	\end{tabular}
+	\caption{Results of the proposed pipeline in the RoboCup task}
+	\label{pic:eval_task_results_new}
+\end{figure}
 
+Speech \& Person Recognition task of RoboCup@home 2018 with minor modifications see page 64
 Two solutions will be benchmarked: The existing RoboCup setup (using PocketSphinxAdapter and pyroomacoustics SSL) and the proposed SpeechRec Pipeline  (using PocketSphinx, a re-implementation of PocketSphinxAdapter VAD and pyroomacoustics SSL)
 Both solutions can run at the same time, and thus will be evaluated concurrently, to eliminate run-to-run variances between the solutions
 Recognized speech and SSL angles will be logged and evaluated after all runs
@@ -25,7 +64,6 @@ Extensive noise is generated around the robot, to simulate a crowded convention 
 Spoken questions and recognition results
 SSL results that would be used for turning, i.e. turning angle provided by each solution
 (Resulting points; can be calculated from these)
-
 
 \subsubsection{Robocup task setup and modifications}
 -Simultaneous execution of both solutions require small changes to the task
@@ -78,63 +116,3 @@ SSL results that would be used for turning, i.e. turning angle provided by each 
 	\item oftentimes recognition results would be very similar, but once wrong and once right, e.g. ''whats the color of the coke'' would be once interpreted by both pipelines as ''whats the color of the bowl'' and once by the old pipeline as ''whats the color of the fork'' and once correct by the proposed pipeline; other example: sponge was recognized as sausages, thus once wrong
 \end{itemize}
 
-\subsection{Discussion}
-
-
-\begin{figure}[]
-	\centering
-	\subfloat[Scenario for baseline of proposed pipeline]{
-		\includegraphics[width=0.5\textwidth]{diagrams/robocup_task_t.pdf}
-	}
-	\subfloat[Scenario for elongated baseline of proposed pipeline]{
-		\includegraphics[width=0.5\textwidth]{diagrams/robocup_task_t1.pdf}
-	}
-	\caption{Test scenario for the RoboCup task}
-	\label{pic:eval_task}
-\end{figure}
-
-\begin{figure}[]
-	\centering
-	\subfloat[Setup of existing solution]{
-		\includegraphics[width=0.5\textwidth]{diagrams/eval_task_old.pdf}
-	}
-	\subfloat[Setup of of proposed pipeline]{
-		\includegraphics[width=0.5\textwidth]{diagrams/eval_task_proposed.pdf}
-	}
-	\caption{Setup of components for the RoboCup task}
-	\label{pic:eval_task_setup}
-\end{figure}
-
-\begin{figure}[]
-	\begin{tabular}{ | l | l | l | l |}
-		\hline
-		Run & Correctly recognized sentences & Points & Points by SSL \\ \hline
-		1 & 50\% & 45 & 0 \\ \hline
-		2 & 50\% & 40 & 10 \\ \hline
-		4 & 35\% & 25 &  0 \\ \hline
-		5 & 40\% & 30 & 10 \\ \hline
-		6 & 45\% & 40 & 10 \\ \hline
-		7 & 60\% & 50 & 10 \\ \hhline{|=|=|=|=|} 
-		Avg & 46.7\% & 38.3 & 6.7 \\
-		\hline
-	\end{tabular}
-	\caption{Results of the existing pipeline in the RoboCup task}
-	\label{pic:eval_task_results_old}
-\end{figure}
-
-\begin{figure}[ht]
-	\begin{tabular}{ | l | l | l | l |}
-		\hline
-		Run & Correctly recognized sentences & Points & Points by SSL \\ \hline
-		1 & 65\% & 50 &  0 \\ \hline
-		2 & 55\% & 70 & 20 \\ \hline
-		4 & 55\% & 35 &  0 \\ \hline
-		5 & 55\% & 50 & 20 \\ \hline
-		6 & 60\% & 60 &  0 \\ \hline
-		7 & 60\% & 60 & 10 \\ \hhline{|=|=|=|=|} 
-		Avg & 58.3\% & 54.2 & 8.3\\
-		\hline
-	\end{tabular}
-	\caption{Results of the proposed pipeline in the RoboCup task}
-	\label{pic:eval_task_results_new}
-\end{figure}

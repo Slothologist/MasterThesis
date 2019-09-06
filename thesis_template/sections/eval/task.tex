@@ -5,29 +5,37 @@
 In this section, an evaluation of the proposed pipeline in a real work scenario will be presented.
 The goal of this evaluation is to evaluate if using the proposed pipeline leads to improved recognition results, in this particular case to better sound source localization results.
 
-This evaluation will be based on the Speech \& Person Recognition task of RoboCup@home 2018,\cite{speechrec_2018}, although some minor modifications will be made to the setup.
+This evaluation will be based on the Speech \& Person Recognition task of RoboCup@home 2018 \cite{speechrec_2018}, although some minor modifications will be made to the setup.
+The evaluation will be conducted on the Pepper robot (TODO cite).
 
 \subsubsection{Software Setup}
 Two distinct solutions will be benchmarked:
 The existing RoboCup setup and a reimplementation of it within the proposed pipeline.
+Both will mainly be comprised of a sound source localization, a speech recognizer and a layer to combine the results of both these components.
+
+The proposed pipeline (see figure \ref{pic:eval_task_setup_new}) will consist mainly of the basic speech recognition setup established as the baseline for the dataset evaluation (see chapter \ref{eval:dataset:pipeline:baseline}), i.e. an audio grabber to record audio from a microphone as well as the previously (see chapter \ref{eval:dataset:setup}) established VAD, PocketSphinx speech recognizer and Orchestrator.
+As sound source localization a component using pyroomacoustics, and specifically, its SRP algorithm, will be employed.
+Due to the robot providing four channel audio from its four microphones, which are all needed by the SSL, but the speech recognition part of the pipeline requiring only one channel audio, an additional component is needed in the form of a channel splitter.
+
+For the existing solution (see figure \ref{pic:eval_task_setup_old}), the already established PSA will take the role of the speech recognizer.
+For sound source localization, a slightly modified variant of the proposed pipelines component will be employed.
+To combine both results, an established behavior controller called Bonsai (TODO: cite bonsai) will be used.
+An channel splitter as with the proposed pipeline is not necessary, as ALSA will assume this task for the PSA.
+
+Of course, similar components within both solutions will be equivalently configured.
+The logged output of both solutions will contain SSL angles and recognized speech.
+Both solutions will be run concurrently, to eliminate run-to-run variances between the solutions.
 
 
 \subsubsection{Modification to the RoboCup@home task}
 
 
 
-Two solutions will be benchmarked: The existing RoboCup setup (using PocketSphinxAdapter and pyroomacoustics SSL) and the proposed SpeechRec Pipeline  (using PocketSphinx, a re-implementation of PocketSphinxAdapter VAD and pyroomacoustics SSL)
-Both solutions can run at the same time, and thus will be evaluated concurrently, to eliminate run-to-run variances between the solutions
-Recognized speech and SSL angles will be logged and evaluated after all runs
-5-10 runs are planned
-Extensive noise is generated around the robot, to simulate a crowded convention center
-
-Spoken questions and recognition results
-SSL results that would be used for turning, i.e. turning angle provided by each solution
-(Resulting points; can be calculated from these)
-
-
 \subsubsection{Robocup task setup and modifications}
+- 5-10 runs are planned
+
+-Extensive noise is generated around the robot, to simulate a crowded convention center
+
 -Simultaneous execution of both solutions require small changes to the task
 
 -Since the robot can not turn to two different angles at once, logged angle information will be used to evaluate SSL results
@@ -95,14 +103,16 @@ SSL results that would be used for turning, i.e. turning angle provided by each 
 
 \begin{figure}[]
 	\centering
-	\subfloat[Setup of existing solution]{
-		\includegraphics[width=0.5\textwidth]{diagrams/eval_task_old.pdf}
-	}
-	\subfloat[Setup of of proposed pipeline]{
-		\includegraphics[width=0.5\textwidth]{diagrams/eval_task_proposed.pdf}
-	}
-	\caption{Setup of components for the RoboCup task}
-	\label{pic:eval_task_setup}
+	\includegraphics[width=0.5\textwidth]{diagrams/eval_task_old.pdf}
+	\caption{Setup of existing solution}
+	\label{pic:eval_task_setup_old}
+\end{figure}
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=0.5\textwidth]{diagrams/eval_task_proposed.pdf}
+	\caption{Setup of of proposed pipeline}
+	\label{pic:eval_task_setup_new}
 \end{figure}
 
 \begin{figure}[]

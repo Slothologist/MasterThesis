@@ -87,7 +87,7 @@ This configuration of the pipeline is intended to resemble a realistic use case 
 \subsubsection{Dataset}
 \label{eval:dataset:dataset}
 
-The data set used for this evaluation consists of 1723 samples ranging between a half and fourteen seconds.
+The data set (see figure \ref{table:eval_dataset_info}) used for this evaluation consists of 1723 samples ranging between a half and fourteen seconds.
 It incorporates twelve speakers (male and female) speaking 24 phrases. 
 Individual samples were recorded using two microphones, one omni directional and one cardioid.
 They were recorded in two rooms, some of them with noise, others without.
@@ -97,6 +97,28 @@ This also simplifies matching the recorded speech recognition results with the a
 The proposed pipeline was fed each sample individually, but three seconds of silence were similarly inserted into the audio.
 
 The complete data sets playtime including the silence amounted to nearly two hours and fifty minutes.
+
+
+\begin{figure}[]
+	\centering
+	\begin{tabular}{| l | r |}
+		\hline
+		Samples 				& 1723	 	\\ \hline
+		Phrases	in kitchen		& 1149		\\ \hline
+		Phrases	in wardrobe		& 574		\\ \hline
+		Noisy Phrases			& 575		\\ \hline
+		Clean Phrases			& 1148		\\ \hline
+		Individual Phrases		& 24 		\\ \hline
+		Speakers 				& 12	 	\\ \hline
+		Female					& 5 		\\ \hline
+		Male	 				& 7			\\ \hline
+		Runtime (w/ silence) 	& 2:49:23	\\ \hline
+		Runtime (w/o silence) 	& 1:23:01	\\ \hline
+		Language 				& German	\\ \hline
+	\end{tabular}
+	\caption{Detailed Data Set Information}
+	\label{table:eval_dataset_info}
+\end{figure}
 
 \subsubsection{Setup}
 \label{eval:dataset:setup}
@@ -148,6 +170,7 @@ In any case, speech recognition results and timings were recorded as raw data an
 Afterwards, these raw results could be processed and evaluated with the help of further scripts.
 
 \begin{figure}[]
+	\centering
 	\begin{tabular}{ | l | p{0.2\textwidth} | p{0.2\textwidth} | r|}
 		\hline
 		Pipeline 	& Recognition percentage & Absolute time till result & Sum CPU time \\ \hline
@@ -162,6 +185,7 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 \end{figure}
 
 \begin{figure}[]
+	\centering
 	\begin{tabular}{ | l | r | r | r | r | r |}
 		\hline
 		Component 	& Existing 	& Proposed & Elongated & Widened & Realistic\\ \hline

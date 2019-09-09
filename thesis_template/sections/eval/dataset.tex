@@ -1,4 +1,4 @@
-%!TEX root = thesis.tex
+%!TEX root = ../../thesis.tex
 %=============================================================================
 
 
@@ -28,7 +28,9 @@ In this evaluation it is primarily used to provide a baseline for the proposed p
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_1.pdf}
-	\caption{Test scenario for existing pipeline}
+	\caption{Test scenario for existing pipeline.
+		The PocketSphinxAdapter acquires audio data from ALSA and provides speech recognitions.
+		A CPU and result watchdog monitor and log its CPU usage and results respectively.}
 	\label{pic:eval_p1_diag}
 \end{figure}
 
@@ -41,7 +43,11 @@ Recognition results are gathered by the Orchestrator and then communicated via R
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_2.pdf}
-	\caption{Test scenario for existing pipeline}
+	\caption{Test scenario for proposed pipelines baseline.
+		It consists of a wav player, which provides audio data.
+		The audio is then processed by a VAD and a speech recognizer.
+		The Orchestrator gathers the speech recognizers data and provides it to a result watchdog, which then saves the results.
+		A CPU watchdog monitors and logs CPU usage of all components.}
 	\label{pic:eval_p2_diag}
 \end{figure}
 
@@ -53,8 +59,10 @@ As indicated in figure \ref{pic:eval_p4_diag} and by its name, the dummy node do
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_4.pdf}
+	\caption{Test scenario for an elongated configuration of the proposed pipeline.
+		In comparison to the baseline of the proposed pipeline, it encompasses an additional dummy node which is squeezed in between the wav player and the VAD.
+		It does not alter the audio in any way, but is monitored by the CPU watchdog as well.}
 	\label{pic:eval_p4_diag}
-	\caption{Test scenario for existing pipeline}
 \end{figure}
 
 \subsubsection{Widened baseline of proposed Pipeline}
@@ -66,8 +74,9 @@ This way the Orchestrator does not have to wait on receiving the dummy nodes inf
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_3.pdf}
+	\caption{Test scenario for an widened configuration of the proposed pipeline.
+		In comparison to the baseline of the proposed pipeline, it encompasses an additional dummy node which is set in parallel to the speech recognizer and provides hard coded information to the Orchestrator, which then synchronizes these information with those it received from the speech recognizer.}
 	\label{pic:eval_p3_diag}
-	\caption{Test scenario for existing pipeline}
 \end{figure}
 
 
@@ -81,8 +90,10 @@ This configuration of the pipeline is intended to resemble a realistic use case 
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_5.pdf}
+	\caption{Test scenario for an realistic configuration of the proposed pipeline.
+		In comparison to the baseline of the proposed pipeline, it encompasses two additional components which are set in parallel to the speech recognizer, namely a gender and a emotion recognizer.
+		Both provide additional information to the Orchestrator, which then synchronizes these information with those it received from the speech recognizer.}
 	\label{pic:eval_p5_diag}
-	\caption{Test scenario for existing pipeline}
 \end{figure}
 
 \subsubsection{Dataset}
@@ -117,7 +128,7 @@ The complete data sets playtime including the silence amounted to nearly two hou
 		Runtime (w/o silence) 	& 1:23:01	\\ \hline
 		Language 				& German	\\ \hline
 	\end{tabular}
-	\caption{Detailed Data Set Information}
+	\caption{Detailed Information about the Data Set.}
 	\label{table:eval_dataset_info}
 \end{figure}
 
@@ -181,7 +192,8 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 		Widened 	& 99.65\% & 1.090 sec &  1665.66 sec \\ \hline
 		Realistic 	& 99.48\% & 1.780 sec & 37517.13 sec \\ \hline
 	\end{tabular}
-	\caption{Results of the pipelines in comparison}
+	\caption{Results of the different pipelines in comparison.
+		Shown are percentage of correct recognition, average time for recognition and consumed CPU time.}
 	\label{table:eval_dataset_results}
 \end{figure}
 
@@ -198,7 +210,8 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 		Gender Rec 	& - 		& -		 & -	  & -	 	 &  5959.50 \\ \hline
 		Emotion Rec	& - 		& -		 & - 	  & -		 & 30119.82 \\ \hline
 	\end{tabular}
-	\caption{Detailed CPU cost}
+	\caption{Detailed CPU cost by pipeline and component.
+		}
 	\label{table:eval_dataset_detail}
 \end{figure}
 

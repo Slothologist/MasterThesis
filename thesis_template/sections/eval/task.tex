@@ -66,13 +66,10 @@ All questions for the task will be generated from the publicly available RoboCup
 
 \begin{figure}[]
 	\centering
-	\subfloat[Scenario for baseline of proposed pipeline]{
-		\includegraphics[width=0.5\textwidth]{diagrams/robocup_task_t.pdf}
-	}
-	\subfloat[Scenario for elongated baseline of proposed pipeline]{
-		\includegraphics[width=0.5\textwidth]{diagrams/robocup_task_t1.pdf}
-	}
-	\caption{Test scenario for the RoboCup task}
+	\includegraphics[width=0.66\textwidth]{diagrams/robocup_task_t1.pdf}
+	\caption{Test scenario for the RoboCup task, specifically the ''blind mans bluff'' game. 
+		One person each is locate in front, behind and to either side of the robot.
+		The person on the right is asking the robot a question.}
 	\label{pic:eval_task}
 \end{figure}
 
@@ -93,39 +90,22 @@ The two speakers seen in the foreground were playing restaurant noises, which co
 \begin{figure}[]
 	\centering
 	\includegraphics[width=\textwidth]{bilder/eval/pepper_task_setup.png}
-	\caption{Evaluation Setup}
+	\caption{Task evaluation setup. 
+		Speakers can be seen in the foreground, while the test crowd shuffles around in between runs.}
 	\label{pic:eval_task_setup_pepper}
 \end{figure}
 
 \subsubsection{Discussion}
 Pinpoint accuracy of SSL results is generally not required.
-For the purposes of locating and differentiating speakers from one another, especially in a household environment, where generally only a handful of people are present, any SSL result within a margin of error of +-15$^\circ$ can be regarded as correct.
+For the purposes of locating and differentiating speakers from one another, especially in a household environment, where generally only a handful of people are present, any SSL result within a margin of error of 15$^\circ$ can be regarded as correct.
 Rather erroneous detections caused by noise before or after the spoken question should not falsely be included in an analysis on where a speaking person is located.
 As such, for the purpose of scoring both pipelines results, any SSL result would be regarded as correct, if it lied inside the proposed 15$^\circ$ margin of error.
 
 Results were manually evaluated by combining information from the recorded videos, spoken questions and logged SSL recordings.
 The performance of the existing solution can be seen in figure \ref{table:eval_task_results_old}, while that of the proposed pipeline can be seen in figure \ref{table:eval_task_results_new}.
 
-When comparing results of both solutions, it can easily be seen that similarly to the data set evaluation (see chapter \ref{eval:discussion}), speech recognition results of the proposed pipeline outperform those of the existing solution.
-This could be expected, considering that both pipelines use the same speech recognizer as in the data set evaluation.
-
-The SSL results of both solutions may appear quite weak, but one should keep in mind the noise which was specifically generated to increase the difficulty of SSL.
-In a real world scenario, similar noise may come from a loud dishwasher or TV.
-A robot should however still be able to locate a person giving it commands when confronted by such challenging environments.
-
-The proposed pipeline provided slightly more correct SSL results, which is to say it produced five opposed to the four of the existing solution where 30 were maximally possible.
-Both factors in when comparing the actual scores of the RoboCup task, where the proposed pipeline outperforms the existing solution.
-However, we consider this score to not be very meaningful, as most of it is caused by the proposed pipelines speech recognizer outperforming the existing solutions one.
-
-Additionally, we generated information about the average error of the SSL results, as we consider these in this particular case to be more significant to the evaluation due to the TODO.
-When comparing them, the proposed pipeline outperforms the existing solution in all runs but one, oftentimes by a significant margin.
-In run seven and two it (nearly) halves the error.
-Overall, the proposed pipeline reduces the error in angle by around 30$^\circ$ in comparison to the existing solution.
-We believe this to be the case due to the proposed pipelines enhanced synchronization abilities.
-Within the existing solution, shorter questions' SSL results may be random as Bonsai's SSL lookup time frame can completely miss the actual time in which the question was asked.
-
 \begin{figure}[]
-	\begin{tabular}{ | l | p{3.5cm}  | r | r | r |}
+	\begin{tabular}{ | l | p{3.5cm} | r | r | r |}
 		\hline
 		Run & Correctly recognized sentences & Points & Points by SSL & Avg SSL Error \\ \hline
 		1 & 50\% & 45 & 0 & 83.4\\ \hline
@@ -137,7 +117,8 @@ Within the existing solution, shorter questions' SSL results may be random as Bo
 		Avg & 46.7\% & 38.3 & 6.7 & 98.78 \\
 		\hline
 	\end{tabular}
-	\caption{Results of the existing pipeline in the RoboCup task}
+	\caption{Results of the existing pipeline in the RoboCup task by each run.
+		Run 3 and 8 were omitted because of camera malfunctions.}
 	\label{table:eval_task_results_old}
 \end{figure}
 
@@ -154,8 +135,39 @@ Within the existing solution, shorter questions' SSL results may be random as Bo
 		Avg & 58.3\% & 54.2 & 8.3 & 68.25\\
 		\hline
 	\end{tabular}
-	\caption{Results of the proposed pipeline in the RoboCup task}
+	\caption{Results of the proposed pipeline in the RoboCup task by each run.
+		Run 3 and 8 were omitted because of camera malfunctions.}
 	\label{table:eval_task_results_new}
 \end{figure}
+
+When comparing results of both solutions, it can easily be seen that similarly to the data set evaluation (see chapter \ref{eval:discussion}), speech recognition results of the proposed pipeline outperform those of the existing solution.
+This could be expected, considering that both pipelines use the same speech recognizer as in the data set evaluation.
+
+The SSL results of both solutions may appear quite weak, but one should keep in mind the noise which was specifically generated to increase the difficulty of SSL.
+In a real world scenario, similar noise may come from a loud dishwasher or TV.
+A robot should however still be able to locate a person giving it commands when confronted by such challenging environments.
+
+The proposed pipeline provided slightly more correct SSL results, which is to say it produced five opposed to the four of the existing solution where 30 were maximally possible.
+Both factors in when comparing the actual scores of the RoboCup task, where the proposed pipeline outperforms the existing solution.
+However, we consider this score to not be very meaningful, as most of it is caused by the proposed pipelines speech recognizer outperforming the existing solutions one.
+
+Additionally, we generated information about the average error of the SSL results, as we consider these in this particular case to be more significant to the evaluation due to the score results being very close to one another.
+When comparing them, the proposed pipeline outperforms the existing solution in all runs but one, oftentimes by a significant margin.
+In run seven and two it (nearly) halves the error.
+Overall, the proposed pipeline reduces the error in angle by around 30$^\circ$ in comparison to the existing solution.
+We believe this to be the case due to the proposed pipelines enhanced synchronization abilities.
+Within the existing solution, shorter questions' SSL results may be random as Bonsai's SSL lookup time frame can completely miss the actual time in which the question was asked.
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -18,26 +18,26 @@ We will lastly discuss if this additional cost renders the pipeline unsuitable f
 
 \subsubsection{Existing Solution}
 
-The existing solution only consists of the PocketSphinxAdapter (PSA), see figure \ref{pic:eval_p1_diag}.
-The PSA grabs audio from a microphone using ALSA, filters the audio using an integrated voice activity detection and finally uses, as its name suggests, PocketSphinx to recognize speech.
+The existing solution only consists of the \gls{psa}, see figure \ref{pic:eval_p1_diag}.
+The \gls{psa} grabs audio from a microphone using ALSA, filters the audio using an integrated voice activity detection and finally uses, as its name suggests, \gls{ps} to recognize speech.
 Results are then published via ROS.
 
-The PSA was and is used extensively for several years in the RoboCup@Home setup of Team ToBi \cite{ToBi}.
+The \gls{psa} was and is used extensively for several years in the RoboCup@Home setup of Team ToBi \cite{ToBi}.
 In this evaluation it is primarily used to provide a baseline for the proposed pipeline and context for the acquired results.
 
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_1.pdf}
 	\caption{Test scenario for existing pipeline.
-		The PocketSphinxAdapter acquires audio data from ALSA and provides speech recognitions.
+		The \gls{psa} acquires audio data from ALSA and provides speech recognitions.
 		A CPU and result watchdog monitor and log its CPU usage and results respectively.}
 	\label{pic:eval_p1_diag}
 \end{figure}
 
 \subsubsection{Baseline for proposed Pipeline}
 \label{eval:dataset:pipeline:baseline}
-This configuration of the proposed pipeline is intended to reassemble the PSA as closely as possible.
-As seen in figure \ref{pic:eval_p2_diag}, it consists of a voice activity detection, a speech recognizer (using PocketSphinx), the Orchestrator and a Wav file player to feed audio into the pipeline.
+This configuration of the proposed pipeline is intended to reassemble the \gls{psa} as closely as possible.
+As seen in figure \ref{pic:eval_p2_diag}, it consists of a voice activity detection, a speech recognizer (using \gls{ps}), the Orchestrator and a Wav file player to feed audio into the pipeline.
 Recognition results are gathered by the Orchestrator and then communicated via ROS.
 
 \begin{figure}[]
@@ -45,7 +45,7 @@ Recognition results are gathered by the Orchestrator and then communicated via R
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_2.pdf}
 	\caption{Test scenario for proposed pipelines baseline.
 		It consists of a wav player, which provides audio data.
-		The audio is then processed by a VAD and a speech recognizer.
+		The audio is then processed by a \gls{vad} and a speech recognizer.
 		The Orchestrator gathers the speech recognizers data and provides it to a result watchdog, which then saves the results.
 		A CPU watchdog monitors and logs CPU usage of all components.}
 	\label{pic:eval_p2_diag}
@@ -54,20 +54,20 @@ Recognition results are gathered by the Orchestrator and then communicated via R
 
 \subsubsection{Elongated baseline of proposed Pipeline}
 This configuration of the proposed pipeline is nearly identical to its baseline, but incorporates a dummy component to evaluate how much overhead in time and CPU cost an additional processing step produces.
-As indicated in figure \ref{pic:eval_p4_diag} and by its name, the dummy node does neither alter nor compute information on the audio data it receives, but instead just relays it from the WAV player to the VAD.
+As indicated in figure \ref{pic:eval_p4_diag} and by its name, the dummy node does neither alter nor compute information on the audio data it receives, but instead just relays it from the WAV player to the \gls{vad}.
 
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_4.pdf}
 	\caption{Test scenario for an elongated configuration of the proposed pipeline.
-		In comparison to the baseline of the proposed pipeline, it encompasses an additional dummy node which is squeezed in between the wav player and the VAD.
+		In comparison to the baseline of the proposed pipeline, it encompasses an additional dummy node which is squeezed in between the wav player and the \gls{vad}.
 		It does not alter the audio in any way, but is monitored by the CPU watchdog as well.}
 	\label{pic:eval_p4_diag}
 \end{figure}
 
 \subsubsection{Widened baseline of proposed Pipeline}
 This configuration of the proposed pipeline is nearly identical to its baseline, but incorporates a dummy component to evaluate how much overhead in time and CPU cost an additional information provider produces.
-As indicated in figure \ref{pic:eval_p3_diag} and by its name, the dummy node receives audio data from the VAD and works basically in parallel to the speech recognizer.
+As indicated in figure \ref{pic:eval_p3_diag} and by its name, the dummy node receives audio data from the \gls{vad} and works basically in parallel to the speech recognizer.
 Upon receiving audio data, the dummy node provides hard coded information to the Orchestrator.
 This way the Orchestrator does not have to wait on receiving the dummy nodes information during its synchronization steps, and can theoretically provide synchronized data as soon as speech recognition results are provided to it.
 
@@ -139,11 +139,11 @@ Two slightly different setups were used for the various configurations of the pr
 What they have in common is that all pipelines were tested on the same computer, a Thinkpad Carbon X1 Gen with a Intel(R) Core(TM) i7-7500U, to ensure equal CPU performance.
 
 All setups were comprised of equivalent components. 
-If not otherwise stated, all variations of the proposed pipeline used the exact same components with identical configurations (safe for some minor details, e.g. a modified path for the audio between the wav player, dummy node and VAD in the elongated version of the proposed pipeline, see figure \ref{pic:eval_p2_diag} and \ref{pic:eval_p4_diag}).
+If not otherwise stated, all variations of the proposed pipeline used the exact same components with identical configurations (safe for some minor details, e.g. a modified path for the audio between the wav player, dummy node and \gls{vad} in the elongated version of the proposed pipeline, see figure \ref{pic:eval_p2_diag} and \ref{pic:eval_p4_diag}).
 
-The existing pipeline's PocketSphinxAdapter internally incorporates a VAD, which was reimplemented and used as the VAD of the proposed pipelines.
-It uses PocketSphinx for speech recognition, as does the speech recognizer used in the proposed pipeline. 
-Both PocketSphinx instances use the same speech models, dictionary, and grammar.
+The existing pipeline's \gls{psa} internally incorporates a \gls{vad}, which was reimplemented and used as the \gls{vad} of the proposed pipelines.
+It uses \gls{ps} for speech recognition, as does the speech recognizer used in the proposed pipeline. 
+Both \gls{ps} instances use the same speech models, dictionary, and grammar.
 
 In both cases two small scripts were used to record the components CPU usage as well as speech recognition results and timings.
 CPU usage was universally recorded using the python library psutil \cite{psutil} and its cpu\_times functionality.
@@ -154,7 +154,7 @@ This is supported by the fact that identical components across various pipelines
 \ref{table:eval_dataset_detail}.
 Incidentally, a process producing the computational load of one CPU second over any timespan is equal to the process running on one core of a CPU under full load for one second.
 
-Speech recognition results were recorded by a ROS node which collected ROS messages published by the proposed pipeline's orchestrator and the PSA respectively.
+Speech recognition results were recorded by a ROS node which collected ROS messages published by the proposed pipeline's orchestrator and the \gls{psa} respectively.
 
 \subsubsection{Recording Results}
 
@@ -167,12 +167,12 @@ The method of feeding audio into the proposed pipeline does not matter as long a
 So instead of grabbing the audio via a microphone we used a wav-file player to feed the data set directly into the pipeline.
 
 The existing solution however was in need of a small workaround to work on audio files rather than audio directly grabbed by a real microphone.
-A virtual microphone was needed to feed the data set into the PocketSphinxAdapter.
+A virtual microphone was needed to feed the data set into the \gls{psa}.
 This virtual microphone provided access to a wav file containing the data set. 
-As information about singular utterances inside the data set could not be propagated through ALSA and the PocketSphinxAdapter, we recorded a timestamp with the start of feeding the wav file into the virtual microphone and thus in turn into the PocketSphinxAdapter.
+As information about singular utterances inside the data set could not be propagated through ALSA and the \gls{psa}, we recorded a timestamp with the start of feeding the wav file into the virtual microphone and thus in turn into the \gls{psa}.
 Speech recognition results were then recorded along timestamps acquired when these results were received in the dedicated ROS node.
 Supplementary, while concatenating the data set into the singular wav file, we created annotations to keep track of when each sample ended and which phrase it contained.
-To achieve comparable results, slight modifications to the internal segmenter of the PocketSphinxAdapter were made, i.e. timestamps on each successful segmentation would be recorded.
+To achieve comparable results, slight modifications to the internal segmenter of the \gls{psa} were made, i.e. timestamps on each successful segmentation would be recorded.
 
 By combining the information provided by these annotations, the timestamp created during the start of feeding the wav file, the timestamps recorded when recording the speech recognition results and after each successful segmentation, the absolute time needed by this solution could be computed. 
 This is mostly done by subtracting the timestamp collected after a successful segmentation from the corresponding recorded when the results were received. TODO
@@ -205,7 +205,7 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 		Speech Rec 	& 247.44 	& 546.65 & 545.73 & 574.82	 &   285.77 \\ \hline
 		Orchestrator& - 		& 107.66 & 114.69 & 415.73	 &   962.56 \\ \hline
 		Wav Player 	& -			& 380.11 & 378.71 & 405.40	 &   138.22 \\ \hline
-		VAD		 	& - 		& 174.88 & 188.56 & 191.97	 &    51.26 \\ \hline
+		\gls{vad}		 	& - 		& 174.88 & 188.56 & 191.97	 &    51.26 \\ \hline
 		Dummy	 	& - 		& -		 & 171.94 &  77.74	 &        - \\ \hline
 		Gender Rec 	& - 		& -		 & -	  & -	 	 &  5959.50 \\ \hline
 		Emotion Rec	& - 		& -		 & - 	  & -		 & 30119.82 \\ \hline
@@ -221,11 +221,11 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 % Pipeline 1 & 2 ----------------------------------------------------------
 
 { % 10 
-If one compares the recognition percentages of all the pipelines in figure \ref{table:eval_dataset_results}, the various configurations of the proposed pipeline all share virtually identical results, which however differs significantly from the PSA's result.
-This is somewhat unexpected, as special care was taken to ensure both speech recognizers use not only PocketSphinx, but also equal configuration files, including speech model, dictionary and grammar.
-As the audio segmentation for the proposed pipeline is a reimplementation of the one used internally in the PSA, and was furthermore basically bypassed in that the silence in between samples enabled the usage of very lenient VAD configurations.
+If one compares the recognition percentages of all the pipelines in figure \ref{table:eval_dataset_results}, the various configurations of the proposed pipeline all share virtually identical results, which however differs significantly from the \gls{psa}'s result.
+This is somewhat unexpected, as special care was taken to ensure both speech recognizers use not only \gls{ps}, but also equal configuration files, including speech model, dictionary and grammar.
+As the audio segmentation for the proposed pipeline is a reimplementation of the one used internally in the \gls{psa}, and was furthermore basically bypassed in that the silence in between samples enabled the usage of very lenient \gls{vad} configurations.
 
-The proposed pipelines PocketSphinx component is written in Python and uses its PocketSphinx wrapper, which in turn makes use of the same C++ libraries as the PSA, so it would be difficult to claim this as the determining difference responsible for this discrepancy.
+The proposed pipelines \gls{ps} component is written in Python and uses its \gls{ps} wrapper, which in turn makes use of the same C++ libraries as the \gls{psa}, so it would be difficult to claim this as the determining difference responsible for this discrepancy.
 Clearly more testing is needed to produce substantiated suppositions about the difference in recognition results.
 }
 
@@ -236,9 +236,9 @@ If one compares the results of the proposed and elongated pipeline in figure \re
 The increase in CPU cost is virtually completely due to the additional dummy component present in this pipeline, as can be extracted from figure \ref{table:eval_dataset_detail}. 
 
 The slight increase of 15ms in absolute recognition time was, as discussed before, expected.
-Considering a very elaborate configuration, where audio would be transmitted through audio grabbing, sound source localization, beamforming, audio enhancement, VAD and speech recognition, the latency introduced by using the proposed pipeline could be estimated to have an upper bound of 90ms.
+Considering a very elaborate configuration, where audio would be transmitted through audio grabbing, sound source localization, beamforming, audio enhancement, \gls{vad} and speech recognition, the latency introduced by using the proposed pipeline could be estimated to have an upper bound of 90ms.
 This would barely be humanly noticeable and depending on the time taken by the components themselves probably be just a fraction of the absolute recognition time needed.
-%Considering the VAD, which utilizes a computationally very inexpensive algorithm to segment the audio and should introduce only a slightly larger latency into the pipeline.
+%Considering the \gls{vad}, which utilizes a computationally very inexpensive algorithm to segment the audio and should introduce only a slightly larger latency into the pipeline.
 }
 
 % pipeline 3
@@ -268,7 +268,7 @@ As this is a expected feature of the proposed pipeline, the longer time for reco
 The baseline of the proposed pipeline consuming at least six times as much CPU power as the existing solution, as can be seen in figure \ref{table:eval_dataset_results} may seem like an tremendous increase.
 But in comparison to the playtime of nearly 2 hours and 50 minutes the CPU time cost of circa 20 minutes and 4 minutes for the proposed pipeline and the existing solution respectively are both more than acceptable, especially considering that most modern CPUs have more than one core and this load is shared between them.
 
-Additionally, we should keep in mind that PocketSphinx was designed years ago to work on mobile devices of that time, so it is one of the computational most inexpensive speech recognizers still used. 
+Additionally, we should keep in mind that \gls{ps} was designed years ago to work on mobile devices of that time, so it is one of the computational most inexpensive speech recognizers still used. 
 Despite this it is the computationally most demanding component of all the proposed pipelines configurations apart from the realistic one.
 
 More modern speech recognizers can generally be divided into offline and cloud services.
@@ -290,9 +290,9 @@ Based on this and the fact that all components of the proposed pipeline can easi
 As can clearly be seen in figure \ref{table:eval_dataset_results}, each configuration of the proposed pipeline takes over a second to compute speech recognition results, which seems extremely high in comparison to the existing solution.
 Considering the insights procured with the elongated version of the proposed pipeline, recognition time should in the presented configurations never increase by over 100ms due to audio transferring.
 
-The argument could be made that due to the recognition results being different between the PSA and proposed pipelines' PocketSphinx, both implementations could behave fundamentally different from one another.
-This could explain the proposed pipelines PocketSphinx component to perform better while also consuming considerably more CPU time.
-But even when scaling the PSA's recognition time to match the six times higher CPU cost of the proposed pipeline, the PocketSphinx component's part of the recognition time would only amount to around 320ms.
+The argument could be made that due to the recognition results being different between the \gls{psa} and proposed pipelines' \gls{ps}, both implementations could behave fundamentally different from one another.
+This could explain the proposed pipelines \gls{ps} component to perform better while also consuming considerably more CPU time.
+But even when scaling the \gls{psa}'s recognition time to match the six times higher CPU cost of the proposed pipeline, the \gls{ps} component's part of the recognition time would only amount to around 320ms.
 
 In a worst case scenario, summing up these upper bounds on added recognition time would result in an average time of about 420ms.  
 Due to the actually measured time being more than twice that, we suspect some sort of bug to be responsible for this behavior, which sadly could not be eliminated because of time constraints and would be material for future work.

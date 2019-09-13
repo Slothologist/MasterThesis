@@ -1,4 +1,4 @@
-%!TEX root = ../thesis.tex
+%!TEX root = ../../thesis.tex
 
 \section{RoboCup@Home}
 The RoboCup was founded in 1996 as a annual soccer competition for robots with the goal to beat the human world champions in 2050.
@@ -11,25 +11,42 @@ This results in the demand for robust speech recognition software, but also intr
 
 One of the tasks tested in RoboCup@Home of 2017 and 2018, the ''Speech and Person Recognition'' task \cite{rulebook_2018}, is of particular interest for this work, as it mainly tests the basic speech recognition ability of the robots. 
 As it was used in several RoboCup events over two years, and on dozens of robots, it is an almost ideal test to evaluate any speech recognition system on a robot.
-Consequently, we will use it to evaluate the performance of the proposed pipeline later in chapter TODO, where the test will also be illustrated in greater detail. 
+Consequently, we will use it to evaluate the performance of the proposed pipeline later in chapter \ref{eval:task_start}, where the test will also be illustrated in greater detail. 
+
+To gather information on the state of the art with regards to synchronization of sensor results and speech results in particular, we will provide an overview of established RoboCup@Home teams, which published information on that matter.
+However, these information is relatively sparse in team description papers and on the teams websites, so some of the information had to be pieced together.
+
+\subsection{SPQReL}
+The SPQReL team from Sapienza University of Rome and the University of Lincoln use a late fusion approach as presented in section \ref{related:fusion}.
+They employ several speech recognizer, i.e. Google Speech API and a Nuance speech recognizer, and fuse their results with a custom algorithm, which is able to prioritize results based on expected domain specific terms. (TODO cite tdp 2018)
 
 \subsection{RoboFEI}
-
-The RoboFEI Team from Sao Paulo uses a specific microphone configuration to handle problems caused by highly mobile sound source localization microphones. %todo: cite
-Their robots head is attached to a rotatable pipe, which enables it to spin around its axis, while the robots microphone array is attached to a static shaft running through that pipe which does not allow it to rotate.
-
-As such, the position and movement of the robots head are not relevant for sound source localization results and beamforming.
-Nevertheless, the robots own position and movement needs to be taken into account when performing 
-
-
-\subsection{Walking Machine}
-no pipeline for that matter, but an all-inclusive solution, ODAS
-%todo cite
+The RoboFEI team from Centro Universitário FEI in Sao Paolo (TODO cite) uses a specific microphone configuration to handle problems caused by highly mobile sound source localization microphones.
+Their robots head is attached to a rotatable pipe, which enables it to spin around its axis, while the robots microphone array is attached to a static shaft running through that pipe which keeps it still.
+As such, the position and movement of the robots head are not relevant for sound source localization results and beamforming, and can as such be ignored.
+Nevertheless, the robots own position and movement needs to be taken into account when performing SSL, as is the case for all mobile robots.
 
 \subsection{Tech United}
-benutzen anscheinend beamforming, reimplementieren das für den HSR
-%todo: cite
+The Tech United team from the Eindhoven University of Technology provides some information about their speech recognition system.
+In 2018, they generated SSL information independently from their speech recognition.(TODO cite 2018 tdp)
+No information on how speech and SSL results were published by them.
 
-\begin{itemize}
-	\item 
-\end{itemize}
+\subsection{Walking Machine}
+The Walking Machine team from École de Technologie Supérieure in Montreal (TODO cite) uses an solution, ODAS (TODO cite), which would enable them to perform SSL and beamforming in one component, thus providing an enhanced audio signal.
+However, they appear to only use its SSL capabilities at this time.
+
+
+\subsection{Kamerider}
+The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and SSL (TODO cite).
+They use Gstreamer to segment audio, which is then being processed by PocketSphinx (TODO cite).
+Additionally, they use HARK for SSL.
+%https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-opl-kamerider_opl.pdf
+nutzen gstreamer um audio zu segmentieren %(http://openbotics.org/kamerider/index.php?title=Main_Page)
+HARK für SSL
+Pocketsphinx für Speechrec
+
+
+\subsection{Hibikino Musashi}
+%https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-dspl-hibikino-musashiathome.pdf
+nutzen web speech api on chrome für STT
+nutzen HARK (MUSIC) für SSL

@@ -1,3 +1,33 @@
-%!TEX root = ../thesis.tex
+%!TEX root = ../../thesis.tex
 
 \section{Fusion}
+\label{related:fusion}
+Moderns robots generally have a plethora of different sensors to perceive their environment, such as cameras, laser sensors and microphones.
+Oftentimes different sensors will provide information about identical THINGS (todo: find better word), a picture provided by a camera may for example include a person, which could also be detected by a laser detection the legs of that person.
+To create an optimal model of the robots world, these information must be fused.
+Fusion of information can be generally split into two categories: Early fusion and late fusion.
+
+\subsection{Early Fusion}
+An approach can be classified as early fusion if it feeds
+Early fusion is only achievable with several sensors and specifically trained or prepared classifiers.
+
+Early fusion can provide a significant boost to classification results, as it enables the combination of raw data of several sensors with one another.
+However, it can be difficult to implement correctly and 
+
+\subsection{Late Fusion}
+Late fusion encompasses several classifiers, which are typically independent from each other. 
+These classifiers can take the raw data of one or several sensors and produce distinct classifications of a specific .
+Afterwards, a special late fusion algorithm will take all these -potentially different- classifications and produce a definitive classification by fusion them.
+
+Late fusion is an approach which can be used to rather easily improve an existing system, as it can build upon the already existing solutions.
+However, in comparison to early fusion it lacks the ability to combine features of several sensors independently from one another.
+
+
+\subsection{Fusion by Time}
+
+
+- same sensor different recognizers 
+
+- different recognizers, same recognition type
+
+- same sensor, different recognition type, fusion by time

@@ -5,6 +5,77 @@
 
 \section{Orchestrator}
 
+The Orchestrator has to provide two services.
+First, it has to determine and inform nodes about their actual audio in- \& output formats.
+To achieve this, a number of factors have to be considered.
+
+To reduce network traffic and improve transmission speed it is advantageous to transmit audio with the lowest possible bandwidth.
+Consider two nodes, where one node transmits and one node receives audio which differs only in that one node internally works with 16kHz and the other with 48kHz.
+In this scenario, resampling should happen at the node which works with 48kHz, in order to transmit only 16kHz audio.
+
+However, it may be the case that network capacity is abundant while CPU capacity is not, e.g. in embedded systems.
+Consider a node outputting an audio signal at 16kHz, and four nodes requiring this audio signal at 48kHz, e.g. a \gls{vad}, gender-, emotion-, and voice recognition.
+In this scenario, one may opt to not resample four times, but rather once and transmit the higher bandwidth audio, or, more generally speaking, minimize the number of resamplings happening in the pipeline.
+
+To tackle this issue, we developed two algorithms which would one of these cases and added a simple way to add new algorithms.
+The first algorithm introduces a cost function which calculates the bandwidth of each topics formats.
+This algorithm is formalized in figure \ref{main:orc:resampling:formula:min_traffic}.
+It applies the aforementioned cost function $cost_{format}$ on each in- \& output format for a given topic and then chooses the minimum as the optimal.
+
+\begin{figure}
+	\begin{align}
+	cost_{format} &= channel\_count \cdot bitrate_{signal} \cdot frequency\\
+	format_{optimal} &= min({bitrate_{i}\ |\ i \in formats_{input} \cup formats_{output}})
+	\end{align}
+	\caption{Formula to calculate the lowest bandwidth format out of a given set of in- \& output formats.
+		The $bitrate_{signal}$ is the amount of bits a single sample requires, while the $bitrate_{i}$ is the $cost_{format}$ of the format $i$.}
+	\label{main:orc:resampling:formula:min_traffic}
+\end{figure}
+
+The second algorithm is a bit more complex, as it prioritizes the amount of resamplings over the used bandwidth when choosing the right format.
+It is formalized in figure \ref{main:orc:resampling:formula:min_cpu}.
+As such, it calculates for each format on a given topic the number of resamplings that would occur, if that format was chosen for this topic.
+Then the format which has the fewest resamplings is chosen as the optimal format.
+However, there may be several formats which fulfill this condition.
+If this is the case, it comes naturally to mind to choose the format which requires the least amount of bandwidth, so the algorithm formalized in figure \ref{main:orc:resampling:formula:min_traffic} is used to choose the optimal format of the formats which require the least amount of resampling.
+
+\begin{figure}
+	\begin{align}
+	\alpha(i,k) &=
+	\begin{cases}
+	1 & , i = k \\
+	0 & , i \neq k
+	\end{cases} \\[10pt]
+	resamplings_{format} &= \sum_{f=1}^{F} \alpha(format, f) ,\ f \in formats\\[10pt]
+	format_{optimal} &= argmin_{f}(resamplings_{f}) , \ f \in formats
+	\end{align}
+	\caption{Formula to calculate the lowest bandwidth format out of a given set of in- \& output formats.
+		The $bitrate_{signal}$ is the amount of bits a single sample requires, while the $bitrate_{format}$ indicates, how many bits a second of this signal require.}
+	\label{main:orc:resampling:formula:min_cpu}
+\end{figure}
+
+
+% ------------------------------------- 
+
+The second task of the Orchestrator is to gather the information almost every node of the pipeline produces, fuse them and then provide these fused information.
+There are a number of factors to consider when designing a solution for this task.
+\begin{enumerate}
+	\item How to actually synchronize?
+	\item How to handle missing information or information which take a long time to compute?
+	\item third thing
+\end{enumerate}
+
+Second, it needs to synchronize the nodes results and output them. 
+
+Algorithms
+
+- algo zur synchronisierung der ergebnisse 
+
+- einfach nur relativ großer timeout?
+
+- zusätzlich heuristik über die bisher benötigten zeiten
+
+
 \begin{itemize}
 	\item manages all participating nodes
 	\item determines used audio formats for transmission
@@ -28,7 +99,10 @@ algorithms implemented for the orchestrator
 \end{itemize}
 
 \subsection{Meta Information Gathering}
-It is desirable to gather meta information about results delivered by nodes. I.e. probability of a certain result and time to compute. TTC can be used to better predict if a node will deliver a result at all. See synchronisation of results in the orchestrator algorithms chapter.
+It is desirable to gather meta information about results delivered by nodes. 
+I.e. probability of a certain result and time to compute. 
+Time to compute can be used to better predict if a node will deliver a result at all. 
+See synchronization of results in the orchestrator algorithms chapter.
 
 Method 1: Every results need to be enhanced with meta informations
 
@@ -60,4 +134,24 @@ con
 
 
 \subsection{Fusion}
-One of the if the most important tasks of the Orchestrator
+- One of the if the most important tasks of the Orchestrator is the fusion of each components results.
+
+- For each registered component
+
+- This allows the Orchestrator to adapt the maximum time it waits for each component on the fly, while running.
+
+- Due to the Orchestrator saving all incoming results with their respective latency to a database, it is also possible to load the database of a previous run.
+
+- 
+
+
+\begin{figure}
+	\begin{align}
+	latency_{fusion} = V_A \cdot max(\{\frac{1}{n_i} \cdot \sum_{k=1}^{n_i} l_{i,k}\ | \ i \in components\})
+	\end{align}
+	\caption{Maximum latency of a single fusion.
+		$V_A$ is a constant, typically 1.5.
+		$n_i$ is the amount of results the orchestrator already received of a component $i$.
+		$l_{i,k}$ is the latency of the $k$th result of the component $i$.}
+	\label{main:orc:latency:formula}
+\end{figure}

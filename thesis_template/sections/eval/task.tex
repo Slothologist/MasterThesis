@@ -25,7 +25,7 @@ Both will mainly be comprised of a sound source localization, a speech recognize
 \end{figure}
 
 The proposed pipeline (see figure \ref{pic:eval_task_setup_new}) will consist mainly of the basic speech recognition setup established as the baseline for the data set evaluation (see chapter \ref{eval:dataset:pipeline:baseline}), i.e. an audio grabber to record audio from a microphone as well as the previously (see chapter \ref{eval:dataset:setup}) established \gls{vad}, \gls{ps} speech recognizer and Orchestrator.
-As sound source localization a component using pyroomacoustics \cite{pyroomacoustics}, and specifically, its SRP algorithm, will be employed.
+As sound source localization the component using \texttt{pyroomacoustics} we described earlier in chapter \ref{main:components:ssl}, will be employed.
 Due to the robot providing four channel audio from its four microphones, which are all needed by the \gls{ssl}, but the speech recognition part of the pipeline requiring only one channel audio, an additional component is needed in the form of a channel splitter.
 Since one of the features of the proposed pipeline is synchronization of results, recorded speech recognition results will naturally be enriched with corresponding \gls{ssl} results.
 
@@ -40,7 +40,7 @@ Since one of the features of the proposed pipeline is synchronization of results
 \end{figure}
 
 For the existing solution (see figure \ref{pic:eval_task_setup_old}), the already established PSA will take the role of the speech recognizer.
-For sound source localization, a slightly modified variant of the proposed pipelines component will be employed.
+For sound source localization, a slightly modified variant of the proposed pipelines component will be employed, as elaborated earlier (see chapter \ref{main:components:ssl}).
 To combine both results, a behavior controller called Bonsai \cite{bonsai} will be used.
 Bonsai is a TODO.
 An channel splitter as with the proposed pipeline is not necessary, as ALSA will assume this task for the PSA.

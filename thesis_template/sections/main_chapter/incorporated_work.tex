@@ -21,7 +21,7 @@ These components are:
 	\item[\textit{Audio Player}] This component is the \textit{Audio Grabbers} counterpart, as it receives audio data from the pipeline and outputs it via \gls{alsa} through a speaker.
 	As such, it is mostly used for debugging purposes and to enable quick auditory microphone checks.
 
-	\item[\textit{Channel Splitter}] As discussed in section TODO, the proposed pipelines library does not support mixing of channels.%TODO
+	\item[\textit{Channel Splitter}] As discussed in section TODO, the proposed pipelines library does not support mixing of channels.
 	The \textit{Channel Splitter} is used to mitigate this absence in that it takes a multichannel audio signal in and produces a corresponding number of single channel outputs.
 	One possible use case is to split to split a multichannel audio needed for \gls{ssl} also into single channel audio usable for speech recognition, when no beamforming is desired.
 
@@ -40,18 +40,22 @@ As such its predominant use case is to enable evaluations of other components wi
 \subsubsection{\gls{ssl}}
 \label{main:components:ssl}
 We developed a component\footnote{\url{https://github.com/Slothologist/esiaf_doa}} which handles \gls{ssl}.
-It uses the python library \texttt{pyroomacoustics} \cite{pyroomacoustics}, and specifically its SRP algorithm, though usage of all other \gls{ssl} algorithms can be configured.
+It uses the python library \texttt{pyroomacoustics} \cite{pyroomacoustics}, and specifically its SRP algorithm, though usage of all other \gls{ssl} algorithms provided by \texttt{pyroomacoustics} can be configured.
 For each sound chunk the component receives via our pipeline, it creates \gls{ssl} results and then sends them to the Orchestrator.
 
 A slight variation of this node\footnote{\url{https://github.com/Slothologist/ma_baseline_doa}}  will be used in one of the experiments of the evaluation chapter (see \ref{eval:task_start}).
 This variant will, instead of publishing results for each sound chunk it receives, store these results in a queue.
 To communicate the results it provides a \gls{ros} service which allows any component to ask for results which occurred in a specified time frame.
+Additionally, this variant will receive audio not from our pipeline, but instead capture it from a microphone via \gls{alsa}.
 
 \subsubsection{Reimplementation of custom \gls{vad}}
 \label{main:components:vad}
 The \gls{vad} we developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of an pre-existing algorithm present in the \gls{psa}.
-It incorporates a simple three-state state machine, 
-%TODO
+It segments audio based on a loudness threshold, which, if overcome long enough, will start a segmentation.
+This segmentation is ended either if a certain time limit is exceeded or if the loudness of received audio chunks drops under a second, typically slightly lower threshold.
+
+If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a segmentation\_ended annotation, as described in chapter TODO, before sending it.
+Audio will not be transmitted to the next node(s) if it were not found to include speech.
 
 \subsubsection{PocketSphinx}
 \label{main:components:ps}
@@ -59,15 +63,15 @@ The \gls{ps} component we developed\footnote{\url{https://github.com/Slothologis
 It will feed all audio it receives into \gls{ps}, which will then dynamically produce results.
 These results are however only used if the component receives the signal, that a \gls{vad} has reached the end of its segmentation.
 As such, our \gls{ps} component requires a \gls{vad} to work.
-Whenever a result is produced, it is sent to the Orchestrator via published \gls{ros} message (see chapter TODO).%TODO
+Whenever a result is produced, it is sent to the Orchestrator via published \gls{ros} message (see chapter TODO).
 
 \subsubsection{Emotion Recognition}
 \label{main:components:emotion}
-The emotion recognition component we developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} (TODO cite). %TODO
+The emotion recognition component we developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} (TODO cite).
 \texttt{Speech Emotion Recognition} uses a neural net to extract the emotional state of a person based on their speech.
 As such, it is capable to categorize speech into three emotions: angry, happy, sad.
 Additionally, speech can be categorized as neutral.
-Small changes were required for it to TODO, so we improved it to include a probability for each result. %TODO
+Small changes were required for it to meet all our pipelines expectations, so we improved it to include a probability for each result. %TODO
 Each sound chunk our component acquires will be fed into \texttt{Speech Emotion Recognition} which will return an emotion and probability for each of these sound chunks.
 These results are then sent to the Orchestrator for further synchronization.
 

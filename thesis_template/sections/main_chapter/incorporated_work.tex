@@ -29,8 +29,7 @@ These components are:
 	Its foremost usage is to save audio it receives via the proposed pipeline to a file for later inspection or analysis.
 	This can either be done for documentation purposes or, as was mostly done during development, to check if the pipeline transmitted and resampled audio correctly.
 \end{itemize}
-
-
+Additional components not included in the libraries repository cover the topics of:
 
 \subsubsection{Wav Player}
 \label{main:components:wav}
@@ -50,7 +49,7 @@ This variant will, instead of publishing results for each sound chunk it receive
 To communicate the results it provides a \gls{ros} service which allows any component to ask for results which occurred in a specified time frame.
 Additionally, this variant will receive audio not from our pipeline, but instead capture it from a microphone via \gls{alsa}.
 
-\subsubsection{Reimplementation of custom VAD}
+\subsubsection{Voice Activity Detection}
 \label{main:components:vad}
 The \gls{vad} we developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of a pre-existing algorithm present in the \gls{psa}.
 It segments audio based on a loudness threshold, which, if overcome long enough, will start a segmentation.
@@ -59,9 +58,9 @@ This segmentation is ended either if a certain time limit is exceeded or if the 
 If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a segmentation\_ended annotation, as described in chapter TODO, before sending it.
 Audio will not be transmitted to the next node(s) if it were not found to include speech.
 
-\subsubsection{PocketSphinx}
+\subsubsection{Automatic Speech Recognition}
 \label{main:components:ps}
-The \gls{ps} component we developed\footnote{\url{https://github.com/Slothologist/esiaf_pocketsphinx}} is a very simple wrapper around the python wrapper of \gls{ps}.
+The \gls{asr} component we developed\footnote{\url{https://github.com/Slothologist/esiaf_pocketsphinx}} is a very simple wrapper around the python wrapper of \gls{ps}.
 It will feed all audio it receives into \gls{ps}, which will then dynamically produce results.
 These results are however only used if a \gls{vad} signals the end of a segment.
 As such, our \gls{ps} component requires a \gls{vad} to work.
@@ -86,7 +85,7 @@ It also includes our changes, so its results include a probability.
 We retrained the net and achieved a training accuracy of 99.63\% while maintaining a test accuracy on unseen data of 91.20\%.
 Similar to our emotion recognition component, it will produce a gender result for each sound chunk it receives along with a probability for it and send them to the Orchestrator.
 
-It should be noted that the data set was quite small with only 339 data points, 188 of which were female, 151 male. 
+It should be noted that the data set was quite small with only 339 data points, 188 of which were female, 151 male. % TODO small why? 
 We suspect this being the cause for it to not achieve the level of accuracy on real world data that it achieved on the test data.
 This observation is however anecdotally and was not evaluated formally.
 We were however satisfied with this solution, as it produces somewhat reasonable results.

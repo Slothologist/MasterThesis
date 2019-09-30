@@ -2,51 +2,80 @@
 
 \section{RoboCup@Home}
 The RoboCup was founded in 1996 as a annual soccer competition for robots with the goal to beat the human world champions in 2050.
-Over the years, RoboCup split into several leagues and expanded into other disciplines as well, such as the Rescue Robot League or the RoboCup@Work league.
+Over the years, RoboCup split into several leagues and expanded into other disciplines as well, such as the Rescue Robot league or the RoboCup@Work league.
 
 RoboCup@Home is a league of the RoboCup dedicated to service robots in a domestic environment. % genauere beschreibung von @home, how is this relevant?
 Therefore, human robot interaction is one of, if not the primary focus of this league.
 Naturally, speech recognition systems are used as the default way to interact and communicate with the robots.
-This results in the demand for robust speech recognition software, but also introduces problems rather unnoticed by theoretical research, such as...
+This results in the demand for robust speech recognition software.%, but also introduces problems rather unnoticed by theoretical research, such as...
 
 One of the tasks tested in RoboCup@Home of 2017 and 2018, the ''Speech and Person Recognition'' task \cite{rulebook_2018}, is of particular interest for this work, as it mainly tests the basic speech recognition ability of the robots. 
 As it was used in several RoboCup events over two years, and on dozens of robots, it is an almost ideal test to evaluate any speech recognition system on a robot.
 Consequently, we will use it to evaluate the performance of the proposed pipeline later in chapter \ref{eval:task_start}, where the test will also be illustrated in greater detail. 
 
 To gather information on the state of the art with regards to synchronization of sensor results and speech results in particular, we will provide an overview of established RoboCup@Home teams, which published information on that matter.
-However, these information is relatively sparse in team description papers and on the teams websites, so some of the information had to be pieced together.
+However, this information is relatively sparse in team description papers and on the teams websites, so some of the information had to be pieced together.
 
 \subsection{SPQReL}
-The SPQReL team from Sapienza University of Rome and the University of Lincoln use a late fusion approach as presented in section \ref{related:fusion}.
-They employ several speech recognizer, i.e. Google Speech API and a Nuance speech recognizer, and fuse their results with a custom algorithm, which is able to prioritize results based on expected domain specific terms. (TODO cite tdp 2018)
+The SPQReL team from Sapienza University of Rome and the University of Lincoln use several fusion approaches.
+Visual person perceptions were matched with \gls{ssl} results, based on their respective angular difference, and could thus be tagged as speaking.
+Spoken sentences could then be mapped to speaking persons.
+They employ several speech recognizers, i.e. Google Speech API and a Nuance speech recognizer, and fuse their results with a custom speech understanding system called \textit{LU4R} (todo cite), which is able to prioritize results based on expected domain specific terms. 
+As such, this approach fits into the category of decision level techniques, as discussed in section \ref{related:fusion}.
 
 \subsection{RoboFEI}
 The RoboFEI team from Centro Universitário FEI in Sao Paolo (TODO cite) uses a specific microphone configuration to handle problems caused by highly mobile sound source localization microphones.
 Their robots head is attached to a rotatable pipe, which enables it to spin around its axis, while the robots microphone array is attached to a static shaft running through that pipe which keeps it still.
 As such, the position and movement of the robots head are not relevant for sound source localization results and beamforming, and can as such be ignored.
-Nevertheless, the robots own position and movement needs to be taken into account when performing SSL, as is the case for all mobile robots.
+Nevertheless, the robots own position and movement needs to be taken into account when performing \gls{ssl}, as is the case for all mobile robots.
 
 \subsection{Tech United}
 The Tech United team from the Eindhoven University of Technology provides some information about their speech recognition system.
-In 2018, they generated SSL information independently from their speech recognition.(TODO cite 2018 tdp)
-No information on how speech and SSL results were published by them.
+In 2018, they generated \gls{ssl} information independently from their speech recognition.(TODO cite 2018 tdp)
+They did not fuse these information however, instead opting to separately process them. %(mail)
+
 
 \subsection{Walking Machine}
-The Walking Machine team from École de Technologie Supérieure in Montreal (TODO cite) uses an solution, ODAS (TODO cite), which would enable them to perform SSL and beamforming in one component, thus providing an enhanced audio signal.
-However, they appear to only use its SSL capabilities at this time.
+The Walking Machine team from École de Technologie Supérieure in Montreal (TODO cite) uses an solution, ODAS (TODO cite), which would enable them to perform \gls{ssl} and beamforming in one component, thus providing an enhanced audio signal.
+However, they appear to only use its \gls{ssl} capabilities at this time.
 
 
 \subsection{Kamerider}
 The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and SSL (TODO cite).
-They use Gstreamer to segment audio, which is then being processed by PocketSphinx (TODO cite).
-Additionally, they use HARK for SSL.
+They use Gstreamer to segment audio, which is then being processed by \gls{ps}.
+Additionally, they use \HARK for \gls{ssl}.
+This way they appear to have modularized their components to a greater degree than other teams.
+However, they gave no information about the interfacing of thusly acquired \gls{asr} and \gls{ssl} results.
 %https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-opl-kamerider_opl.pdf
-nutzen gstreamer um audio zu segmentieren %(http://openbotics.org/kamerider/index.php?title=Main_Page)
-HARK für SSL
-Pocketsphinx für Speechrec
+ %(http://openbotics.org/kamerider/index.php?title=Main_Page)
 
 
 \subsection{Hibikino Musashi}
 %https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-dspl-hibikino-musashiathome.pdf
-nutzen web speech api on chrome für STT
-nutzen HARK (MUSIC) für SSL
+The Hibikino-Musashi team of the Kyushu Institute of Technology also uses \HARK, specifically its \textit{MUSIC} algorithm for \gls{ssl}.
+Additionally, they employ an \gls{asr} solution in the form of \textit{Google SpeechRec} via its web API on the Chrome web browser.
+We could however, find no information about how the results of those components were interfaced.
+
+\subsection{ToBi}
+The team of Bielefeld (ToBi) of Bielefeld University can be discussed in greater detail, as we were members of this team.
+For \gls{ssl} they used a proprietary solution which came with their Pepper robot %todo cite pepper and softbanks
+while they used a \gls{ps} based component for \gls{asr}, the \gls{psa}. 
+
+\gls{asr} and \gls{ssl} results are merged on the behavior layer, but only when \gls{ssl} information are explicitly needed.
+The method with which they are merged is rather simplistic.
+\gls{ssl} results are temporarily stored along a timestamp, which corresponds to the time these results were gathered.
+Whenever an \gls{asr} result needs to be enhanced with \gls{ssl} results, an average is calculated over the \gls{ssl} results which were recorded between two and half a second before said \gls{asr} result.
+This offset is employed to mitigate the time the \gls{psa} needs to recognize an utterance and the time needed by the behavior engine. 
+
+The \gls{psa} is an \gls{asr} component which is based on \gls{ps}. \label{related_work:psa}
+It captures sound directly from a microphone via \gls{alsa}, which is then segmented, to ensure only audio containing actual speech is evaluated.
+It segments audio based on a loudness threshold, which, if overcome long enough, will start a segmentation.
+This segmentation is ended either if a certain time limit is exceeded or if the loudness of received audio chunks drops under a second, typically slightly lower threshold.
+Audio which is thus decided to contain speech will then be fed into \gls{ps}.
+After a segmentation is ended, \gls{ps} will produce a result, which is then published via a \gls{ros} message.
+We will use this component in later experiments (see chapters \ref{eval:dataset} and \ref{eval:task_start}).
+
+One of these experiments will show the \gls{psa} to require considerably less time for recognitions than these 500ms.
+However, a number of factors make this a good approximation still.
+First, during the RoboCup@Home event, all computations are done on the robot itself, which sports considerably weaker hardware than the machine used for our experiments.
+Additionally, the grammars typically used in RoboCup@Home Tasks are considerably bigger than the grammar used in our experiments, which makes matching a given utterance to a phrase in the grammar computationally more expensive.

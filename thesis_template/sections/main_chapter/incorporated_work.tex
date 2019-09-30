@@ -51,11 +51,10 @@ Additionally, this variant will receive audio not from our pipeline, but instead
 
 \subsubsection{Voice Activity Detection}
 \label{main:components:vad}
-The \gls{vad} we developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of a pre-existing algorithm present in the \gls{psa}.
-It segments audio based on a loudness threshold, which, if overcome long enough, will start a segmentation.
-This segmentation is ended either if a certain time limit is exceeded or if the loudness of received audio chunks drops under a second, typically slightly lower threshold.
+The \gls{vad} we developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of a pre-existing algorithm present in the \gls{psa} (see chapter \ref{related_work:psa}).
+Its segmentation is therefore virtually identical to the \gls{psa}'s.
 
-If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a segmentation\_ended annotation, as described in chapter TODO, before sending it.
+If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a \texttt{segmentation\_ended annotation}, as described in chapter TODO, before sending it.
 Audio will not be transmitted to the next node(s) if it were not found to include speech.
 
 \subsubsection{Automatic Speech Recognition}
@@ -85,7 +84,7 @@ It also includes our changes, so its results include a probability.
 We retrained the net and achieved a training accuracy of 99.63\% while maintaining a test accuracy on unseen data of 91.20\%.
 Similar to our emotion recognition component, it will produce a gender result for each sound chunk it receives along with a probability for it and send them to the Orchestrator.
 
-It should be noted that the data set was quite small with only 339 data points, 188 of which were female, 151 male. % TODO small why? 
+It should be noted that the data set was quite small with only 339 audio samples, 188 of which by 5 female speakers , 151 from 5 male.
 We suspect this being the cause for it to not achieve the level of accuracy on real world data that it achieved on the test data.
 This observation is however anecdotally and was not evaluated formally.
 We were however satisfied with this solution, as it produces somewhat reasonable results.

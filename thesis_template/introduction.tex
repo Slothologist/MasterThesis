@@ -45,7 +45,7 @@ Consider a setup of a number of microphones and a sound source, seen for example
 The positions of the microphones must be known at all time and ideally be static.
 Due to the sound waves traveling with a constant speed, a single sound event can reach microphones at different points in time.
 By matching the events captured in the recording of each microphone with their respective selfs in the recording of the other microphones, one can compute the time-of-arrival differences of the event.
-In the given example, this time-of-arrival difference would be the smaller arrow.
+In the given example, this time-of-arrival difference would be the smaller, blue arrow.
 Due to the speed of sound being constant and known, it is then possible to triangulate the general direction or even position of the source.
 Thus by observing similar excitations detected at different points in time by different microphones a sound source can be localized.
 
@@ -60,7 +60,7 @@ Thus by observing similar excitations detected at different points in time by di
 \end{figure}
 
 \gls{ssl} requires an array of at least two microphones.
-This will however yield two possible \gls{doa}, which may be enough, depending on the application.
+This will however yield two possible \gls{doa}, which may be enough, depending on the application.%todo why two doa?
 To calculate an exact location in a two dimensional space at least three microphones are needed, while a three dimensional space requires at least four.
 An excess of microphones is often used in practice to increase accuracy of the \gls{doa}.
 
@@ -71,6 +71,7 @@ Most approaches do not handle the special case of finding the exact position of 
 \section{Beamforming}
 Beamforming could colloquially be described as the inverse of \gls{ssl}.
 Its goal is to, in a way, "listen" to a particular direction and provide an audio signal given the recording of a number of microphones and a direction.
+This new, artificial audio signal will greatly enhance audio events occurring in this particular direction.
 Similarly to \gls{ssl}, a number of algorithms have been developed around a single principle, which we will now outline.
 
 \begin{figure}[]

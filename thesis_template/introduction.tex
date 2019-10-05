@@ -24,7 +24,7 @@ Through this procedure, the amount of frames requested can have a significant im
 Consider requesting audio with a length equivalent to one second.
 Even when the software introduces virtually no latency, the audio frames at the beginning of the acquired audio chunk had to be recorded a second prior.
 
-In chapter \ref{eval:dataset} we will show a particular speech recognizer to just spend 0.063 seconds processing audio.
+In chapter \ref{eval:dataset} we will show a particular speech recognizer to just spend 0.063 seconds processing audio, with an average signal length of about one and a half seconds.
 This particular speech recognizer needs audio to be recorded with a sample frequency of 16000Hz, which would enable it to record audio to the equivalent
 of around 1000 frames. % satz über minimale chunk size?
 This shows that finding an effective audio chunk size is important and not necessarily trivial.

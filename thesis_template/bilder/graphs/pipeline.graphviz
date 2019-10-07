@@ -8,7 +8,7 @@ strict digraph G {
 		ssl [label="SSL"];
 		gender [label="Gender-Detection"];
 		emotion [label="Emotion-Detection"];
-		{rank=same; emotion; gender;}
+		{rank=max; emotion; gender; ssl;}
 	}
 
 	subgraph cluster_2 {
@@ -18,7 +18,7 @@ strict digraph G {
 		beamforming [label="Beamforming"];
 		filtering [label="Filtering"];
 
-		{rank=same; beamforming; filtering; ssl;}
+		{rank=max; beamforming; filtering; }
 	}
 
 	recording [label="Recording"];

@@ -76,10 +76,80 @@ Developing the library in Python in the first place was considered, but ultimate
 
 Another important task of the library is to provide standardized \gls{ros} messages of common results generated from raw audio.
 This is realized by a number of \gls{ros} messages, dedicated to speech-, emotion-, gender-, voice-, \gls{ssl}-, and \gls{vad}- information.
-They generally consist of a start \& end timestamp, a probability and a 
+These messages can be inspected in figure \ref{table:main:lib:messages}.
+They generally consist of a start \& end timestamp, a probability and a string containing their actual result.
+Special cases are the \textit{VADInfo} message, which lacks such a string, as it only needs to capture a timeframe, 
+the \textit{SpeechInfo} message, which consists of a list of result strings and their respective probabilities, along with an duration, 
+and the \textit{SSLInfo} message, which in addition to a duration fields a list of \gls{ssl} outcomes, determined by an vertical as well as horizontal angle and a distinct source ID.
 In any case, these must be published by the components to similarly standardized \gls{ros}-topics, consisting of the name of the component and the type of the message.
 
-%Components within the framework may or may not generate results based on audio they received.
+\begin{figure}[]
+	\centering
+	\begin{tabular}{| l | l |}
+		\hline
+		\multicolumn{2}{|c|}{\textbf{Duration}} \\\hline
+		start & finish \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l | l |}
+		\hline
+		
+		\multicolumn{3}{|c|}{\textbf{GenderInfo}} \\ \hline
+		gender* & probability & Duration \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l | l |}
+		\hline
+		
+		\multicolumn{3}{|c|}{\textbf{EmotionInfo}} \\ \hline
+		emotion* & probability & Duration  \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l | l |}
+		\hline
+		
+		\multicolumn{3}{|c|}{\textbf{VoiceIdInfo}} \\ \hline
+		voiceId* & probability & Duration  \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l |}
+		\hline
+		
+		\multicolumn{2}{|c|}{\textbf{VADInfo}} \\ \hline
+		probability & Duration  \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l | l |}
+		\hline
+		
+		\multicolumn{3}{|c|}{\textbf{SpeechInfo}} \\ \hline
+		\multicolumn{2}{|c|}{hypotheses[]} & Duration  \\\cline{1-2}
+		recognizedSpeech* & probability & \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l | l | l|}
+		\hline
+		
+		\multicolumn{4}{|c|}{\textbf{SSLInfo}} \\ \hline
+		\multicolumn{3}{|c|}{directions[]} & Duration  \\\cline{1-3}
+		sourceId* & angleVertical & angleHorizontal & \\\hline
+	\end{tabular}\\\vspace{0.3cm}
+	
+	\begin{tabular}{| l | l | l |}
+		\hline
+		
+		\multicolumn{3}{|c|}{\textbf{EsiafRosMsg}} \\ \hline
+		GenderInfo[]	& EmotionInfo[]	& VoiceIdInfo[]	\\\hline
+		VADInfo[]	& SpeechInfo[]	& SSLInfo[] \\\hline
+	\end{tabular}
+	\caption{A list of all available result messages and their composition.
+		All entries indicated with a star are of type string and generally used for result transmission.
+		All other entries are either of a type shown here (e.g. Duration), or are floats.
+		Square brackets indicate this entry to be a list of this type with unspecified length.
+		The EsiafRosMsg is a special type reserved for usage by the Orchestrator, as it represents the message of synchronized results.
+		}
+	\label{table:main:lib:messages}
+\end{figure}
 
 %--------------------------------------------------------------------
 

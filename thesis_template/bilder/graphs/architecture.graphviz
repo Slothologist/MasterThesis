@@ -27,7 +27,7 @@ strict digraph G {
 		filtering -> vad [style=invis lhead=cluster_11 ltail=cluster_12];
 	}
 
-	master [shape=record label="{Orchestrator | - aggregates information of nodes\n - calculates audioflow and resampling points\n - determines if pipeline is invalid\n - warns if undesired behaviour is possible (e.g. too many and extreme resamples)\n - starts components based on config}"]
+	master [shape=record label="{Orchestrator | - aggregates and fuses results of nodes\n - calculates audioflow and resampling points}"]
 	end_msg [shape=octagon, label="Outside Interface"];
 	
 	{rank=min end_msg}

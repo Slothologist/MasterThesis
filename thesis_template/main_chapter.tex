@@ -3,6 +3,7 @@
 \chapter{Resulting System}
 In this chapter we will describe our solution to the problems presented in chapter \ref{motiv:start}.
 We will first give a broad overview how and where certain tasks are handled, before going more into detail in sections dedicated to the two major parts of this solution, namely the Orchestrator and library.
+After we discussed the problems tackled by the Orchestrator and the library in more detail and thus gained deeper insight into the workings of both, we will again revert to a higher level and describe their interaction with each other.
 Lastly we will present a number of components developed for our solution as a proof of concept and to introduce them, as most of them are later used in the evaluation of this thesis (see chapter \ref{eval}).
 
 The main goal of this theses is to provide synchronized results of audio analysis components, such as \gls{asr} and \gls{ssl} results.
@@ -49,54 +50,11 @@ We chose \gls{ros} as an underlying middleware, see chapter \ref{intro:ros}.
 
 We will now continue to discuss the Orchestrator and the proposed pipelines library in more detail in designated sections.
 
-% -----------------------------
-
-To summarize, we can break down our goal of synchronizing results as such:
-\begin{enumerate}
-	\item standardized results 
-	\begin{enumerate}
-		\item 
-	\end{enumerate}
-	\item timestamped results
-	\begin{enumerate}
-		\item timestamped audio data
-		\begin{enumerate}
-			\item transmission of timestamped audio data
-		\end{enumerate}
-	\end{enumerate}
-\end{enumerate}
-
-
-
-
-\begin{itemize}
-	\item two main problems: synchronization and transmission/ audio format adjusting
-	\item division between library and orchestrator
-	\item library as abstraction layer for resampling, transmission and tool to retrieve correlated information, e.g. VAD and SSL results
-	\item orchestrator as central control node to manage all participating nodes
-	\item ``perspective'' from outside, interfaces into and out of the pipeline
-	\item most important ros messages and why they were designed as they were (AugmentedAudio.msg and EsiafRosMsg.msg)
-\end{itemize}
-
-general design decisions regarding:
-
-\begin{itemize}
-	\item latency
-	\item parallelism/ pipeline tree generation
-	\item architecture (distributed vs centralized (need for orchestrator))
-	\item decision for using ros as an additional middleware (and against jackaudio, gstreamer, alsa, just TCP)
-	\item the need for client side selectable audio format 
-\end{itemize}
-
-interaction between library and orchestrator
-
-\begin{itemize}
-	\item interfaces the orchestrator provides for the clients
-\end{itemize}
-
 
 \input{sections/main_chapter/library}
 \newpage
 \input{sections/main_chapter/orchestrator}
+\newpage
+\input{sections/main_chapter/combination.tex}
 \newpage
 \input{sections/main_chapter/incorporated_work}

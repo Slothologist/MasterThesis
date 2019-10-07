@@ -5,11 +5,11 @@
 
 \section{Orchestrator}
 \label{main:orc}
+In this section we will discuss the Orchestrator as part of the proposed framework.
+The Orchestrator has to fulfill two major tasks, synchronizing results and determining the formats used to transmit audio, as discussed in the previous chapter \ref{main:lib:format_chooosing}.
 
-The Orchestrator has to provide two services.
-First, it has to determine and inform nodes about their actual audio in- \& output formats.
+First we will discuss the determination of audio in- \& output formats used internally by the library.
 To achieve this, a number of factors have to be considered.
-
 To reduce network traffic and improve transmission speed it is advantageous to transmit audio with the lowest possible bandwidth.
 Consider two nodes, where one node transmits and one node receives audio which differs only in that one node internally works with 16kHz and the other with 48kHz.
 In this scenario, resampling should happen at the node which works with 48kHz, in order to transmit only 16kHz audio.
@@ -18,7 +18,7 @@ However, it may be the case that network capacity is abundant while CPU capacity
 Consider a node outputting an audio signal at 16kHz, and four nodes requiring this audio signal at 48kHz, e.g. a \gls{vad}, gender-, emotion-, and voice recognition.
 In this scenario, one may opt to not resample four times, but rather once and transmit the higher bandwidth audio, or, more generally speaking, minimize the number of resamplings happening in the pipeline.
 
-To tackle this issue, we developed two algorithms which would one of these cases and added a simple way to add new algorithms.
+To tackle this issue, we developed two algorithms which could each handle one of these cases and added a simple way to add new algorithms, should the need arise.
 The first algorithm introduces a cost function which calculates the bandwidth of each topics formats.
 This algorithm is formalized in figure \ref{main:orc:resampling:formula:min_traffic}.
 It applies the aforementioned cost function $cost_{format}$ on each in- \& output format for a given topic and then chooses the minimum as the optimal.
@@ -55,10 +55,66 @@ If this is the case, it comes naturally to mind to choose the format which requi
 	\label{main:orc:resampling:formula:min_cpu}
 \end{figure}
 
+After the Orchestrator determined the transmission format for each topic, it will inform all registered components about their respective internally used audio formats via a \gls{ros}-message.
+The library part of each component will listen to these messages and then store and use these formats as discussed in chapter \ref{main:lib:format_chooosing}.
+It is important to note at which points in time the Orchestrator will determine the audio formats.
+Since it cannot conclusively determine if all components that are going to be started have already registered, as it lacks a list of such components, whenever a component registers the formats of all topics are determined anew.
+Additionally, a component may die or shut down at any point in time.
+When this is detected, all formats are determined as well, since the Orchestrator cannot foretell how long the pipeline will still run in the current configuration and more profitable audio formats may save a lot of bandwidth or computation time, or improve the quality of the transmission, by not unnecessarily resampling and converting audio.  
 
-% ------------------------------------- 
+Determining whether a component has shut down must be conducted by the Orchestrator.
+For this reason it will routinely ping all components via \gls{ros} inbuild \gls{ros}-node pinging functionality.
+Should \gls{ros} not find a node in question, or should the node be non-responding, the Orchestrator will remove it from its internally kept list of active nodes and terminate all communication with it.
+Such nodes will furthermore not be considered for fusion of results anymore. 
 
-The second task of the Orchestrator is to gather the information almost every node of the pipeline produces, fuse them and then provide these fused information.
+\subsubsection{Result Fusion}
+
+When synchronizing results, a few key circumstances need to be kept in mind.
+The first and probably most important one is that because of our library and the relentless efforts to annotate our audio and in turn results with timestamps, the synchronization of the results itself is rather trivial.
+There are however still a few possible pitfalls.
+Most importantly, the Orchestrator can not know with certainty when results are arriving, or -more precisely- when all of the results to be synchronized will have arrived.
+This is rather unfortunate, as it is of utmost importance to relay all information as soon as possible, to keep further programs reliant on our synchronized results, such as natural language processors or robot behavior controllers, not waiting and thus keep latency down to a minimum.
+There is another important question we have evaded up until now.
+When we synchronize our results,with respect to what do we synchronize?
+After all, results of different types may overlap within the time frame of their respective occurrence.
+An example of this phenomenon can be observed in figure \ref{pic:main:orc:result_overlap}.
+The first result of an \gls{asr} node, A1, may be fused with the first result of an \gls{ssl} node, S1.
+This however occurred partially with A2, which may be also fused for our result.
+This could iteratively go on until all shown results may be fused together.
+This is naturally not desirable, as the latency of the first results would needlessly increase and no meaningful information could be gained by this synchronization.
+
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\textwidth]{diagrams/main_orc_result_overlap.pdf}
+	\caption{Overlap of results from two distinct components, an \gls{ssl} component in green and an \gls{asr} component in red.
+		Trying to synchronize as much results as possible may result in a macro result containing all presented data.}
+	\label{pic:main:orc:result_overlap}
+\end{figure}
+
+
+A few approaches to deal with this problem may come to mind.
+We could for example choose to synchronize with respect to each recorded audio message.
+But due to the library not enforcing a singular, constant size for the audio transmitted via these messages (see chapter \ref{main:lib:augmented_audio_msg} and chapter \ref{basics:latency} for the reasoning), this could quickly explode in complexity; especially since a beamformer may create a new artificial audio signal which may either transport smaller audio signals with each message or slightly shift the timestamps of the messages, due to factoring in the time-of-arrival differences for the different microphones.
+This way, all -or worse, just some- of the results may have been computed on timestamps differing from the originally recorded ones.
+
+The approach we ultimately chose was to determine one so called anchor type, which would then be the basis of all synchronization.
+Each result received of this anchor type would by their timestamps determine the timeframe with which all results of other types would then be synchronized with.
+Any result occurring at least partially in this timeframe would be included in the fused result.
+
+Initially we planned to only use speech utterances as anchor.
+However, as time moved on, we realized that this may not be the only interesting type for synchronization.
+Programs for tracking persons for example could be very interested in obtaining data on which particular person was speaking at a given moment, synchronized with their position provided by \gls{ssl} information.
+And so our algorithms would quickly be adapted to not only use every result type as anchor type, but to do so concurrently.
+This puts us in the favorable position to provide any result type of particular interest without giving up synchronization with other results.
+
+- actual 
+
+For each anchor result the Orchestrator receives, it creates a new meta fusion object
+
+%-------------------------
+
+
+The most important task of the Orchestrator is to gather the information almost every node of the pipeline produces, fuse them and then provide these fused information.
 There are a number of factors to consider when designing a solution for this task.
 \begin{enumerate}
 	\item How to actually synchronize?
@@ -67,6 +123,7 @@ There are a number of factors to consider when designing a solution for this tas
 \end{enumerate}
 
 Second, it needs to synchronize the nodes results and output them. 
+%-------------------------
 
 Algorithms
 

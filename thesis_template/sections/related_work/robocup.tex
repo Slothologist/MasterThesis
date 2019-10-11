@@ -1,6 +1,7 @@
 %!TEX root = ../../thesis.tex
 
 \section{RoboCup@Home}
+\label{related:robocup}
 The RoboCup was founded in 1996 as an annual soccer competition for robots with the goal to beat the human world champions by 2050 (todo cite https://www.robocup.org/objective).
 Over the years, RoboCup split into several leagues and expanded into other disciplines as well, such as the Rescue Robot league or the RoboCup@Work league.
 
@@ -43,7 +44,7 @@ However, they appear to only use its \gls{ssl} capabilities at this time.
 \subsection{Kamerider}
 The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and SSL (TODO cite).
 They use Gstreamer to segment audio, which is then being processed by \gls{ps}.
-Additionally, they use \HARK for \gls{ssl}.
+Additionally, they use \gls{hark} for \gls{ssl}.
 This way they appear to have modularized their components to a greater degree than other teams.
 However, they gave no information about the interfacing of thusly acquired \gls{asr} and \gls{ssl} results.
 %https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-opl-kamerider_opl.pdf
@@ -52,9 +53,9 @@ However, they gave no information about the interfacing of thusly acquired \gls{
 
 \subsection{Hibikino Musashi}
 %https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-dspl-hibikino-musashiathome.pdf
-The Hibikino-Musashi team of the Kyushu Institute of Technology also uses \HARK, specifically its \textit{MUSIC} algorithm for \gls{ssl}.
+The Hibikino-Musashi team of the Kyushu Institute of Technology also uses \gls{hark}, specifically its \textit{MUSIC} algorithm for \gls{ssl}.
 Additionally, they employ an \gls{asr} solution in the form of \textit{Google SpeechRec} via its web API on the Chrome web browser.
-We could however, find no information about how the results of those components were interfaced.
+We could however find no information about how the results of those components were interfaced.
 
 \subsection{ToBi}
 The team of Bielefeld (ToBi) of Bielefeld University can be discussed in greater detail, as we were members of this team.

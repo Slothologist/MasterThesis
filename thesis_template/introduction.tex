@@ -3,7 +3,10 @@
 
 
 \chapter{Basics}
+\label{basics:start}
 In this chapter, we will provide an overview and describe a number of concepts and technologies used within this work.
+
+% todo: why each section?
 
 
 \section{Latency}
@@ -68,6 +71,8 @@ An excess of microphones is often used in practice to increase accuracy of the \
 Due to practical limitations caused by slight inaccuracies in position of the microphones, an exact sound source can often only be determined in the immediate vicinity or even just inside of the microphone array.
 Otherwise, only a general \gls{doa} can be calculated with respect to the microphone array.
 Most approaches do not handle the special case of finding the exact position of a source inside the microphone array and thus only provide a \gls{doa}.
+
+% todo: how to approaches to beamforming differ? maximum likelihood vs music
 
 \section{Beamforming}
 Beamforming could colloquially be described as the inverse of \gls{ssl}.

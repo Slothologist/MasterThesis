@@ -22,6 +22,9 @@
 	\import{./bilder/}{#1.pdf_tex}
 }
 
+\renewcommand{\labelenumii}{\theenumii}
+\renewcommand{\theenumii}{\theenumi.\arabic{enumii}.}
+
 % This is the only file needed for actually using the smart-thesis style.
 \input{style}
 
@@ -80,6 +83,7 @@
 
 \appendix
 \input{statement}
-%\input{app_a}
+\newpage
+\input{appendix}
 
 \end{document}

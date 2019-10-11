@@ -23,6 +23,7 @@ A similar phenomenon could very publicly be observed in the near past, when Amaz
 In social robots, this behavior is not acceptable, especially since the means to at least partially solve these problems already exist.
 Voice recognition technologies which can differentiate voices to a degree most people could be identified are available (todo cite voice github project).
 Additionally, computer vision can be used to search for speakers, either standalone, looking for moving lips (too cite), or in combination with sound source localization (see \ref{basics:ssl}).
+We will later show (see chapter \ref{related:robocup}) these to not be in use by leading robotics teams.
 
 Of course suitable robot behaviors need to be created, to take all this information into account.
 When creating these behaviors, one must take into account how these information are fed into them.
@@ -32,7 +33,7 @@ A number of factors have to be considered when combining these informations.
 The ratios in which information may arrive may not be distributed evenly.
 While just a single, long speech utterance may be received, a number of voices can be detected, or several results of the same voice.
 Results thus have to be combined in a manner that takes this into account.
-Additionally, results will almost always have different calculation times, based on what component created them.
+Additionally, results will almost always have different calculation times, based on what component created them and thus may be temporally unaligned.
 This must be considered as well, creating the need to synchronize results based on their occurrence in time.
 
 The problems just presented are clearly out of scope for robot behaviors an thus should be handled separately.

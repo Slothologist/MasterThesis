@@ -40,7 +40,7 @@ When creating these behaviors, one must take into account how these information 
 The behavior in question must either be fed a pre-combined package or be able to combine the information, e.g. a spoken utterance and a distinct, detected voice.
 If the behavior handles the combination both may not be fed into the behavior at the same time, resulting in the problem to combine them.
 A number of factors have to be considered when combining these informations.
-The ratios in which information may arrive may not be distributed evenly.
+Information may arrive in ratios which are not be distributed evenly.
 While just a single, long speech utterance may be received, a number of voices can be detected, or several results of the same voice.
 Results thus have to be combined in a manner that takes this into account.
 Additionally, results will have different calculation times, based on what component created them and thus may be temporally unaligned.

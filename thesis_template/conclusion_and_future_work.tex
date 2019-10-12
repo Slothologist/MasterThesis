@@ -3,3 +3,33 @@
 
 
 \chapter{Conclusion \& Future Work}
+\label{conclusion}
+
+I began this thesis with the goal to ultimately improve \gls{hri}, by providing robot behaviors with synchronized results and thus enable them to focus on perceiving humans better.
+For this I created a framework which synchronizes and combines results of components of various disciplines, such as emotion and gender recognition.
+Smaller, secondary goals were also formulated:
+The solution was supposed to be modular, to increase its value for research.
+Naturally, the solution should also perform as good as pre-existing solutions with regards to computational speed and accuracy.
+This reiterated, I consider this thesis to be a mild success.
+
+The RoboCup@Home experiment I could show my fusion approach to not only work, but to improve the accuracy of the used \gls{ssl} component in comparison to previously employed methods.
+In this particular area, this thesis can be considered fully successful.
+The data set experiment however is more of a mixed bag.
+It inherently showed the proposed framework to be quite modular by its ability to incorporate additional components and reuse nearly all components from the RoboCup experiment.
+On the other hand, it showed the proposed framework to be considerably slower then a comparable pre-existing solution.
+I briefly investigated this problem and could determine the long computation time to be not be explainable by just the components and framework alone.
+As such, I suspect an undiscovered bug to be he cause of this discrepancy.
+Future work may thus begin by exploring this inconsistency and -if possible- eliminate it.
+
+%--------------------
+
+Apart from this, the logical next step would be to use the proposed framework to fed information into a robot behavior.
+This way the work I presented can be properly utilized and thus improve \gls{hri} of robot, the very motivation for this thesis.
+Another path for future work could start with creating more components for the proposed framework.
+A number of the components I developed (see chapter \ref{main:components:start}) can not considered to be state of the art, but rather rapidly developed proofs of concept.
+For productive work and actual research in the fields of speech recognition and robotics, especially multi-modal sensor fusion, as outlined in chapter \ref{related:fusion} it may prove fruitful to incorporate better performing algorithms into the proposed framework.
+
+Another, rather unintentional feature of the proposed framework became clear when conducting the data set experiment.
+The proposed framework provides a very easy way to benchmark different components against each other by providing distinct interfaces and as such a controls the environment of components to be benchmarked very tightly.
+This way algorithms to be benchmarked can be controllably fed audio and their impact upon other components inspected.
+It would for example be easily conceivable to test the word error rate of different combinations of \gls{vad} and \gls{asr} components.

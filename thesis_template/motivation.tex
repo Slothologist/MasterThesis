@@ -4,7 +4,7 @@
 \label{motiv:start}
 
 Robotics in general depend heavily on \gls{hri}, which in turn is influenced and shaped by human-human interaction. %todo cite
-Since speech is one of (if not) the most important form of communication between humans, it is no surprise that it is also one of the most important parts of \gls{hri}.
+Since speech is one of the most important form of communication between humans, it is no surprise that it is also one of the most important parts of \gls{hri}.
 From a robots point of view, speech can be divided into speech synthesis and the main interest of this thesis: speech recognition.
 
 Being able to perfectly understand the words a person spoke does not completely cover speech recognition.
@@ -12,7 +12,7 @@ See for example this video\footnote{\url{https://www.youtube.com/watch?v=iEMKZdw
 In the video parts of a RoboCup@home Task of the RoboCup World Championship 2018 in Montreal can be seen.
 In three different instances two referees are giving a robot commands, but they take turns in speaking to the robot.
 The robot does not acknowledge this nor does it seem to notice.
-More so: When asking for the confirmation of a specific command, it does not even seem to care that a different person gives this confirmation, or that the original referee walked away and no longer seems to care.
+More so: When asking for the confirmation of a specific command, it does not even seem to care that a different person gives this confirmation, or that the original referee walked away and no longer partakes in the conversation.
 
 \begin{figure}[]
 	\centering
@@ -36,10 +36,10 @@ Additionally, computer vision can be used to search for speakers, either standal
 We will later show (see chapter \ref{related:robocup}) these to not be in use by leading robotics teams.
 
 Of course suitable robot behaviors need to be created, to take all this information into account.
-When creating these behaviors, one must take into account how these information are fed into them.
+When creating these behaviors, one must consider how these information are fed into them.
 The behavior in question must either be fed a pre-combined package or be able to combine the information, e.g. a spoken utterance and a distinct, detected voice.
-If the behavior handles the combination both may not be fed into the behavior at the same time, resulting in the problem to combine them.
-A number of factors have to be considered when combining these informations.
+If the behavior handles the combination, both may not be fed into the behavior at the same time, resulting in the problem to combine them.
+A number of factors have to be considered when combining these information.
 Information may arrive in ratios which are not be distributed evenly.
 While just a single, long speech utterance may be received, a number of voices can be detected, or several results of the same voice.
 Results thus have to be combined in a manner that takes this into account.
@@ -47,7 +47,7 @@ Additionally, results will have different calculation times, based on what compo
 This must be considered as well, creating the need to synchronize results based on their occurrence in time.
 
 The problems just presented are clearly out of scope for robot behaviors an thus should be handled separately.
-We thus declare the main goal of this thesis to be creating a framework to automatically generate these synchronized results of audio analysis solutions.
+We thus declare the main goal of this thesis to create a framework for the automatic generation of these synchronized audio analysis results.
 
 Furthermore, we can declare a number of secondary goals.
 Naturally our approach to synchronize audio results shall not have a negative impact on these results.
@@ -68,8 +68,7 @@ We can thus declare modularity a secondary goal, to increase the usability of th
 
 The remainder of this thesis is structured as follows:
 We will first introduce a number of concepts and frameworks in chapter \ref{basics:start}.
-After this we will present our solution to 
-in chapter \ref{main:main}.
+After this we will present our solution in chapter \ref{main:main}.
 We will then proceed to evaluate our proposed solution in chapter \ref{eval} based on two experiments.
 Lastly we will summarize our findings and point out possible future work in chapter \ref{conclusion}.
 

@@ -8,7 +8,7 @@
 In this section the Orchestrator as part of the proposed framework will discussed.
 The Orchestrator has to fulfill two major tasks, synchronizing results and determining the formats used to transmit audio, as discussed in the previous chapter \ref{main:lib:format_chooosing}.
 
-First we will discuss the determination of audio in- \& output formats used internally by the library.
+First the determination of audio in- \& output formats used internally by the library will be discussed.
 To achieve this, a number of factors have to be considered.
 To reduce network traffic and improve transmission speed it is advantageous to transmit audio with the lowest possible bandwidth.
 Consider two nodes, where one node transmits and one node receives audio which differs only in that one node internally works with 16kHz and the other with 48kHz.
@@ -18,7 +18,7 @@ However, it may be the case that network capacity is abundant while CPU capacity
 Consider a node outputting an audio signal at 16kHz, and four nodes requiring this audio signal at 48kHz, e.g. a \gls{vad}, gender-, emotion-, and voice recognition.
 In this scenario, one may opt to not resample four times, but rather once and transmit the higher bandwidth audio, or, more generally speaking, minimize the number of resamplings happening in the pipeline.
 
-To tackle this issue, we developed two algorithms which could each handle one of these cases and added a simple way to add new algorithms, should the need arise.
+To tackle this issue, I developed two algorithms which could each handle one of these cases and added a simple way to add new algorithms, should the need arise.
 The first algorithm introduces a cost function which calculates the bandwidth of each topics formats.
 This algorithm is formalized in figure \ref{main:orc:resampling:formula:min_traffic}.
 It applies the aforementioned cost function $cost_{format}$ on each in- \& output format for a given topic and then chooses the minimum as the optimal.
@@ -74,8 +74,8 @@ The first and probably most important one is that because of the library and the
 There are however still a few possible pitfalls.
 Most importantly, the Orchestrator can not know with certainty when results are arriving, or -more precisely- when all of the results to be synchronized will have arrived.
 This is rather unfortunate, as it is of utmost importance to relay all information as soon as possible, to keep further programs reliant on the synchronized results, such as natural language processors or robot behavior controllers, not waiting and thus keep latency down to a minimum.
-There is another important question we have evaded up until now.
-When we synchronize the results, with respect to what do we synchronize?
+There is another important question, which has been evaded up until now.
+When results are synchronized, with respect to what are they synchronized?
 After all, results of different types may overlap within the time frame of their respective occurrence.
 An example of this phenomenon can be observed in figure \ref{pic:main:orc:result_overlap}.
 The first result of an \gls{asr} node, A1, may be fused with the first result of an \gls{ssl} node, S1.
@@ -97,17 +97,17 @@ We could for example choose to synchronize with respect to each recorded audio m
 But due to the library not enforcing a singular, constant size for the audio transmitted via these messages (see chapter \ref{main:lib:augmented_audio_msg} and chapter \ref{basics:latency} for the reasoning), this could quickly explode in complexity; especially since a beamformer may create a new artificial audio signal which may either transport smaller audio signals with each message or slightly shift the timestamps of the messages, due to factoring in the time-of-arrival differences for the different microphones.
 This way, all -or worse, just some- of the results may have been computed on timestamps differing from the originally recorded ones.
 
-The approach we ultimately chose was to determine one so called anchor type, which would then be the basis of all synchronization.
+The approach ultimately chosen was to determine one so called anchor type, which would then be the basis of all synchronization.
 Each result received of this anchor type would by their timestamps determine the timeframe with which results of all other types would then be synchronized with.
 Any result occurring at least partially in this timeframe would be included in the fused result.
 
-Initially we planned to only use speech utterances as anchor.
-However, as time moved on, we realized that this may not be the only interesting type for synchronization.
+Initially it was planned to only use speech utterances as anchor.
+However, as time moved on, I realized that this may not be the only interesting type for synchronization.
 Programs for tracking persons for example could be very interested in obtaining data on which particular person was speaking at a given moment, synchronized with their position provided by \gls{ssl} information.
 And so the algorithms of the Orchestrator would quickly be adapted to not only use every result type as anchor type, but to do so concurrently.
 This puts us in the favorable position to provide any result type of particular interest without giving up synchronization with other results.
 
-In chapter \ref{main:lib}, we discussed the fact that each component will register itself giving a designation.
+In chapter \ref{main:lib}, the fact that each component will register itself giving a designation was discussed.
 A list of these designations can be seen in figure \ref{table:main:designations}.
 This designation corresponds to a result type, seen on the right side of the figure.
 Through this connection the Orchestrator can know to expect certain result types from each component of a pipeline.
@@ -134,7 +134,7 @@ The Orchestrator may receive results in any order.
 However, fused results should not be published, until all results of interest were received.
 When the Orchestrator receives a result of one of his anchor types, results of interest may already have been received, or still be to be received.
 We thus need a way to gather all these results.
-To take care of all results the Orchestrator has already received, we chose to create a database, in which all incoming results are saved.
+To take care of all results the Orchestrator has already received, it was chosen to create a database, in which all incoming results are saved.
 This may seem a little over-engineered, but will later be of additional service.
 
 When the Orchestrator receives a result of its anchor type, it will then create a so called \texttt{Fusion} object.
@@ -162,7 +162,7 @@ More explicitly, components should be expected to sometimes not produce results,
 As an example, consider an \gls{ssl} component to produce a result based on a shattering glass.
 Other components, especially components requiring an actual utterance or at least a voice to be present in the signal should not detect anything during this time and thus not produce any results.
 This would make synchronizing the generated \gls{ssl} results with anything other impossible. 
-Additionally, we again must bear in mind that components may unexpectedly shut down.
+Additionally, it must be kept in mind that components may unexpectedly shut down.
 Synchronizing their then not produced results would be impossible.
 A component may also struggle to calculate one specific result, due to it being either very computationally expensive or due to having a temporary shortage of computational power, because e.g. other programs consuming much computational power.
 
@@ -177,29 +177,29 @@ Consider a setup with a component which is very fast in computing results and on
 In the case the fast component did not produce a result, a long timeout would lead to a higher latency than a small one.
 A large timeout would however be needed for the component which takes a long time to produce results.
 
-The method we developed to find the optimal timeout takes into account all of these concerns.
-Making use of the database we included to save results, we do not only save received results, but also their time to compute.
-This can very easily be calculated, as we can just take the difference between the time the result is received by the Orchestrator and the end time of the audio timestamp.
+The method I developed to find the optimal timeout takes into account all of these concerns.
+Making use of the database included to save results, not only received results are saved, but also their time to compute.
+This can very easily be calculated, as this is just the difference between the time the result is received by the Orchestrator and the end time of the audio timestamp.
 This gives us the absolute time needed from recording the audio to the point in time at which results are available to the Orchestrator.
-Because we generate this time for each result, we can then calculate the average for each type of result.
-Thus we can generate a timeout for each type of result which is equivalent to a timeout for each component.
-To avoid ignoring results which take shortly longer to arrive at the Orchestrator than the average, we multiply the average value with a constant factor to gain the final timeout.
+Because this time is generated for each result, the average for each type of result can then be calculated.
+Thus a timeout for each type of result can be generated, which is equivalent to a timeout for each component.
+To avoid ignoring results which take shortly longer to arrive at the Orchestrator than the average, the average value is multiplied with a constant factor to gain the final timeout.
 We found a factor of 1.5 to work quite well in this regards.
 
 These timeouts are generated for each anchor result anew.
 Due to this, the Orchestrator can react to possible changes in the execution times of components and adjust the timestamps on the fly.
-The first anchor result the Orchestrator receives however will not be able to generate timeouts this way, we need an alternative for it.
+The first anchor result the Orchestrator receives however will not be able to generate timeouts this way, an alternative is needed for it.
 We found a hard coded high timeout and the thusly potentially higher latency resulting on this first result to be acceptable.
 However, at this point another feature of the database approach from before comes in.
-As results are stored permanently, we are able to simply load an already existing database.
+As results are stored permanently, it is possible to simply load an already existing database.
 If the configuration of the used pipelines have not changed to much with respect to components and network/ compute environment, the Orchestrator can make use of the previous runs and thus eliminate the drawback of the first anchor result.
 
 %-------------------------
 
-Lastly we will take a look at the latency introduced by synchronizing results.
+Lastly the latency introduced by synchronizing results is worth a look at.
 In a best case scenario, where the Orchestrator can make use of overlapping results (as shown in figure \ref{pic:main:orc:result_overlap}), the latency is simply the time of the slowest computing component, along with a small calculation time the Orchestrator introduces.
 The worst case scenario can be seen in figure \ref{main:orc:latency:formula}.
-This latency $l_f$ is mostly determined by the exact factors we discussed previously: The maximum of the average time to compute of all components and the multiplicand $V_A$. 
+This latency $l_f$ is mostly determined by the exact factors discussed previously: The maximum of the average time to compute of all components and the multiplicand $V_A$. 
 We consider this to be a worthwhile trade off, due to the most important anchor message types only being generated when an utterance or at least voice is present in the corresponding audio.
 We believe these message types to be that of the \gls{asr}-, emotion-, gender-, and voice-results.
 
@@ -208,7 +208,7 @@ We believe these message types to be that of the \gls{asr}-, emotion-, gender-, 
 	l_{f} = V_A \cdot max(\{\frac{1}{n_i} \cdot \sum_{k=1}^{n_i} l_{i,k}\ | \ i \in components\})
 	\end{align}
 	\caption{Maximum latency of a single fusion.
-		$V_A$ is a constant, typically 1.5.
+		$V_A$ is a constant.
 		$n_i$ is the amount of results the orchestrator already received of a component $i$.
 		$l_{i,k}$ is the latency of the $k$th result of the component $i$.}
 	\label{main:orc:latency:formula}

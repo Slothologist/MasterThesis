@@ -7,8 +7,8 @@
 \label{main:lib}
 In this part of this thesis the library of the proposed framework will described, along with its tasks.
 As discussed earlier, the library of the proposed framework solves a number of problems, which are either directly needed for synchronization of results or make it considerably easier.
-First we will lay down the reasoning for some major design decision.
-After this we will go into more detail with more technical explanations.
+First the reasoning for some major design decision will be laid down.
+After this more technical details and explanations will follow.
 
 
 % audio transmission
@@ -27,7 +27,7 @@ Working on audio data which is present in a different format then expected will 
 
 Under normal circumstances, a component will request audio in the format it requires directly, e.g. via \gls{alsa}.
 However, as the library now handles all audio transmission, this is no longer feasible.
-With respect to one of the secondary goals of this thesis, to provide a modular framework, we can also not assume every components algorithm to work with a specific audio format.
+With respect to one of the secondary goals of this thesis, to provide a modular framework, every components algorithm can also not be assumed to work with a specific audio format.
 This leaves us to either require each component to use a single, pre-determined audio format or resampling and converting audio signals for each component.
 By handling resampling and converting of audio signals within the library, components of the resulting framework can theoretically employ any kind of algorithm they desire, without having to handle resampling and converting audio themselves.
 Furthermore, by abstracting resampling and converting from the components themselves, the library can be equipped to change audio formats adaptively when new components are introduced or old components vanish from a specific configuration, in a standardized way.
@@ -36,7 +36,7 @@ Consequently, the library needs to be able to resample and convert audio between
 We chose the \gls{soxr} library (todo cite), to resample the audio and use a custom implementation to change its \textit{Bitrate} and \textit{Channel Count}.
 We prepared the library to handle different \textit{Endianness}, but ultimately did not implement such a feature, as different byte order is mostly a historic phenomenon and most modern operating systems, such as Windows, MacOs and most Unix systems, use little-endian encodin.
 
-From the perspective of the library, we can then divide between an externally used format, which is the format in which the component provides or requests audio data to the library; and an internally used format, which is the format in which the audio is transmitted.
+From the perspective of the library, it can then be divided between an externally used format, which is the format in which the component provides or requests audio data to the library; and an internally used format, which is the format in which the audio is transmitted.
 Both of these can be identical, but must not be.
 As discussed previously in chapter todo, resampling and converting of audio signals should be minimized, so careful consideration is required when choosing the format with which to transmit audio between components.
 
@@ -54,7 +54,7 @@ While the communication between \texttt{c\_1} and \texttt{c\_2} is straight forw
 Additionally, the way in which each format is determined must be deterministic, as each component must come to the same conclusion.
 All this results in a not insignificant overhead in both computational load and inter-component communication.
 
-However, as we already always employ an additional program to synchronize the results, namely the Orchestrator, the benefit of the distributed approach becomes negligible.
+However, as there is already always an additional program  employed to synchronize the results, namely the Orchestrator, the benefit of the distributed approach becomes negligible.
 We thus chose to implement the centralized approach with the Orchestrator as the master component, which determines each components internally used audio format.
 We will go into detail how the Orchestrator chooses these formats in the following section \ref{main:orc}.
 
@@ -155,7 +155,7 @@ In any case, these must be published by the components to similarly standardized
 
 We will now illustrate the tasks handled by the library by means of typical actions taken by an example component in its life-cycle.
 Our example will be that of a typical \gls{vad} component.
-As we use \gls{ros} as an underlying middleware, components within the proposed framework must also use \gls{ros} for a number of tasks.
+As \gls{ros}is used as an underlying middleware, components within the proposed framework must also use \gls{ros} for a number of tasks.
 Thus it is necessary for the component to first initialize \gls{ros}.
 Following this, the proposed library will need to be initialized, which is done by first creating a handle.
 This handle keeps track of all relevant information the proposed library needs.
@@ -256,11 +256,12 @@ We will go more into detail regarding this designation in the Orchestrator's cha
 Additionally needed are information about the in- \& output topics of audio that were previously declared.
 The information about meta-information are not needed for the registration process, as they are handled internally by the library itself.
 Registering the component is then done via a dedicated \gls{ros}-service, which has the library send these information
-Using a \gls{ros}-service in this instance instead of a simple \gls{ros}-message has the advantage, that we can ensure that the Orchestrator is started and ready, which may not necessarily be the case when starting the Orchestrator and components of the framework in rapid succession.
+Using a \gls{ros}-service in this instance instead of a simple \gls{ros}-message has the advantage, that it can be ensured that the Orchestrator is started and ready, which may not necessarily be the case when starting the Orchestrator and components of the framework in rapid succession.
 
 After this registration has finished, the components work may actually begin.
 When the component has finished its work it may signal this to the library, or simply exit.
 If the library was thusly informed, it will shut down all audio transmission.
-As we cannot expect components to exit in a regulated manner in all cases, the Orchestrator must be able to handle suddenly disappearing components.
-Thus we do not provide a dedicated way to de-register a component within the library, and instead let the Orchestrator handle all component shut downs.
+As components cannot be expected to exit in a regulated manner in all cases, the Orchestrator must be able to handle suddenly disappearing components.
+Thus there is no dedicated way to de-register a component within the library, and instead the Orchestrator handles all component shut downs.
 We will focus on the Orchestrator's approach for this in the following chapter \ref{main:orc}.
+

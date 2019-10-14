@@ -4,7 +4,7 @@
 
 \chapter{Basics}
 \label{basics:start}
-In this chapter, we will provide an overview and describe a number of concepts and technologies used within this work.
+In this chapter, I will provide an overview and describe a number of concepts and technologies used within this work.
 
 % todo: why each section?
 
@@ -15,10 +15,10 @@ Irregardless of the method used, when transmitting any kind of information, this
 This delay is universal concept and can be found in macro levels, e.g. light from distant galaxies reaching us after thousands of years, over a more intermediate level, e.g. sending a letter to a micro level, e.g. the sound of a spoken phrase to reach the ear of the recipient.
 This delay is also known as \textit{latency}.
 
-However, while we cannot alter the laws of physics, we might be able to reduce latency when we are in control of the environment.
+However, while the laws of physics cannot be altered, one might be able to reduce latency when in control of the environment.
 To follow our previous example of sending a letter, one may opt for sending a intercontinental letter via plane instead of ship.
 
-In this particular work, we will almost exclusively talk about latency of audio signals.
+In this particular work, I will almost exclusively discuss latency of audio signals.
 As audio signals are not singular events, akin to e.g. a photon, but rather a continuous stream and most of the computations presented in this work are done by computers which can work way faster then audio signals typically occur, their latency behaves special in a number of ways. % todo formulierung
 One such special behavior for example can be observed when recording audio from a microphone.
 This is typically done in a iterative manner:
@@ -28,7 +28,7 @@ Through this procedure, the amount of frames requested can have a significant im
 Consider requesting audio with a length equivalent to one second.
 Even when the software introduces virtually no latency, the audio frames at the beginning of the acquired audio chunk had to be recorded a second prior.
 
-In chapter \ref{eval:dataset} we will show a particular speech recognizer to just spend 0.063 seconds processing audio, with an average signal length of about one and a half seconds.
+In chapter \ref{eval:dataset} I will show a particular speech recognizer to just spend 0.063 seconds processing audio, with an average signal length of about one and a half seconds.
 This particular speech recognizer needs audio to be recorded with a sample frequency of 16000Hz, which would enable it to record audio to the equivalent
 of around 1000 frames. % satz über minimale chunk size?
 This shows that finding an effective audio chunk size is important and not necessarily trivial.
@@ -43,7 +43,7 @@ Other approaches make use of neural nets and deep learning.
 \section{Sound Source Localization}
 \label{basics:ssl}
 \gls{ssl} is a technique used to determine the origin of a sound relative to an array of microphones.
-A great variety of algorithms has been developed in this field, however they build upon a general principle, which we will outline here.
+A great variety of algorithms has been developed in this field, however they build upon a general principle, which I will outline here.
 
 Consider a setup of a number of microphones and a sound source, seen for example in figure \ref{pic:basics:ssl}.
 The positions of the microphones must be known at all time and ideally be static.
@@ -78,7 +78,7 @@ Most approaches do not handle the special case of finding the exact position of 
 Beamforming could colloquially be described as the inverse of \gls{ssl}.
 Its goal is to, in a way, "listen" to a particular direction and provide an audio signal given the recording of a number of microphones and a direction.
 This new, artificial audio signal will greatly enhance audio events occurring in this particular direction.
-Similarly to \gls{ssl}, a number of algorithms have been developed around a single principle, which we will now outline.
+Similarly to \gls{ssl}, a number of algorithms have been developed around a single principle, which will now be outlined.
 
 \begin{figure}[]
 	\centering
@@ -115,7 +115,7 @@ Any \gls{ros}-node may then send this \textit{service}-server a request, which i
 The \textit{service}-server will then somehow react to this message and react with a single answer, another \gls{ros} message.
 Similar to the simpler publish-subscribe method, \textit{services} are identified via a so called \textit{service}-topic.
 
-The third method will be only discussed briefly, as we do not make use of it in this work.
+The third method will be only discussed briefly, as it is not made use of in this work.
 It is known as a \gls{ros} action and identifiable similar to the already discussed methods by an action-topic.
 It is similar in nature to the \gls{ros} service, but features additional update messages send from the server to their respective client.
 

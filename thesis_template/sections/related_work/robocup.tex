@@ -2,10 +2,10 @@
 
 \section{RoboCup@Home}
 \label{related:robocup}
-The RoboCup was founded in 1996 as an annual soccer competition for robots with the goal to beat the human world champions by 2050 (todo cite https://www.robocup.org/objective).
+The RoboCup was founded in 1996 as an annual soccer competition for robots with the goal to beat the human world champions by 2050\footnote{\url{http://archive.is/CGYqO}}.
 Over the years, RoboCup split into several leagues and expanded into other disciplines as well, such as the Rescue Robot league or the RoboCup@Work league.
 
-RoboCup@Home (todo cite http://www.robocupathome.org/) is a league of the RoboCup dedicated to service robots in a domestic environment. % genauere beschreibung von @home, how is this relevant?
+RoboCup@Home\footnote{\url{http://archive.is/TGhGg}} is a league of the RoboCup dedicated to service robots in a domestic environment. % genauere beschreibung von @home, how is this relevant?
 Therefore, human robot interaction is one of, if not the primary focus of this league.
 Naturally, speech recognition systems are used as the default way to interact and communicate with the robots.
 This results in the demand for robust speech recognition software.%, but also introduces problems rather unnoticed by theoretical research, such as...
@@ -18,32 +18,32 @@ To gather information on the state of the art with regards to synchronization of
 However, this information is relatively sparse in team description papers and on the teams websites, so some additional information was gathered by contacting the teams directly.
 
 \subsection{SPQReL}
-The SPQReL team from Sapienza University of Rome and the University of Lincoln use several fusion approaches. (todo cite)
+The SPQReL team from Sapienza University of Rome and the University of Lincoln use several fusion approaches \cite{spqrl}.
 Visual person perceptions were matched with \gls{ssl} results, based on their respective angular difference, and could thus be tagged as speaking.
 Spoken sentences could then be mapped to speaking persons (according to email).
-They employ several speech recognizers, i.e. Google Speech API and a Nuance speech recognizer, and fuse their results with a custom speech understanding system called \textit{LU4R} (todo cite), which is able to prioritize results based on expected domain specific terms. 
+They employ several speech recognizers, i.e. Google Speech API and a Nuance speech recognizer, and fuse their results with a custom speech understanding system called \textit{LU4R} \cite{Bastianelli:2016:DAG:3060832.3061005}, which is able to prioritize results based on expected domain specific terms. 
 As such, this approach fits into the category of decision level techniques, as discussed in section \ref{related:fusion}.
 
 \subsection{RoboFEI}
-The RoboFEI team from Centro Universitário FEI in Sao Paolo (TODO cite) uses a specific microphone configuration to handle problems caused by moving sound source localization microphones.
+The RoboFEI team from Centro Universitário FEI in Sao Paolo \cite{robofei} uses a specific microphone configuration to handle problems caused by moving sound source localization microphones.
 Their robot's head is attached to a rotating pipe, which enables it to spin around its axis, while the robot's microphone array is attached to a static shaft running through that pipe which keeps it still.
 As such, the position and movement of the robot's head are not relevant for sound source localization results and beamforming, and can as such be ignored.
 Nevertheless, the robots own position and movement needs to be taken into account when performing \gls{ssl}, as is the case for all mobile robots.
 
 \subsection{Tech United}
 The Tech United team from the Eindhoven University of Technology provides some information about their speech recognition system.
-In 2018, they generated \gls{ssl} information independently from their speech recognition.(TODO cite 2018 tdp)
+In 2018, they generated \gls{ssl} information independently from their speech recognition \cite{techu}.
 They did not fuse these information however, instead opting to separately process them. %(mail)
 
 
 \subsection{Walking Machine}
-The Walking Machine team from École de Technologie Supérieure in Montreal (TODO cite) uses an solution, ODAS (TODO cite), which would enable them to perform \gls{ssl} and beamforming in one component, thus providing an enhanced audio signal.
+The Walking Machine team from École de Technologie Supérieure in Montreal \cite{walkingm} uses an solution, ODAS \cite{GRONDIN201963}, which would enable them to perform \gls{ssl} and beamforming in one component, thus providing an enhanced audio signal.
 However, they appear to only use its \gls{ssl} capabilities at this time.
 
 
 \subsection{Kamerider}
-The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and SSL (TODO cite).
-They use Gstreamer to segment audio, which is then being processed by \gls{ps}.
+The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and SSL \cite{kamerider}.
+They use Gstreamer \cite{Gstreamer} to segment audio, which is then being processed by \gls{ps}.
 Additionally, they use \gls{hark} for \gls{ssl}.
 This way they appear to have modularized their components to a greater degree than other teams.
 However, they gave no information about the interfacing of thusly acquired \gls{asr} and \gls{ssl} results.
@@ -53,13 +53,13 @@ However, they gave no information about the interfacing of thusly acquired \gls{
 
 \subsection{Hibikino Musashi}
 %https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-dspl-hibikino-musashiathome.pdf
-The Hibikino-Musashi team of the Kyushu Institute of Technology also uses \gls{hark}, specifically its \textit{MUSIC} algorithm for \gls{ssl}.
+The Hibikino-Musashi team of the Kyushu Institute of Technology also uses \gls{hark}, specifically its \textit{MUSIC} algorithm for \gls{ssl} \cite{hibikino}.
 Additionally, they employ an \gls{asr} solution in the form of \textit{Google SpeechRec} via its web API on the Chrome web browser.
 We could however find no information about how the results of those components were interfaced.
 
 \subsection{ToBi}
-The team of Bielefeld (ToBi) of Bielefeld University can be discussed in greater detail, as I am a former member of this team.
-For \gls{ssl} they used a proprietary solution which came with their Pepper robot %todo cite pepper and softbanks
+The team of Bielefeld (ToBi) of Bielefeld University \cite{tobitdp} can be discussed in greater detail, as I am a former member of this team.
+For \gls{ssl} they used a proprietary solution which came with their Pepper robot\footnote{\url{http://archive.is/2VKYS}}
 while they used a \gls{ps} based component for \gls{asr}, the \gls{psa}. 
 
 \gls{asr} and \gls{ssl} results are merged on the behavior layer, but only when \gls{ssl} information are explicitly needed.

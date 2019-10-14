@@ -3,40 +3,24 @@
 \section{Fusion}
 \label{related:fusion}
 Moderns robots generally have a plethora of different sensors to perceive their environment, such as cameras, laser sensors and microphones.
-Oftentimes different sensors will provide information about identical THINGS (todo: find better word), a picture provided by a camera may for example include a person, which could also be detected by a laser detection the legs of that person.
+Oftentimes different sensors will provide information about identical characteristics, a picture provided by a camera may for example include a person, which could also be detected by a laser detection the legs of that person.
 To create an optimal model of the robots world, these information must be fused.
-Fusion of information can be generally split into two categories: Early fusion and late fusion.
-In this section we will present both of these approaches.
+In this section we will present a number of approaches for this fusion.
+Most of these approaches describe multisensor systems.
+Though our interest lies in the field of speech recognition, which typically makes use of just one sensor -the microphone-, these can easily be applied by broadening the definition of sensor from physical ones to also include components as a sort of software based sensors.
 
-\subsection{Early Fusion}
-An approach can be classified as early fusion if it feeds
-Early fusion is only achievable with several sensors and specifically trained or prepared classifiers.
+\cite{TURK2014189} and \cite{PORIA201650} divide between feature and decision level fusion within multimodal systems.
+As such they only cover classification of a single characteristic with data of several sensors.
+Feature and decision level fusion differ in the level on which the fusion happens.
+Late fusion encompasses several unique classifiers, which are typically independent from each other. 
+These classifiers can take the raw data of one or several sensors and produce distinct classifications of a shared characteristic.
+Afterwards, a special late fusion algorithm will take all these -potentially different- classifications and produce a definitive classification.
+In contrast to that, early fusion makes use of only a single classifier, which is fed with raw data of several sensors and produce a classification directly from that.
+Early fusion is thus only achievable with several sensors and specifically trained or prepared classifiers.
 
-Early fusion can provide a significant boost to classification results, as it enables the combination of raw data of several sensors with one another.
-However, it can be difficult to implement correctly and 
-
-\subsection{Late Fusion}
-Late fusion encompasses several classifiers, which are typically independent from each other. 
-These classifiers can take the raw data of one or several sensors and produce distinct classifications of a specific .
-Afterwards, a special late fusion algorithm will take all these -potentially different- classifications and produce a definitive classification by fusion them.
-
-Late fusion is an approach which can be used to rather easily improve an existing system, as it can build upon the already existing solutions.
-However, in comparison to early fusion it lacks the ability to combine features of several sensors independently from one another.
-
-
-\subsection{Fusion by Time}
-
-
-- same sensor different recognizers 
-
-- different recognizers, same recognition type
-
-- same sensor, different recognition type, fusion by time
-
-
-%-----------------------------------
-
-- feature level fusion
-
-
-- decision level fusion
+\cite{287895} provide an algorithm to fuse the asynchronous results of multiple sensors which focus on th same characteristic.
+They thus try to extract the most likely states of the observed system.
+\cite{10.1117/12.138164} solves the issue of synchronizing results by batching all data within a specific time interval and then compressing them. 
+In contrast to that, \cite{4383603} uses a recursive algorithm in conjunction with a Kalman filter to fuse asynchronous multisensor data and thus better estimate the state of a given system.
+In \cite{1468761} asynchronous sensor data are fused without the need synchronization.
+This however necessitates all sensors to perceive the same characteristic.

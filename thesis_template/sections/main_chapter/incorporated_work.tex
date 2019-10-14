@@ -2,10 +2,10 @@
 
 \section{Developed Components}
 \label{main:components:start}
-In this section, we will discuss components that were developed for the proposed pipeline.
+In this section, components that were developed for the proposed pipeline will be discussed.
 These components cover different aspects of speech recognition.
 
-\marginnote{One good example would be a DeepSpeech component we developed\footnotemark. It makes use of a TensorFlow \cite{tensorflow} implementation of Baidus Deepspeech \cite{deepspeech}.}
+\marginnote{One good example would be a DeepSpeech component I developed\footnotemark. It makes use of a TensorFlow \cite{tensorflow} implementation of Baidus Deepspeech \cite{deepspeech}.}
 \footnotetext{\url{https://github.com/Slothologist/DeepSpeech4Ros}}
 Some initially planned and partially developed components were left out of this list, because it became clear they could not be included into this thesis in a meaningful way.
 Thus development for these components was stopped or they were left out in favor of diverting time to more important parts of this thesis.
@@ -42,16 +42,16 @@ As such its predominant use case is to enable evaluations of other components wi
 \label{main:components:ssl}
 We developed a component\footnote{\url{https://github.com/Slothologist/esiaf_doa}} which performs \gls{ssl}.
 It uses the python library \texttt{pyroomacoustics} \cite{pyroomacoustics}, and specifically its SRP algorithm, though usage of all other \gls{ssl} algorithms provided by \texttt{pyroomacoustics} can be configured.
-For each sound chunk the component receives via our pipeline, it creates \gls{ssl} results and then sends them to the Orchestrator.
+For each sound chunk the component receives via the proposed framework, it creates \gls{ssl} results and then sends them to the Orchestrator.
 
 A slight variation of this node\footnote{\url{https://github.com/Slothologist/ma_baseline_doa}}  will be used in one of the experiments of the evaluation chapter (see \ref{eval:task_start}).
 This variant will, instead of publishing results for each sound chunk it receives, store these results in a queue.
 To communicate the results it provides a \gls{ros} service which allows any component to ask for results which occurred in a specified time frame.
-Additionally, this variant will receive audio not from our pipeline, but instead capture it from a microphone via \gls{alsa}.
+Additionally, this variant will receive audio not from the proposed framework, but instead capture it from a microphone via \gls{alsa}.
 
 \subsubsection{Voice Activity Detection}
 \label{main:components:vad}
-The \gls{vad} we developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of a pre-existing algorithm present in the \gls{psa} (see chapter \ref{related_work:psa}).
+The \gls{vad} I developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of a pre-existing algorithm present in the \gls{psa} (see chapter \ref{related_work:psa}).
 Its segmentation is therefore virtually identical to the \gls{psa}'s.
 
 If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a \texttt{segmentation\_ended annotation}, as described in chapter TODO, before sending it.
@@ -59,38 +59,38 @@ Audio will not be transmitted to the next node(s) if it were not found to includ
 
 \subsubsection{Automatic Speech Recognition}
 \label{main:components:ps}
-The \gls{asr} component we developed\footnote{\url{https://github.com/Slothologist/esiaf_pocketsphinx}} is a very simple wrapper around the python wrapper of \gls{ps}.
+The \gls{asr} component I developed\footnote{\url{https://github.com/Slothologist/esiaf_pocketsphinx}} is a very simple wrapper around the python wrapper of \gls{ps}.
 It will feed all audio it receives into \gls{ps}, which will then dynamically produce results.
 These results are however only used if a \gls{vad} signals the end of a segment.
-As such, our \gls{ps} component requires a \gls{vad} to work.
+As such, this \gls{ps} component requires a \gls{vad} to work.
 Whenever a result is produced, it is sent to the Orchestrator via published \gls{ros} message (see chapter TODO).
 
 \subsubsection{Emotion Recognition}
 \label{main:components:emotion}
-The emotion recognition component we developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} (TODO cite).
+The emotion recognition component I developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} (TODO cite).
 \texttt{Speech Emotion Recognition} uses a neural net to extract the emotional state of a person based on their speech.
 As such, it is capable to categorize speech into three emotions: angry, happy, sad.
 Additionally, speech can be categorized as neutral.
-Small changes were required for it to meet all our pipeline's expectations, so we improved it to include a probability for each result. %TODO
-Each sound chunk our component acquires will be fed into \texttt{Speech Emotion Recognition} which will return an emotion and probability for each of these sound chunks.
+Small changes were required for it to meet all the proposed framework's expectations, so I improved it to include a probability for each result. %TODO
+Each sound chunk this component acquires will be fed into \texttt{Speech Emotion Recognition} which will return an emotion and probability for each of these sound chunks.
 These results are then sent to the Orchestrator for further synchronization.
 
 \subsubsection{Gender Recognition}
 \label{main:components:gender}
-The gender recognition component\footnote{\url{https://github.com/Slothologist/esiaf_gender_rec}} we created is actually a somewhat new development.
+The gender recognition component\footnote{\url{https://github.com/Slothologist/esiaf_gender_rec}} I created is actually a somewhat new development.
 It is based upon \texttt{Speech Emotion Recognition}, as it uses a nearly identical neural net and dataset.
-However, we adjusted the output dimension of the neural net and reorganized its training data to classify either to male or to female, instead of the four emotions.
-It also includes our changes, so its results include a probability.
+However, I adjusted the output dimension of the neural net and reorganized its training data to classify either to male or to female, instead of the four emotions.
+It also includes my changes, so its results include a probability.
 We retrained the net and achieved a training accuracy of 99.63\% while maintaining a test accuracy on unseen data of 91.20\%.
-Similar to our emotion recognition component, it will produce a gender result for each sound chunk it receives along with a probability for it and send them to the Orchestrator.
+Similar to the described emotion recognition component, it will produce a gender result for each sound chunk it receives along with a probability for it and send them to the Orchestrator.
 
 It should be noted that the data set was quite small with only 339 audio samples, 188 of which by 5 female speakers , 151 from 5 male.
 We suspect this being the cause for it to not achieve the level of accuracy on real world data that it achieved on the test data.
 This observation is however anecdotally and was not evaluated formally.
 We were however satisfied with this solution, as it produces somewhat reasonable results.
 
-This is especially true given the fact that it is not a part of our work to develop new approaches to recognition of gender, emotion or speech.
-We chose this course of action with this specific component however, because an almost feasible component in the form of our emotion recognizer was already in place and retraining of its neural net seemed to be a quick and easy way to produce a new component.
+This is especially true given the fact that it is not a part of this thesis to develop new approaches to recognition of gender, emotion or speech.
+We chose this course of action with this specific component however, because an almost feasible component in the form of the described emotion recognizer was already in place and retraining of its neural net seemed to be a quick and easy way to produce a new component.
 The alternative would have been to restructure and adjust a different approach, which may not have worked at all.
 
 

@@ -2,13 +2,13 @@
 %=============================================================================
 \chapter{Resulting System}
 \label{main:main}
-In this chapter we will describe our solution to the problems presented in chapter \ref{motiv:start}.
+In this chapter I will describe my solution to the problems presented in chapter \ref{motiv:start}.
 We will first give a broad overview how and where certain tasks are handled, before going more into detail in sections dedicated to the two major parts of this solution, namely the Orchestrator and library.
 %After we discussed the problems tackled by the Orchestrator and the library in more detail and thus gained deeper insight into the workings of both, we will again revert to a higher level and describe their interaction with each other.
-Lastly we will present a number of components developed for our solution as a proof of concept and to introduce them, as most of them are later used in the evaluation of this thesis (see chapter \ref{eval}).
+Lastly I will present a number of components developed for my solution as a proof of concept and to introduce them, as most of them are later used in the evaluation of this thesis (see chapter \ref{eval}).
 
 The main goal of this theses is to provide synchronized results of audio analysis components, such as \gls{asr} and \gls{ssl} results.
-To effectively provide these fused results, we first need these results in a standardized separated form.
+To effectively provide these fused results, these results are first needed in a standardized separated form.
 Additionally, to be able to synchronize these separated results based on time, they need to be annotated with a timestamp.
 This timestamp however needs to fulfill a number of requirements:
 As the first and most central requirement, the timestamp must not correspond to the time a given result was made available, but rather to the time when the audio of said result was recorded.
@@ -23,27 +23,26 @@ Consider a setup of a \gls{ssl} component, a beamformer and an \gls{asr} compone
 In this setup, the \gls{ssl} component would have to acquire audio data and annotate it with timestamps as discussed above and then provide its results.
 An independent beamformer would in turn also have to acquire audio and annotate it, and then match the \gls{ssl} results provided by the respective component to its audio data to then calculate the beamformed audio signal, which would also needed to be annotated with timestamps.
 Lastly, the \gls{asr} component would have to collect these timestamped audio signals, produce \gls{asr} results and then timestamp them.
-
 An additional dependency implicitly declared in this example is that the \gls{asr} component must be able to read the audio annotated with timestamps the beamformer outputs.
-Most commonly used libraries for audio transmission, as we have shown in chapter \ref{related:frameworks}, do not support adding of meta-information such as timestamps, so either these components would need to be merged or must prepare a interface for communication.
+%Most commonly used libraries for audio transmission, as we have shown in chapter \ref{related:frameworks}, do not support adding of meta-information such as timestamps, so either these components would need to be merged or must prepare a interface for communication.
 
 Most of these requirements could in theory be handled by the components themselves.
-However, we decided to outsource most of the work done by the components into a library, to allow them to focus on their respective goal.
+However, I decided to outsource most of the work done by the components into a library, to allow them to focus on their respective goals.
 This provides a number of advantages:
 
-First, by outsourcing this work we must inherently define standards, which, as they can easily be heeded by the components, provide benefits for the individual components and for the final synchronization of the results.
-More so, by defining these standards and providing a library to heed them, we encourage the fragmentation of speech recognition components. 
+First, by outsourcing this work standards must inherently be defined, which, as they can easily be heeded by the components, provide benefits for the individual components and for the final synchronization of the results.
+More so, by defining these standards and providing a library to heed them, the fragmentation of speech recognition components is encouraged. 
 Take for example the \gls{psa} described in chapter \ref{related_work:psa}.
 It contains not only an \gls{asr}, but also an \gls{vad} component.
-This makes sense from a developmental perspective, but impedes further development and replacing of single 
-Even when done correctly and iteratively, after a few exchanges new technologies may 
-By encouraging this to not occur, a typical speech recognition pipeline of the resulting framework becomes highly modular and enables fast prototyping.
-It also makes benchmarking individual components of such a pipeline quite easy, as we will later show with a number of experiments for evaluation (see chapter \ref{eval:dataset}).
+This makes sense from a developmental perspective, but impedes further development and replacing of its parts.
+Even when done correctly and iteratively, after a few exchanges new technologies may need different interfaces.
+By encouraging this melding of components to not occur, a typical speech recognition pipeline of the resulting framework becomes highly modular and enables fast prototyping.
+It also makes benchmarking individual components of such a pipeline quite easy, as I will later show with a number of experiments for evaluation (see chapter \ref{eval:dataset}).
 
 Furthermore, by providing a way to easily send properly timestamped audio between components, a elaborate amount of work is lifted off the individual components, which in turn ensures the correct transmission of audio timestamps.
 Additional, more technical benefits include the prevention of code duplication and the reduction of bugs, which provide more time for actual research.
 
-By embedding each component into the framework provided by the library, we also provide our solution for finally synchronizing the results with standardized interfaces.
+By embedding each component into the framework provided by the library, the proposed solution for finally synchronizing the results is also provided with standardized interfaces.
 We called this solution the Orchestrator, as it not only synchronizes the results, but also keeps track of all components within the proposed pipeline.
 
 Both library and Orchestrator work in tandem and need to communicate with each other on several occasions.
@@ -55,7 +54,5 @@ We will now continue to discuss the Orchestrator and the proposed pipelines libr
 \input{sections/main_chapter/library}
 \newpage
 \input{sections/main_chapter/orchestrator}
-%\newpage
-%\input{sections/main_chapter/combination.tex}
 \newpage
 \input{sections/main_chapter/incorporated_work}

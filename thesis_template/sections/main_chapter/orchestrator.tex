@@ -5,7 +5,7 @@
 
 \section{Orchestrator}
 \label{main:orc}
-In this section we will discuss the Orchestrator as part of the proposed framework.
+In this section the Orchestrator as part of the proposed framework will discussed.
 The Orchestrator has to fulfill two major tasks, synchronizing results and determining the formats used to transmit audio, as discussed in the previous chapter \ref{main:lib:format_chooosing}.
 
 First we will discuss the determination of audio in- \& output formats used internally by the library.
@@ -70,16 +70,16 @@ Such nodes will furthermore not be considered for fusion of results anymore.
 \subsubsection{Result Fusion}
 
 When synchronizing results, a few key circumstances need to be kept in mind.
-The first and probably most important one is that because of our library and the relentless efforts to annotate our audio and in turn results with timestamps, the synchronization of the results itself is rather trivial.
+The first and probably most important one is that because of the library and the relentless efforts to annotate the audio and in turn results with timestamps, the synchronization of the results itself is rather trivial.
 There are however still a few possible pitfalls.
 Most importantly, the Orchestrator can not know with certainty when results are arriving, or -more precisely- when all of the results to be synchronized will have arrived.
-This is rather unfortunate, as it is of utmost importance to relay all information as soon as possible, to keep further programs reliant on our synchronized results, such as natural language processors or robot behavior controllers, not waiting and thus keep latency down to a minimum.
+This is rather unfortunate, as it is of utmost importance to relay all information as soon as possible, to keep further programs reliant on the synchronized results, such as natural language processors or robot behavior controllers, not waiting and thus keep latency down to a minimum.
 There is another important question we have evaded up until now.
-When we synchronize our results,with respect to what do we synchronize?
+When we synchronize the results, with respect to what do we synchronize?
 After all, results of different types may overlap within the time frame of their respective occurrence.
 An example of this phenomenon can be observed in figure \ref{pic:main:orc:result_overlap}.
 The first result of an \gls{asr} node, A1, may be fused with the first result of an \gls{ssl} node, S1.
-This however occurred partially with A2, which may be also fused for our result.
+This however occurred partially with A2, which may be also fused for the result.
 This could iteratively go on until all shown results may be fused together.
 This is naturally not desirable, as the latency of the first results would needlessly increase and no meaningful information could be gained by this synchronization.
 
@@ -104,7 +104,7 @@ Any result occurring at least partially in this timeframe would be included in t
 Initially we planned to only use speech utterances as anchor.
 However, as time moved on, we realized that this may not be the only interesting type for synchronization.
 Programs for tracking persons for example could be very interested in obtaining data on which particular person was speaking at a given moment, synchronized with their position provided by \gls{ssl} information.
-And so our algorithms would quickly be adapted to not only use every result type as anchor type, but to do so concurrently.
+And so the algorithms of the Orchestrator would quickly be adapted to not only use every result type as anchor type, but to do so concurrently.
 This puts us in the favorable position to provide any result type of particular interest without giving up synchronization with other results.
 
 In chapter \ref{main:lib}, we discussed the fact that each component will register itself giving a designation.
@@ -167,7 +167,7 @@ Synchronizing their then not produced results would be impossible.
 A component may also struggle to calculate one specific result, due to it being either very computationally expensive or due to having a temporary shortage of computational power, because e.g. other programs consuming much computational power.
 
 To counter this problem a timeout is needed that will tell the Orchestrator to abandon any results not yet received.
-This is somewhat contrary to our previously discussed goal of ensuring the synchronization of all results, but is crucial to ensure all results to be actually relayed to further programs and arrive there with a minimal latency.
+This is somewhat contrary to the previously discussed goal of ensuring the synchronization of all results, but is crucial to ensure all results to be actually relayed to further programs and arrive there with a minimal latency.
 Finding a feasible value for this timeout is not trivial, as circumstances can have a major impact on it.
 Consider for example a setup running over a slow, but very stable network connection, or a number of components running on very weak hardware.
 In both cases the timeout should be bigger than normal.
@@ -190,8 +190,8 @@ These timeouts are generated for each anchor result anew.
 Due to this, the Orchestrator can react to possible changes in the execution times of components and adjust the timestamps on the fly.
 The first anchor result the Orchestrator receives however will not be able to generate timeouts this way, we need an alternative for it.
 We found a hard coded high timeout and the thusly potentially higher latency resulting on this first result to be acceptable.
-However, at this point another feature of our database approach from before comes in.
-As our results are stored permanently, we are able to simply load an already existing database.
+However, at this point another feature of the database approach from before comes in.
+As results are stored permanently, we are able to simply load an already existing database.
 If the configuration of the used pipelines have not changed to much with respect to components and network/ compute environment, the Orchestrator can make use of the previous runs and thus eliminate the drawback of the first anchor result.
 
 %-------------------------

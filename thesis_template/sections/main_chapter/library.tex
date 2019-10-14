@@ -5,8 +5,8 @@
 
 \section{Library}
 \label{main:lib}
-In this part of our work we will describe the library of our proposed pipeline, along with its tasks.
-As discussed earlier, the library of our proposed pipeline solves a number of problems, which are either directly needed for synchronization of results or make it considerably easier.
+In this part of this thesis the library of the proposed framework will described, along with its tasks.
+As discussed earlier, the library of the proposed framework solves a number of problems, which are either directly needed for synchronization of results or make it considerably easier.
 First we will lay down the reasoning for some major design decision.
 After this we will go into more detail with more technical explanations.
 
@@ -26,8 +26,8 @@ Typically, the structure of any audio data can be described by four factors:
 Working on audio data which is present in a different format then expected will in most cases lead to unusable results, maybe even to critical segmentation faults. 
 
 Under normal circumstances, a component will request audio in the format it requires directly, e.g. via \gls{alsa}.
-However, as our library now handles all audio transmission, this is no longer feasible.
-With respect to one of our secondary goals, to provide a modular framework, we can also not assume every components algorithm to work with a specific audio format.
+However, as the library now handles all audio transmission, this is no longer feasible.
+With respect to one of the secondary goals of this thesis, to provide a modular framework, we can also not assume every components algorithm to work with a specific audio format.
 This leaves us to either require each component to use a single, pre-determined audio format or resampling and converting audio signals for each component.
 By handling resampling and converting of audio signals within the library, components of the resulting framework can theoretically employ any kind of algorithm they desire, without having to handle resampling and converting audio themselves.
 Furthermore, by abstracting resampling and converting from the components themselves, the library can be equipped to change audio formats adaptively when new components are introduced or old components vanish from a specific configuration, in a standardized way.
@@ -44,7 +44,7 @@ As discussed previously in chapter todo, resampling and converting of audio sign
 It is however equally important where these formats are chosen, as it could be done in two ways:
 Either in a distributed manner, where all existing components must communicate with each other and come to a single conclusion.
 Alternatively they could be determined in a centralized manner, where a single master program will collect information about each component and then based on this information will make a decision.
-This was our chosen course of action, which was motivated as follows:
+This was the chosen course of action, which was motivated as follows:
 The main advantage of a distributed approach is that it does not rely on an additional program, as does the centralized approach.
 It does so however at a cost. 
 Due to the nature of the distributed approach each component taking part must have the same information as each other, that is to say each component must have information about at least each other component.
@@ -54,8 +54,8 @@ While the communication between \texttt{c\_1} and \texttt{c\_2} is straight forw
 Additionally, the way in which each format is determined must be deterministic, as each component must come to the same conclusion.
 All this results in a not insignificant overhead in both computational load and inter-component communication.
 
-However, as we already always employ an additional program to synchronize our results, namely the Orchestrator, the benefit of the distributed approach becomes negligible.
-We thus chose to implement the centralized approach with the Orchestrator as our master component, which determines each components internally used audio format.
+However, as we already always employ an additional program to synchronize the results, namely the Orchestrator, the benefit of the distributed approach becomes negligible.
+We thus chose to implement the centralized approach with the Orchestrator as the master component, which determines each components internally used audio format.
 We will go into detail how the Orchestrator chooses these formats in the following section \ref{main:orc}.
 
 \begin{figure}[]
@@ -69,9 +69,9 @@ We will go into detail how the Orchestrator chooses these formats in the followi
 
 % python bindings
 Our library was developed in C++, do to it having access to a number of very widely used and tested libraries for audio processing, such as \gls{sox} as well as its speed.
-However, a number of interesting software was developed for Python, see for example libraries on which we based most of our components, discussed below in chapter \ref{main:components:start}.
+However, a number of interesting software was developed for Python, see for example libraries on which I based most of the developed components, discussed below in chapter \ref{main:components:start}.
 This is what drove us to develop Python bindings for the library, using Boost Python (todo cite).
-It proved fruitful, as most our then developed components actually make use of these bindings rather then the original C++ library.
+It proved fruitful, as most the then developed components actually make use of these bindings rather then the original C++ library.
 Developing the library in Python in the first place was considered, but ultimately not chosen because of C++'s superior support with regards to sound libraries, such as \gls{sox} and \gls{soxr}.
 
 Another important task of the library is to provide standardized \gls{ros} messages of common results generated from raw audio.
@@ -156,16 +156,16 @@ In any case, these must be published by the components to similarly standardized
 We will now illustrate the tasks handled by the library by means of typical actions taken by an example component in its life-cycle.
 Our example will be that of a typical \gls{vad} component.
 As we use \gls{ros} as an underlying middleware, components within the proposed framework must also use \gls{ros} for a number of tasks.
-Thus it is necessary for our component to first initialize \gls{ros}.
+Thus it is necessary for the component to first initialize \gls{ros}.
 Following this, the proposed library will need to be initialized, which is done by first creating a handle.
 This handle keeps track of all relevant information the proposed library needs.
 
 Our example component may then declare its intention to output or request audio.
-In our example, the \gls{vad} component will first declare its intend to output audio and then to require audio.
+In the example, the \gls{vad} component will first declare its intend to output audio and then to require audio.
 However, the library does not put a limit as to how many in- \& outputs a component can request, so an identifier is needed.
 The same identifier will later internally used to generate the \gls{ros} topics with which the actual audio will be transmitted.
 So it also serves to map the audio between components.%todo formulierung
-If our \gls{vad} component would use the input topic \texttt{''vad\_input''}, then a microphone component would be needed to output on the same topic, so that the audio could be correctly transmitted.
+If the \gls{vad} component would use the input topic \texttt{''vad\_input''}, then a microphone component would be needed to output on the same topic, so that the audio could be correctly transmitted.
 Also needed to request an audio in- or output is the format in which the audio should arrive or will be given to the library respectively.
 
 When declaring the output of audio, there are no further requirements.
@@ -213,7 +213,7 @@ To enhance an \textit{Augmented Audio Message} with these meta information, a gi
 To receive these information, the component must provide the library with a callback function for each.
 The receiving component will have all of its callback functions be called in the opposite order.
 This process can also be seen in figure \ref{pic:main:lib:ssl_vad_time}.
-To come back to our example component:
+To come back to the example component:
 Our \gls{vad} component would, upon receiving audio, first generate their \gls{vad} information, which it would then publish to the Orchestrator and simultaneously give this information to the library as meta information.
 After this it would send the audio signal it received via the library, which would in turn enhance this audio with said \gls{vad} information.
 The \textit{Augmented Audio Message} would then arrive in the library of e.g. an \gls{asr} component.

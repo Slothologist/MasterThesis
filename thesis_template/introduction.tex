@@ -2,29 +2,29 @@
 %=============================================================================
 
 
-\chapter{Basics}
+\chapter{Concepts and Technologies}
 \label{basics:start}
-In this chapter, I will provide an overview and describe a number of concepts and technologies used within this work.
+In this chapter, I will provide an overview of and describe concepts and technologies used within this work.
 
 % todo: why each section?
 
 
 \section{Latency}
 \label{basics:latency}
-Irregardless of the method used, when transmitting any kind of information, this transmission will not be instantaneous, but instead happen with a delay.
-This delay is universal concept and can be found in macro levels, e.g. light from distant galaxies reaching us after thousands of years, over a more intermediate level, e.g. sending a letter to a micro level, e.g. the sound of a spoken phrase to reach the ear of the recipient.
+Regardless of the method used, when transmitting any kind of information, this transmission will not be instantaneous, but instead happen with a delay.
+This delay is universal effect and can be found in macro levels, e.g. light from distant galaxies reaching us after thousands of years, over a more intermediate level, e.g. sending a letter to a micro level, e.g. the sound of a spoken phrase to reach the ear of the recipient.
 This delay is also known as \textit{latency}.
 
 However, while the laws of physics cannot be altered, one might be able to reduce latency when in control of the environment.
 To follow the previous example of sending a letter, one may opt for sending a intercontinental letter via plane instead of ship.
 
-In this particular work, I will almost exclusively discuss latency of audio signals.
+In this work, latency will be discussed in the context of transmitting audio signals.
 As audio signals are not singular events, akin to e.g. a photon, but rather a continuous stream and most of the computations presented in this work are done by computers which can work way faster then audio signals typically occur, their latency behaves special in a number of ways. % todo formulierung
 One such special behavior for example can be observed when recording audio from a microphone.
 This is typically done in a iterative manner:
 The software will require a predetermined number of audio frames, singular data points of an audio stream.
 After it acquires it, it can process it and will then typically wait for the next batch of audio data to be available.
-Through this procedure, the amount of frames requested can have a significant impact on the overall latency measured.%experienced?
+Through this procedure, the amount of frames requested can have a impact on the overall latency measured.
 Consider requesting audio with a length equivalent to one second.
 Even when the software introduces virtually no latency, the audio frames at the beginning of the acquired audio chunk had to be recorded a second prior.
 
@@ -35,15 +35,15 @@ This shows that finding an effective audio chunk size is important and not neces
 
 \section{Automatic Speech Recognition}
 \gls{asr} is the general term for speech recognition typically performed by software.
-In general terms, an \gls{asr} program turns an audio signal into a written representation of the utterance en
+In general terms, an \gls{asr} program turns an audio signal into a written representation of the utterance encoded within this audio signal.
 A great variety of approaches are represented by \gls{asr}.
-Typical approaches may calculate signal frequencies of the audio sample and then map them to the closest match of frequencies known to be produced by speech patterns via hidden Markov models.
+Typical approaches calculate signal frequencies of the audio sample and then map them to the closest match of frequencies known to be produced by speech patterns via hidden Markov models.
 Other approaches make use of neural nets and deep learning.
 
 \section{Sound Source Localization}
 \label{basics:ssl}
 \gls{ssl} is a technique used to determine the origin of a sound relative to an array of microphones.
-A great variety of algorithms has been developed in this field, however they build upon a general principle, which I will outline here.
+A great variety of algorithms has been developed in this field such as MUSIC \cite{music} or FRIDA \cite{7952744}; however they build upon a general principle, which I will outline here.
 
 Consider a setup of a number of microphones and a sound source, seen for example in figure \ref{pic:basics:ssl}.
 The positions of the microphones must be known at all time and ideally be static.
@@ -75,10 +75,11 @@ Most approaches do not handle the special case of finding the exact position of 
 % todo: how to approaches to beamforming differ? maximum likelihood vs music
 
 \section{Beamforming}
-Beamforming could colloquially be described as the inverse of \gls{ssl}.
+Beamforming could colloquially be described as a sort of inverse of \gls{ssl}.
 Its goal is to, in a way, "listen" to a particular direction and provide an audio signal given the recording of a number of microphones and a direction.
 This new, artificial audio signal will greatly enhance audio events occurring in this particular direction.
 Similarly to \gls{ssl}, a number of algorithms have been developed around a single principle, which will now be outlined.
+\cite{1239145} provides an in-depth overview with regards to established beamforming techniques.
 
 \begin{figure}[]
 	\centering
@@ -97,7 +98,7 @@ Beamforming can be used either together with \gls{ssl}, to improve sound quality
 
 \section{Robot Operating System}
 \label{intro:ros}
-\gls{ros} was developed explicitly for communication of programs in the context of robotics and offers a wide variety of standardized data types for transmission.
+\gls{ros} \cite{288} was developed explicitly for communication of programs in the context of robotics and offers a wide variety of standardized data types for transmission.
 These include, but are not limited to, equivalents of widely used data types such as integer, float, char and string.
 However, one is not limited to these data types, but can construct new types by combining already established ones.
 

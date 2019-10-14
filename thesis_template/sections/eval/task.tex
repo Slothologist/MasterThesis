@@ -25,7 +25,7 @@ Both will mainly be comprised of a sound source localization, a speech recognize
 \end{figure}
 
 The proposed pipeline (see figure \ref{pic:eval_task_setup_new}) will consist mainly of the basic speech recognition setup established as the baseline for the data set evaluation (see chapter \ref{eval:dataset:pipeline:baseline}), i.e. an audio grabber to record audio from a microphone as well as the previously (see chapter \ref{eval:dataset:setup}) established \gls{vad}, \gls{ps} speech recognizer and Orchestrator.
-As sound source localization the component using \texttt{pyroomacoustics} we described earlier in chapter \ref{main:components:ssl}, will be employed.
+As sound source localization the component using \texttt{pyroomacoustics} described earlier in chapter \ref{main:components:ssl}, will be employed.
 Due to the robot providing four channel audio from its four microphones, which are all needed by the \gls{ssl}, but the speech recognition part of the pipeline requiring only one channel audio, an additional component is needed in the form of a channel splitter.
 Since one of the features of the proposed pipeline is synchronization of results, recorded speech recognition results will naturally be enriched with corresponding \gls{ssl} results.
 
@@ -134,9 +134,9 @@ A robot should however still be able to locate a person giving it commands when 
 
 The proposed pipeline provided slightly more correct \gls{ssl} results, which is to say it produced five opposed to the four of the existing solution where 30 were possible.
 Both factor in when comparing the actual scores of the RoboCup task, where the proposed pipeline outperforms the existing solution.
-However, we consider this score to not be very meaningful, as most of it is caused by the proposed pipeline's speech recognizer performing better.
+However, I consider this score to not be very meaningful, as most of it is caused by the proposed pipeline's speech recognizer performing better.
 
-Additionally, we generated information about the average error of the \gls{ssl} results, as we consider these in this particular case to be more significant to the evaluation due to the score results being very close to one another.
+Additionally, information about the average error of the \gls{ssl} results were generated, as I consider these in this particular case to be more significant to the evaluation due to the score results being very close to one another.
 When comparing them, the proposed pipeline outperforms the existing solution in all runs but one, oftentimes by a significant margin.
 In run seven and two it (nearly) halves the error.
 Overall, the proposed pipeline reduces the error in angle by around 30$^\circ$ in comparison to the existing solution.

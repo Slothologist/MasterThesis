@@ -9,9 +9,9 @@ In this section, an evaluation of the proposed pipeline and an pre-existing solu
 The goal of this evaluation is to take a closer look at the performance of the proposed pipeline with the explicit focus on computational cost as well as time needed for recognizing speech.
 Recognition percentage will be used as control variable, to ensure equivalence between pipelines.
 
-Based on the additional features the proposed pipeline introduces, most prominently synchronization of speech results and the modular nature of the pipeline (see chapters TODO), we expect the proposed pipeline to consume more CPU power as well as taking longer to compute results in comparison to the pre-existing solution.
-To further examine the cost, we will in particular inspect the cost different additional components will add to the pipeline to determine the scaling of the proposed pipeline.
-Due to the pre-existing solution being based on \gls{ps} and the increase in available CPU power since its first release (which in 2012), we would consider a steep increase in CPU power to about five to ten times as a success.
+Based on the additional features the proposed pipeline introduces, most prominently synchronization of speech results and the modular nature of the pipeline (see chapters TODO), the proposed pipeline is expected to consume more CPU power as well as taking longer to compute results in comparison to the pre-existing solution.
+To further examine the cost, in particular the cost different additional components will add to the pipeline will be inspected to determine the scaling of the proposed pipeline.
+Due to the pre-existing solution being based on \gls{ps} and the increase in available CPU power since its first release (which in 2012), I consider a steep increase in CPU power to about five to ten times as a success.
 
 
 We will lastly discuss if this additional cost renders the pipeline unsuitable for real world applications or if the benefits outweigh these costs.
@@ -110,7 +110,7 @@ They were recorded in two rooms, some of them with noise, others without.
 To more easily feed all samples into the pre-existing solution, the wav files containing the samples were concatenated into one big wav file, with three seconds of silence added in between the individual samples, to easily distinguish the samples from one another.
 This also simplifies matching the recorded speech recognition results with the actual utterances.
 The proposed pipeline was fed each sample individually, but three seconds of silence were similarly inserted into the audio.
-This difference was necessary, as the pre-existing solution had to be fed with a single wav file for reasons we will later discuss in detail.
+This difference was necessary, as the pre-existing solution had to be fed with a single wav file for reasons later discussed in detail.
 Feeding each sample individually into our pipeline enabled us to keep track of which file was played at any given moment by publishing information about each wav file after it played, which in turn increased each results assignability to said wav file.
 
 The complete data sets playtime including the silence amounted to nearly two hours and fifty minutes.
@@ -154,7 +154,7 @@ In both cases two small scripts were used to record the components CPU usage as 
 CPU usage was universally recorded using the python library \texttt{psutil} \cite{psutil} and its \texttt{cpu\_times} functionality.
 However, \texttt{psutil} reliability can be called into question, as it seems to not take modern CPU's capability to increase or decrease their clock speed, depending on load, into account.
 As such, the recorded CPU costs should be taken as rough estimates and not as exact measurements.
-Nonetheless, we included these data points despite their supposed inaccuracy because apart from one tested pipeline, all other pipelines did not produce enough load on the CPU to cause it to increase its clock speed.
+Nonetheless, these data points are included despite their supposed inaccuracy because apart from one tested pipeline, all other pipelines did not produce enough load on the CPU to cause it to increase its clock speed.
 This is supported by the fact that identical components across various pipelines produce very similar CPU loads, as seen in figure 
 \ref{table:eval_dataset_detail}.
 Incidentally, a process producing the computational load of one CPU second over any timespan is equal to the process running on one core of a CPU under full load for one second.
@@ -166,22 +166,22 @@ Speech recognition results were recorded by a ROS node which collected ROS messa
 The times needed to calculate results were recorded in two different ways.
 Due to the fact that the proposed pipeline annotates its results with the time the audio was recorded, it is rather simple to calculate the time needed for recognition.
 One can simply subtract the time when the analyzed audio signal ended from the time the synchronized result was received by the recording component and thus, get the total time needed for recognition.
-To be precise, this way we measure the time from when the segmentation ends to the point where the recording node received the recognized speech result.
+To be precise, this way the time from when the segmentation ends to the point where the recording node received the recognized speech result is measured.
 
 The method of feeding audio into the proposed pipeline does not matter as long as the timestamps of the audio are correct.
-So instead of grabbing the audio via a microphone we used a wav-file player to feed the data set directly into the pipeline.
+So instead of grabbing the audio via a microphone a wav-file player was used to feed the data set directly into the pipeline.
 
 The existing solution however was in need of a small workaround to work on audio files rather than audio directly grabbed by a real microphone.
 A virtual microphone was needed to feed the data set into the \gls{psa}.
 This virtual microphone provided access to a wav file containing the data set. 
-As information about singular utterances inside the data set could not be propagated through ALSA and the \gls{psa}, we recorded a timestamp with the start of feeding the wav file into the virtual microphone and thus in turn into the \gls{psa}.
+As information about singular utterances inside the data set could not be propagated through ALSA and the \gls{psa}, a timestamp is recorded with the start of feeding the wav file into the virtual microphone and thus in turn into the \gls{psa}.
 Speech recognition results were then recorded along timestamps acquired when these results were received in the dedicated ROS node.
-Supplementary, while concatenating the data set into the singular wav file, we created annotations to keep track of when each sample ended and which phrase it contained.
+Supplementary, while concatenating the data set into the singular wav file, annotations were created to keep track of when each sample ended and which phrase it contained.
 To achieve comparable results, slight modifications to the internal segmenter of the \gls{psa} were made, i.e. timestamps on each successful segmentation would be recorded.
 
 By combining the information provided by these annotations, the timestamp created during the start of feeding the wav file, the timestamps recorded when recording the speech recognition results and after each successful segmentation, the absolute time needed by this solution could be computed. 
 This is mostly done by subtracting the timestamps, collected after successful segmentation, from the corresponding timestamps, recorded when the results were received.
-Thus, we record the time from the segmentations end to receiving the results, as previously with the proposed pipeline.
+Thus, the time from the segmentations end to receiving the results is recorded, as previously with the proposed pipeline.
 % anmerkung johannes: Noch gerade so n gedanke. Ne graphic oben wie die zeit berechnet wird wäre noch sehr nice. Sonst ist das ein bisschen wall of text. also vlt einfach so n flowchart mit beispiel timestamps und was damit gerechnet wird
 
 In any case, speech recognition results and timings were recorded as raw data and written to files.
@@ -274,7 +274,7 @@ As this is a expected feature of the proposed pipeline, the longer time for reco
 The baseline of the proposed pipeline consuming at least six times as much CPU power as the existing solution, as can be seen in figure \ref{table:eval_dataset_results} may seem like an tremendous increase.
 But in comparison to the playtime of nearly 2 hours and 50 minutes the CPU time cost of circa 20 minutes and 4 minutes for the proposed pipeline and the existing solution respectively are both more than acceptable, especially considering that most modern CPUs have more than one core and this load is shared between them.
 
-Additionally, we should keep in mind that \gls{ps} was designed years ago to work on mobile devices of that time, so it is one of the computational most inexpensive speech recognizers still used. 
+Additionally, one should keep in mind that \gls{ps} was designed years ago to work on mobile devices of that time, so it is one of the computational most inexpensive speech recognizers still used. 
 Despite this, it is the computationally most demanding component of all the proposed pipelines configurations apart from the realistic one.
 
 More modern speech recognizers can generally be divided into offline and cloud services.
@@ -301,7 +301,7 @@ This could explain the proposed pipelines' \gls{ps} component to perform better 
 But even when scaling the \gls{psa}'s recognition time to match the six times higher CPU cost of the proposed pipeline, the \gls{ps} component's part of the recognition time would only amount to around 320ms.
 
 In a worst case scenario, summing up these upper bounds on added recognition time would result in an average time of about 420ms.  
-Due to the actually measured time being more than twice that, we suspect some sort of bug to be responsible for this behavior, which sadly could not be eliminated because of time constraints and would be material for future work.
+Due to the actually measured time being more than twice that, I suspect some sort of bug to be responsible for this behavior, which sadly could not be eliminated because of time constraints and would be material for future work.
 
 Regardless, as the results of the widened and elongated configurations of the proposed pipeline indicate, this bug appears to only add a fixed amount of time needed for recognition and to not scale with the number of its components. 
 }

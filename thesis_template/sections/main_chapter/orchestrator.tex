@@ -24,10 +24,10 @@ This algorithm is formalized in figure \ref{main:orc:resampling:formula:min_traf
 It applies the aforementioned cost function $cost_{format}$ on each in- \& output format for a given topic and then chooses the minimum as the optimal.
 
 \begin{figure}
-	\begin{align}
+	\begin{align*}
 	cost_{format} &= channel\_count \cdot bitrate_{signal} \cdot frequency\\
 	format_{optimal} &= min({bitrate_{i}\ |\ i \in formats_{input} \cup formats_{output}})
-	\end{align}
+	\end{align*}
 	\caption{Formula to calculate the lowest bandwidth format out of a given set of in- \& output formats.
 		The $bitrate_{signal}$ is the amount of bits a single sample requires, while the $bitrate_{i}$ is the $cost_{format}$ of the format $i$.}
 	\label{main:orc:resampling:formula:min_traffic}
@@ -41,7 +41,7 @@ However, there may be several formats which fulfill this condition.
 If this is the case, it comes naturally to mind to choose the format which requires the least amount of bandwidth, so the algorithm formalized in figure \ref{main:orc:resampling:formula:min_traffic} is used to choose the optimal format of the formats which require the least amount of resampling.
 
 \begin{figure}
-	\begin{align}
+	\begin{align*}
 	\alpha(i,k) &=
 	\begin{cases}
 	1 & , i = k \\
@@ -49,7 +49,7 @@ If this is the case, it comes naturally to mind to choose the format which requi
 	\end{cases} \\[10pt]
 	resamplings_{format} &= \sum_{f=1}^{F} \alpha(format, f) ,\ f \in formats\\[10pt]
 	format_{optimal} &= argmin_{f}(resamplings_{f}) , \ f \in formats
-	\end{align}
+	\end{align*}
 	\caption{Formula to calculate the lowest bandwidth format out of a given set of in- \& output formats.
 		The $bitrate_{signal}$ is the amount of bits a single sample requires, while the $bitrate_{format}$ indicates, how many bits a second of this signal require.}
 	\label{main:orc:resampling:formula:min_cpu}
@@ -204,9 +204,9 @@ We consider this to be a worthwhile trade off, due to the most important anchor 
 We believe these message types to be that of the \gls{asr}-, emotion-, gender-, and voice-results.
 
 \begin{figure}
-	\begin{align}
+	\begin{align*}
 	l_{f} = V_A \cdot max(\{\frac{1}{n_i} \cdot \sum_{k=1}^{n_i} l_{i,k}\ | \ i \in components\})
-	\end{align}
+	\end{align*}
 	\caption{Maximum latency of a single fusion.
 		$V_A$ is a constant.
 		$n_i$ is the amount of results the orchestrator already received of a component $i$.

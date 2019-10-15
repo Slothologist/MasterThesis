@@ -94,7 +94,7 @@ This is naturally not desirable, as the latency of the first results would needl
 
 
 A few approaches to deal with this problem may come to mind.
-We could for example choose to synchronize with respect to each recorded audio message.
+It could for example be chosen to synchronize with respect to each recorded audio message.
 But due to the library not enforcing a singular, constant size for the audio transmitted via these messages (see chapter \ref{main:lib:augmented_audio_msg} and chapter \ref{basics:latency} for the reasoning), this could quickly explode in complexity; especially since a beamformer may create a new artificial audio signal which may either transport smaller audio signals with each message or slightly shift the timestamps of the messages, due to factoring in the time-of-arrival differences for the different microphones.
 This way, all -or worse, just some- of the results may have been computed on timestamps differing from the originally recorded ones.
 
@@ -108,7 +108,7 @@ Initially it was planned to only use speech utterances as anchor.
 However, as time moved on, I realized that this may not be the only interesting type for synchronization.
 Programs for tracking persons for example could be very interested in obtaining data on which particular person was speaking at a given moment, synchronized with their position provided by \gls{ssl} information.
 And so the algorithms of the Orchestrator would quickly be adapted to not only use every result type as anchor type, but to do so concurrently.
-This puts us in the favorable position to provide any result type of particular interest without giving up synchronization with other results.
+Thus any result type of particular interest can be provided without giving up synchronization with other results.
 
 In chapter \ref{main:lib}, the fact that each component will register itself giving a designation was discussed.
 A list of these designations can be seen in figure \ref{table:main:designations}.
@@ -136,7 +136,7 @@ The Orchestrator will not expect any results of these components, but still take
 The Orchestrator may receive results in any order.
 However, fused results should not be published, until all results of interest were received.
 When the Orchestrator receives a result of one of his anchor types, results of interest may already have been received, or still be to be received.
-We thus need a way to gather all these results.
+Thus a way to gather all these results is needed.
 To take care of all results the Orchestrator has already received, it was chosen to create a database, in which all incoming results are saved.
 This may seem a little over-engineered, but will later be of additional service.
 
@@ -186,16 +186,16 @@ A large timeout would however be needed for the component which takes a long tim
 The method I developed to find the optimal timeout takes into account all of these concerns.
 Making use of the database included to save results, not only received results are saved, but also their time to compute.
 This can very easily be calculated, as this is just the difference between the time the result is received by the Orchestrator and the end time of the audio timestamp.
-This gives us the absolute time needed from recording the audio to the point in time at which results are available to the Orchestrator.
+This gives the absolute time needed from recording the audio to the point in time at which results are available to the Orchestrator.
 Because this time is generated for each result, the average for each type of result can then be calculated.
 Thus a timeout for each type of result can be generated, which is equivalent to a timeout for each component.
 To avoid ignoring results which take shortly longer to arrive at the Orchestrator than the average, the average value is multiplied with a constant factor to gain the final timeout.
-We found a factor of 1.5 to work quite well in this regards.
+I found a factor of 1.5 to work quite well in this regards.
 
 These timeouts are generated for each anchor result anew.
 Due to this, the Orchestrator can react to possible changes in the execution times of components and adjust the timestamps on the fly.
 The first anchor result the Orchestrator receives however will not be able to generate timeouts this way, an alternative is needed for it.
-We found a hard coded high timeout and the thusly potentially higher latency resulting on this first result to be acceptable.
+I found a hard coded high timeout and the thusly potentially higher latency resulting on this first result to be acceptable.
 However, at this point another feature of the database approach from before comes in.
 As results are stored permanently, it is possible to simply load an already existing database.
 If the configuration of the used pipelines have not changed to much with respect to components and network/ compute environment, the Orchestrator can make use of the previous runs and thus eliminate the drawback of the first anchor result.
@@ -207,8 +207,8 @@ Lastly the latency introduced by synchronizing results is worth a look at.
 In a best case scenario, where the Orchestrator can make use of overlapping results (as shown in figure \ref{pic:main:orc:result_overlap}), the latency is simply the time of the slowest computing component, along with a small calculation time the Orchestrator introduces.
 The worst case scenario can be seen in figure \ref{main:orc:latency:formula}.
 This latency $l_f$ is mostly determined by the exact factors discussed previously: The maximum of the average time to compute of all components and the multiplicand $V_A$. 
-We consider this to be a worthwhile trade off, due to the most important anchor message types only being generated when an utterance or at least voice is present in the corresponding audio.
-We believe these message types to be that of the \gls{asr}-, emotion-, gender-, and voice-results.
+I consider this to be a worthwhile trade off, due to the most important anchor message types only being generated when an utterance or at least voice is present in the corresponding audio.
+I believe these message types to be that of the \gls{asr}-, emotion-, gender-, and voice-results.
 
 \begin{figure}
 	\begin{align*}

@@ -40,7 +40,7 @@ As such its predominant use case is to enable evaluations of other components wi
 
 \subsubsection{Sound Source Localization}
 \label{main:components:ssl}
-We developed a component\footnote{\url{https://github.com/Slothologist/esiaf_doa}} which performs \gls{ssl}.
+I developed a component\footnote{\url{https://github.com/Slothologist/esiaf_doa}} which performs \gls{ssl}.
 It uses the python library \texttt{pyroomacoustics} \cite{pyroomacoustics}, and specifically its SRP algorithm, though usage of all other \gls{ssl} algorithms provided by \texttt{pyroomacoustics} can be configured.
 For each sound chunk the component receives via the proposed framework, it creates \gls{ssl} results and then sends them to the Orchestrator.
 
@@ -81,16 +81,16 @@ The gender recognition component\footnote{\url{https://github.com/Slothologist/e
 It is based upon \texttt{Speech Emotion Recognition}, as it uses a nearly identical neural net and dataset.
 However, I adjusted the output dimension of the neural net and reorganized its training data to classify either to male or to female, instead of the four emotions.
 It also includes my changes, so its results include a probability.
-We retrained the net and achieved a training accuracy of 99.63\% while maintaining a test accuracy on unseen data of 91.20\%.
+I retrained the net and achieved a training accuracy of 99.63\% while maintaining a test accuracy on unseen data of 91.20\%.
 Similar to the described emotion recognition component, it will produce a gender result for each sound chunk it receives along with a probability for it and send them to the Orchestrator.
 
 It should be noted that the data set was quite small with only 339 audio samples, 188 of which by 5 female speakers , 151 from 5 male.
-We suspect this being the cause for it to not achieve the level of accuracy on real world data that it achieved on the test data.
+I suspect this being the cause for it to not achieve the level of accuracy on real world data that it achieved on the test data.
 This observation is however anecdotally and was not evaluated formally.
-We were however satisfied with this solution, as it produces somewhat reasonable results.
+However, I was satisfied with this solution, as it produces somewhat reasonable results.
 
 This is especially true given the fact that it is not a part of this thesis to develop new approaches to recognition of gender, emotion or speech.
-We chose this course of action with this specific component however, because an almost feasible component in the form of the described emotion recognizer was already in place and retraining of its neural net seemed to be a quick and easy way to produce a new component.
+I chose this course of action with this specific component however, because an almost feasible component in the form of the described emotion recognizer was already in place and retraining of its neural net seemed to be a quick and easy way to produce a new component.
 The alternative would have been to restructure and adjust a different approach, which may not have worked at all.
 
 

@@ -46,7 +46,7 @@ Other approaches make use of neural nets and deep learning \cite{6639344}.
 
 \section{Sound Source Localization}
 \label{basics:ssl}
-\gls{ssl} is a technique used to determine the origin of a sound relative to an array of microphones.
+\gls{ssl} \cite{ssl} is a technique used to determine the origin of a sound relative to an array of microphones.
 A great variety of algorithms has been developed in this field such as MUSIC \cite{music} or FRIDA \cite{7952744}; however they build upon a general principle, which I will outline here.
 
 Consider a setup of a number of microphones and a sound source, seen for example in figure \ref{pic:basics:ssl}.
@@ -79,7 +79,7 @@ Most approaches do not handle the special case of finding the exact position of 
 % todo: how to approaches to beamforming differ? maximum likelihood vs music
 
 \section{Beamforming}
-Beamforming could colloquially be described as a sort of inverse of \gls{ssl}.
+Beamforming \cite{beamforming2017} could colloquially be described as a sort of inverse of \gls{ssl}.
 Its goal is to, in a way, "listen" to a particular direction and provide an audio signal given the recording of a number of microphones and a direction.
 This new, artificial audio signal will greatly enhance audio events occurring in this particular direction.
 Similarly to \gls{ssl}, a number of algorithms have been developed around a single principle, which will now be outlined.

@@ -177,6 +177,7 @@ Consider a setup with a component which is very fast in computing results and on
 In the case the fast component did not produce a result, a long timeout would lead to a higher latency than a small one.
 A large timeout would however be needed for the component which takes a long time to produce results.
 
+\label{main:orc:database}
 The method I developed to find the optimal timeout takes into account all of these concerns.
 Making use of the database included to save results, not only received results are saved, but also their time to compute.
 This can very easily be calculated, as this is just the difference between the time the result is received by the Orchestrator and the end time of the audio timestamp.

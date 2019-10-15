@@ -12,6 +12,7 @@ After this more technical details and explanations will follow.
 
 
 % audio transmission
+\label{main:lib:formats}
 One of the central tasks of the library involves transmitting audio from component to component.
 This includes some aspects not immediately obvious.
 One of those is the audio format each component requires.
@@ -33,12 +34,19 @@ By handling resampling and converting of audio signals within the library, compo
 Furthermore, by abstracting resampling and converting from the components themselves, the library can be equipped to change audio formats adaptively when new components are introduced or old components vanish from a specific configuration, in a standardized way.
 
 Consequently, the library needs to be able to resample and convert audio between arbitrary audio formats.
-We chose the \gls{soxr} library (todo cite), to resample the audio and use a custom implementation to change its \textit{Bitrate} and \textit{Channel Count}.
-We prepared the library to handle different \textit{Endianness}, but ultimately did not implement such a feature, as different byte order is mostly a historic phenomenon and most modern operating systems, such as Windows, MacOs and most Unix systems, use little-endian encodin.
+We chose the \gls{soxr} library \cite{soxr,soxrbase}, to resample the audio and use a custom implementation to change its \textit{Bitrate}.
+The library does not handle different \textit{Channel Counts}.
+The reason for this is the absence of a sufficient default behavior.
+While creating a two channel audio signal from a single channel is easily done by doubling it, how to convert a two channel signal with non-identical tracks into a three channel signal?
+What about the other way round?
+Should a two channel signal be interpolated from a three channel signal, or should one of the tracks be discarded?
+The answers to these questions differ from case to case.
+As such, it seems more wise to separate the channel mechanics into dedicated components and entrust the user with finding the best choice. 
+We prepared the library to handle different \textit{Endianness}, but ultimately did not implement such a feature, as different byte order is mostly a historic phenomenon and most modern operating systems, such as Windows, MacOs and most Unix systems, use little-endian encoding.
 
 From the perspective of the library, it can then be divided between an externally used format, which is the format in which the component provides or requests audio data to the library; and an internally used format, which is the format in which the audio is transmitted.
 Both of these can be identical, but must not be.
-As discussed previously in chapter todo, resampling and converting of audio signals should be minimized, so careful consideration is required when choosing the format with which to transmit audio between components.
+Resampling and converting of audio signals should be minimized, so careful consideration is required when choosing the format with which to transmit audio between components.
 
 \label{main:lib:format_chooosing}
 It is however equally important where these formats are chosen, as it could be done in two ways:
@@ -70,10 +78,11 @@ We will go into detail how the Orchestrator chooses these formats in the followi
 % python bindings
 Our library was developed in C++, do to it having access to a number of very widely used and tested libraries for audio processing, such as \gls{sox} as well as its speed.
 However, a number of interesting software was developed for Python, see for example libraries on which I based most of the developed components, discussed below in chapter \ref{main:components:start}.
-This is what drove us to develop Python bindings for the library, using Boost Python (todo cite).
+This is what drove us to develop Python bindings for the library, using Boost Python \cite{Abrahams2003BuildingHS}.
 It proved fruitful, as most the then developed components actually make use of these bindings rather then the original C++ library.
 Developing the library in Python in the first place was considered, but ultimately not chosen because of C++'s superior support with regards to sound libraries, such as \gls{sox} and \gls{soxr}.
 
+\label{main:lib:message_types}
 Another important task of the library is to provide standardized \gls{ros} messages of common results generated from raw audio.
 This is realized by a number of \gls{ros} messages, dedicated to speech-, emotion-, gender-, voice-, \gls{ssl}-, and \gls{vad}- information.
 These messages can be inspected in figure \ref{table:main:lib:messages}.

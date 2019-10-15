@@ -21,7 +21,7 @@ These components are:
 	\item[\textit{Audio Player}] This component is the \textit{Audio Grabbers} counterpart, as it receives audio data from the pipeline and outputs it via \gls{alsa} through a speaker.
 	As such, it is mostly used for debugging purposes and to enable quick auditory microphone checks.
 
-	\item[\textit{Channel Splitter}] As discussed in section TODO, the proposed pipeline's library does not support mixing of channels.
+	\item[\textit{Channel Splitter}] As discussed in section \ref{main:lib:formats}, the proposed pipeline's library does not support mixing of channels.
 	The \textit{Channel Splitter} is used to mitigate this absence by receiving a multichannel audio signal and produces a corresponding number of single channel outputs.
 	One possible use case is to split a multichannel audio needed for \gls{ssl} into single channel audio usable for speech recognition, when no beamforming is desired.
 
@@ -54,7 +54,7 @@ Additionally, this variant will receive audio not from the proposed framework, b
 The \gls{vad} I developed\footnote{\url{https://github.com/Slothologist/AudioSegmenter}} is a reimplementation of a pre-existing algorithm present in the \gls{psa} (see chapter \ref{related_work:psa}).
 Its segmentation is therefore virtually identical to the \gls{psa}'s.
 
-If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a \texttt{segmentation\_ended annotation}, as described in chapter TODO, before sending it.
+If it detects the end of a segmentation, it will enhance the corresponding audio chunk with a \texttt{segmentation\_ended annotation}, as described in chapter \ref{main:lib:augmented_audio_msg}, before sending it.
 Audio will not be transmitted to the next node(s) if it were not found to include speech.
 
 \subsubsection{Automatic Speech Recognition}
@@ -63,11 +63,11 @@ The \gls{asr} component I developed\footnote{\url{https://github.com/Slothologis
 It will feed all audio it receives into \gls{ps}, which will then dynamically produce results.
 These results are however only used if a \gls{vad} signals the end of a segment.
 As such, this \gls{ps} component requires a \gls{vad} to work.
-Whenever a result is produced, it is sent to the Orchestrator via published \gls{ros} message (see chapter TODO).
+Whenever a result is produced, it is sent to the Orchestrator via published \gls{ros} message (see chapter \ref{main:lib:message_types}).
 
 \subsubsection{Emotion Recognition}
 \label{main:components:emotion}
-The emotion recognition component I developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} (TODO cite).
+The emotion recognition component I developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} \cite{speech-em-rec}.
 \texttt{Speech Emotion Recognition} uses a neural net to extract the emotional state of a person based on their speech.
 As such, it is capable to categorize speech into three emotions: angry, happy, sad.
 Additionally, speech can be categorized as neutral.

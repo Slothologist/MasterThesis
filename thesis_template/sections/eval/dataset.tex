@@ -9,7 +9,7 @@ In this section, an evaluation of the proposed pipeline and an pre-existing solu
 The goal of this evaluation is to take a closer look at the performance of the proposed pipeline with the explicit focus on computational cost as well as time needed for recognizing speech.
 Recognition percentage will be used as control variable, to ensure equivalence between pipelines.
 
-Based on the additional features the proposed pipeline introduces, most prominently synchronization of speech results and the modular nature of the pipeline (see chapters TODO), the proposed pipeline is expected to consume more CPU power as well as taking longer to compute results in comparison to the pre-existing solution.
+Based on the additional features the proposed pipeline introduces, most prominently synchronization of speech results and the modular nature of the pipeline (see chapters \ref{motiv:start} and \ref{main:lib:formats}), the proposed pipeline is expected to consume more CPU power as well as taking longer to compute results in comparison to the pre-existing solution.
 To further examine the cost, in particular the cost different additional components will add to the pipeline will be inspected to determine the scaling of the proposed pipeline.
 Due to the pre-existing solution being based on \gls{ps} and the increase in available CPU power since its first release (which in 2012), I consider a steep increase in CPU power to about five to ten times as a success.
 
@@ -263,7 +263,7 @@ However, further tests could be carried out to investigate the scaling of this p
 % pipeline 5
 { % 40
 Regarding the realistic pipeline, the absolute time for recognition saw a significant increase in comparison to the baseline of the proposed pipeline, as can be seen in figure \ref{table:eval_dataset_results}.
-Thanks to the Orchestrator saving all received information inside its database, as described in chapter TODO, it was possible to inspect the latencies of each component individually.
+Thanks to the Orchestrator saving all received information inside its database, as described in chapter \ref{main:orc:database}, it was possible to inspect the latencies of each component individually.
 The emotion and gender recognizers latency proved to be three and thirteen times as large as the speech recognizers, which can be supported by inspecting their CPU cost in figure \ref{table:eval_dataset_detail}.
 This leads to the assumption that the defining factor for the increase in time needed for recognition is actually the result of these components needing more time to compute their results.
 As this is a expected feature of the proposed pipeline, the longer time for recognition is a trade-off for having synchronized results.

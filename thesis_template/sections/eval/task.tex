@@ -8,7 +8,7 @@ The goal of this evaluation is to assess if using the proposed pipeline leads to
 These could be achieved through the result synchronization the proposed pipeline provides.
 
 This evaluation will be based on the Speech \& Person Recognition task of RoboCup@home 2018 \cite{rulebook_2018}, although some minor modifications will be made to the setup.
-The evaluation will be conducted on the Pepper robot (TODO cite).
+The evaluation will be conducted on the Pepper robot\footnote{\url{http://archive.is/2VKYS}}.
 
 \subsubsection{Software Setup}
 Two distinct solutions will be benchmarked:
@@ -42,7 +42,6 @@ Since one of the features of the proposed pipeline is synchronization of results
 For the existing solution (see figure \ref{pic:eval_task_setup_old}), the already established \gls{psa} will take the role of the speech recognizer.
 For sound source localization, a slightly modified variant of the proposed pipelines component will be employed, as elaborated earlier (see chapter \ref{main:components:ssl}).
 To combine both results, a behavior controller called Bonsai \cite{bonsai} will be used.
-Bonsai is a TODO.
 An channel splitter similar to the proposed pipeline is not necessary, as \gls{alsa} will assume this task for the \gls{psa}.
 Since result synchronization is not a feature of primary concern for Bonsai, its default behavior regarding this will be employed, which is to aggregate the \gls{ssl} results from two seconds to half a second before a speech recognition result was received.
 
@@ -61,7 +60,7 @@ Five random persons would then ask the robot each an additional questions.
 The robot should turn to the speakers and answer them.
 To ease the evaluation of \gls{ssl} results, only four persons will partake in the \textit{Blind Mans Bluff Game} of this evaluation.
 One person each will stand directly in front of the robot, behind the robot and to either side of the robot, with circa a 90$^\circ$ shift in angle with respect to the initial orientation of the robot (see figure \ref{pic:eval_task}).
-All questions for the task will be generated from the publicly available RoboCup 2018 command generator (TODO cite).
+All questions for the task will be generated from the publicly available RoboCup 2018 command generator \cite{commandgen}.
 
 \begin{figure}[]
 	\centering

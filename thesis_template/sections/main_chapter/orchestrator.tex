@@ -8,6 +8,7 @@
 In this section the Orchestrator as part of the proposed framework will discussed.
 The Orchestrator has to fulfill two major tasks, synchronizing results and determining the formats used to transmit audio, as discussed in the previous chapter \ref{main:lib:format_chooosing}.
 
+\subsubsection{Determining Audio Formats}
 First the determination of audio in- \& output formats used internally by the library will be discussed.
 To achieve this, a number of factors have to be considered.
 To reduce network traffic and improve transmission speed it is advantageous to transmit audio with the lowest possible bandwidth.
@@ -100,6 +101,8 @@ This way, all -or worse, just some- of the results may have been computed on tim
 The approach ultimately chosen was to determine one so called anchor type, which would then be the basis of all synchronization.
 Each result received of this anchor type would by their timestamps determine the timeframe with which results of all other types would then be synchronized with.
 Any result occurring at least partially in this timeframe would be included in the fused result.
+This approach is similar to \cite{10.1117/12.138164}, in that my approach also batches results.
+Unlike \cite{10.1117/12.138164} however, in my approach batching happens dynamically, based on the anchor result and not on a pre-determined timeframe.
 
 Initially it was planned to only use speech utterances as anchor.
 However, as time moved on, I realized that this may not be the only interesting type for synchronization.
@@ -142,6 +145,7 @@ This object will store all relevant results and additional information used to f
 It starts by querying the database for all results which occurred in the timeframe predefined by the anchor result.
 If will then continue to collect incoming results, if they are eligible for fusion until it determines that no new results will be received.
 
+\subsubsection{Fusion Conditions}
 This can happen in either of two ways.
 The first, straight forward way is the case if all possible results are already present.
 As the timestamps of the audio is continuous, the results can be as well.
@@ -166,6 +170,7 @@ Additionally, it must be kept in mind that components may unexpectedly shut down
 Synchronizing their then not produced results would be impossible.
 A component may also struggle to calculate one specific result, due to it being either very computationally expensive or due to having a temporary shortage of computational power, because e.g. other programs consuming much computational power.
 
+\subsubsection{Fusion Timeouts}
 To counter this problem a timeout is needed that will tell the Orchestrator to abandon any results not yet received.
 This is somewhat contrary to the previously discussed goal of ensuring the synchronization of all results, but is crucial to ensure all results to be actually relayed to further programs and arrive there with a minimal latency.
 Finding a feasible value for this timeout is not trivial, as circumstances can have a major impact on it.
@@ -197,6 +202,7 @@ If the configuration of the used pipelines have not changed to much with respect
 
 %-------------------------
 
+\subsubsection{Latency caused by Fusion}
 Lastly the latency introduced by synchronizing results is worth a look at.
 In a best case scenario, where the Orchestrator can make use of overlapping results (as shown in figure \ref{pic:main:orc:result_overlap}), the latency is simply the time of the slowest computing component, along with a small calculation time the Orchestrator introduces.
 The worst case scenario can be seen in figure \ref{main:orc:latency:formula}.

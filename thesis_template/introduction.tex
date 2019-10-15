@@ -54,7 +54,7 @@ Due to the sound waves traveling with a constant speed, a single sound event can
 By matching the events captured in the recording of each microphone with their respective selfs in the recording of the other microphones, one can compute the time-of-arrival differences of the event.
 In the given example, this time-of-arrival difference would be the smaller, blue arrow.
 Due to the speed of sound being constant and known, it is then possible to triangulate the general direction or even position of the source.
-Thus by observing similar excitations detected at different points in time by different microphones a sound source can be localized.
+Thus, by observing similar excitations detected at different points in time by different microphones a sound source can be localized.
 
 \begin{figure}[]
 	\centering
@@ -67,11 +67,11 @@ Thus by observing similar excitations detected at different points in time by di
 \end{figure}
 
 \gls{ssl} requires an array of at least two microphones.
-This will however yield two possible \gls{doa}, which may be enough, depending on the application.%todo why two doa?
-To calculate an exact location in a two dimensional space at least three microphones are needed, while a three dimensional space requires at least four.
+This will however yield two possible \gls{doa}, which may be enough, depending on the application.
+To calculate an exact location in a two dimensional space, at least three microphones are needed, while a three dimensional space requires at least four.
 An excess of microphones is often used in practice to increase accuracy of the \gls{doa}.
 
-Due to practical limitations caused by slight inaccuracies in position of the microphones, an exact sound source can often only be determined in the immediate vicinity or even just inside of the microphone array.
+Due to practical limitations caused by slight inaccuracies in positioning of the microphones, an exact sound source can often only be determined in the immediate vicinity or even just inside of the microphone array.
 Otherwise, only a general \gls{doa} can be calculated with respect to the microphone array.
 Most approaches do not handle the special case of finding the exact position of a source inside the microphone array and thus only provide a \gls{doa}.
 
@@ -102,24 +102,24 @@ Beamforming can be used either together with \gls{ssl}, to improve sound quality
 \section{Robot Operating System}
 \label{intro:ros}
 \gls{ros} \cite{288} was developed explicitly for communication of programs in the context of robotics and offers a wide variety of standardized data types for transmission.
-These include, but are not limited to, equivalents of widely used data types such as integer, float, char and string.
+These include equivalents of widely used data types such as integer, float, char and string.
 However, one is not limited to these data types, but can construct new types by combining already established ones.
 
 Programs which make use of \gls{ros}, also called \gls{ros}-nodes, typically start by initializing \gls{ros} and thus announcing themselves to a dedicated \gls{ros}-master node, which orchestrates all communication within the \gls{ros} ecosystem and is always required.
 They will then announce all their chosen ways of communication with other \gls{ros}-nodes and either start their work or await data or requests from other \gls{ros}-nodes.
 
 \gls{ros} offers three distinct methods of transmitting these data types with increasing complexity:
-The first is a simple one-way transmission of information, from a so called \textit{Publisher}-node to a \textit{Subscriber}-node.
+The first is a simple one-way transmission of information\footnote{\url{http://archive.is/Tvsg7}}, from a so called \textit{Publisher}-node to a \textit{Subscriber}-node.
 With it, data can be transmitted, also called published, to any number of \textit{Subscriber}-nodes.
 Recipients are identified by the master-node by being subscribed to a specific communication channel, a so called topic, which must be the same as the one the \textit{Publisher}-node publishes to.
 
-The second method is based on providing data on a on-demand basis and is know as a \gls{ros}\textit{-service}.
+The second method is based on providing data on an on-demand basis and is know as a \gls{ros}\textit{-service}\footnote{\url{http://archive.is/ab2sd}}.
 It features a \textit{service}-server, which advertises a specific \textit{service}.
-Any \gls{ros}-node may then send this \textit{service}-server a request, which is -in essence- a \gls{ros} message.
+Any \gls{ros}-node may then send this \textit{service}-server a request, which is, in essence, a \gls{ros} message.
 The \textit{service}-server will then somehow react to this message and react with a single answer, another \gls{ros} message.
 Similar to the simpler publish-subscribe method, \textit{services} are identified via a so called \textit{service}-topic.
 
 The third method will be only discussed briefly, as it is not made use of in this work.
-It is known as a \gls{ros} action and identifiable similar to the already discussed methods by an action-topic.
+It is known as a \gls{ros} action\footnote{\url{http://archive.is/ujkJK}} and identifiable, similar to the already discussed methods, by an action-topic.
 It is similar in nature to the \gls{ros} service, but features additional update messages send from the server to their respective client.
 

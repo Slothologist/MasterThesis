@@ -42,7 +42,7 @@ However, they appear to only use its \gls{ssl} capabilities at this time.
 
 
 \subsection{Kamerider}
-The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and SSL \cite{kamerider}.
+The Kamerider team from Nankai University, China provides some information on the components they use for speech recognition and \gls{ssl} \cite{kamerider}.
 They use Gstreamer \cite{Gstreamer} to segment audio, which is then being processed by \gls{ps}.
 Additionally, they use \gls{hark} for \gls{ssl}.
 This way they appear to have modularized their components to a greater degree than other teams.
@@ -62,7 +62,7 @@ The team of Bielefeld (ToBi) of Bielefeld University \cite{tobitdp} can be discu
 For \gls{ssl} they used a proprietary solution which came with their Pepper robot\footnote{\url{http://archive.is/2VKYS}}
 while they used a \gls{ps} based component for \gls{asr}, the \gls{psa}. 
 
-\gls{asr} and \gls{ssl} results are merged on the behavior layer, but only when \gls{ssl} information are explicitly needed.
+\gls{asr} and \gls{ssl} results are merged on the behavior layer, but only when \gls{ssl} information is explicitly needed.
 The method with which they are merged is rather simplistic.
 \gls{ssl} results are temporarily stored along a timestamp, which corresponds to the time these results were gathered.
 Whenever an \gls{asr} result needs to be enhanced with \gls{ssl} results, an average is calculated over the \gls{ssl} results which were recorded between two and half a second before said \gls{asr} result.
@@ -72,7 +72,7 @@ The \gls{psa} is an \gls{asr} component which is based on \gls{ps}. \label{relat
 It captures sound directly from a microphone via \gls{alsa}, which is then segmented, to ensure only audio containing actual speech is evaluated.
 It segments audio based on a loudness threshold, which, if crossed long enough, will start a segmentation.
 This segmentation is ended either if a certain time limit is exceeded or if the loudness of received audio chunks drops under a second, typically slightly lower threshold.
-Audio which is thus decided to contain speech will then be fed into \gls{ps}.
+Audio which is therefore decided to contain speech will then be fed into \gls{ps}.
 After a segmentation is ended, \gls{ps} will produce a result, which is then published via a \gls{ros} message.
 This component will be used in later experiments (see chapters \ref{eval:dataset} and \ref{eval:task_start}).
 

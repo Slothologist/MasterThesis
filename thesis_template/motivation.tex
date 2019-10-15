@@ -6,7 +6,7 @@ In order to be accepted by humans, social robots in general depend on \gls{hri} 
 Since speech is one of the most important modalities of communication between humans, it is no surprise that it is also one of the most important parts of \gls{hri}.
 In \gls{hri}, verbal dialogue can be divided into speech generation and the main interest of this thesis: speech understanding.
 
-Being able to perfectly recognize the words a person spoke does not completely cover speech understanding, e.g. the perception and engagement of the speaker \cite{Ivaldi2017}.
+Being able to perfectly recognize the words a person spoke does not completely cover speech understanding. Also needed is the perception and engagement of the speaker \cite{Ivaldi2017}.
 An exemplary dialogue between a robot and two humans is depicted in a provided video\footnote{\url{https://www.youtube.com/watch?v=iEMKZdwJPE8}} and in stills in figure \ref{pic:moti:imustgonow}.
 The video depicts parts of a RoboCup@home Task at the RoboCup World Championship 2018 in Montreal.
 In three different instances two referees are giving a robot commands, but they take turns in speaking to the robot.
@@ -31,18 +31,18 @@ the robot does not seem to perceive the human, instead it is quite clear that it
 A similar phenomenon could very publicly be observed in the recent past, when Amazons Alexa ordered a variety of objects online, after hearing commands from a  TV commercial\footnote{\url{http://archive.is/zXuJu}}.
 The solution employed by Amazon to stop this from happening with its own TV commercials seems to be a purposefully altered audio signal\footnote{\url{http://archive.is/d3uVu}} instead of a more general approach.
 
-In the context of social robotics, these kinds of behavior are not desirable since approaches to partially solve these problems can be found in current literature \cite{opdenAkker:2009:YAR:1708376.1708379}.
+In the context of social robotics, these kind of behaviors are not desirable since approaches to partially solve these problems can be found in current literature \cite{opdenAkker:2009:YAR:1708376.1708379}.
 Voice recognition technologies which can be used to differentiate speakers are available \cite{DBLP:journals/corr/abs-1003-4083}.
-Additionally, computer vision is used to search for speakers, either standalone, looking for moving lips, or in combination with sound source localization (see \ref{basics:ssl}) \cite{1048137,lookwhostalking,840663,whosaidthat}.
+Additionally, computer vision is used to search for speakers, either standalone, looking for moving lips, or in combination with sound source localization (see chapter \ref{basics:ssl}) \cite{1048137,lookwhostalking,840663,whosaidthat}.
 
 Suitable robot behaviors need to be created, to take all this information into account.
 When creating these behaviors, one must consider how the corresponding percepts are processed.
 The behavior in question must either be able to combine the information, e.g. a spoken utterance and a distinct, detected voice or receive this information in a pre-combined manner.
 If the behavior handles the combination, both may not be fed into the behavior at the same time, resulting in the problem to combine them.
-A number of factors have to be considered when combining these information, e.g. Information may arrive asynchronous.
+A number of factors have to be considered when combining these information, e.g. information may arrive asynchronous.
 For example:
 while just a single, long speech utterance may be received, a number of voices can be detected, or several results of the same voice.
-Results in that sense are singular perceptions of a component, e.g. a voice recognizer or an \gls{ssl} detector.
+Results in that sense are singular perceptions of a component, e.g. a voice recognizer or a \gls{ssl} detector.
 Thus results have to be combined in a manner that takes this asynchrony into account.
 Additionally, results will have different calculation times, based on what component created them and thus may be temporally unaligned.
 This must be considered as well, creating the need to synchronize results based on their occurrence in time.
@@ -71,13 +71,14 @@ The rest of this thesis is structured as follows:
 I will first introduce concepts and frameworks in chapter \ref{basics:start}.
 Here, first latency is introduced.
 Latency is of special importance since it  plays a role in the computation times and is thus of particular interest with regards to the similar secondary goal.
-After this I will discuss and briefly explain the concepts of \gls{asr}, \gls{ssl} and beamforming, as these can yield results of interest or be used to enhance audio signals, are partially incorporated in the later evaluation and will later present a number of challenges for the design of the proposed framework.
-Finally I will explain \gls{ros}, a middleware used in the later proposed framework.
+After this I will discuss and briefly explain the concepts of \gls{asr} and \gls{ssl} as these can yield results of interest and are incorporated in the later evaluation.
+Additionally, beamforming will be touched upon, as it is used to enhance audio signals and will later present a number of challenges for the design of the proposed framework.
+Finally I will explain the \gls{ros}, a middleware used in the later proposed framework.
 
 Thereafter I will present related work in chapter \ref{related:frameworks}, which will be divided in three parts.
 First, a brief overview of a framework which focuses on \gls{ssl} and beamforming will be given.
 Then I will discuss several fusion and synchronization approaches in preparation for my approach.
-Lastly, an overview of current and former teams of the RoboCup@Home league, a prominent will be given, with special focus on their speech understanding and data fusion approaches.
+Lastly, an overview of current and former teams of the RoboCup@Home league will be given, with special focus on their speech understanding and data fusion approaches.
 
 After this I will present my solution in chapter \ref{main:main}.
 Based on the goals formulated above and fusion approaches discussed in chapter \ref{related:fusion}, and in consideration of the concepts of latency and beamforming discussed in chapter \ref{basics:latency}, I will then present my approach for synchronization and fusion of speech analysis data.

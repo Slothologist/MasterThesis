@@ -5,7 +5,7 @@
 
 \section{Library}
 \label{main:lib}
-In this part of this thesis the library of the proposed framework will described, along with its tasks.
+In this part of this thesis the library of the proposed framework will be described, along with its tasks.
 As discussed earlier, the library of the proposed framework solves a number of problems, which are either directly needed for synchronization of results or make it considerably easier.
 First the reasoning for some major design decision will be laid down.
 Afterwards more technical details and explanations will follow.
@@ -35,7 +35,7 @@ By handling resampling and converting of audio signals within the library, compo
 Furthermore, by abstracting resampling and converting from the components themselves, the library can be equipped to change audio formats adaptively when new components are introduced or old components vanish from a specific configuration, in a standardized way.
 
 Consequently, the library needs to be able to resample and convert audio between arbitrary audio formats.
-The \gls{soxr} library \cite{soxr,soxrbase} was chosen to resample the audio and a custom implementation was used to change its \textit{Bitrate}.
+The \gls{soxr} \cite{soxr,soxrbase} was chosen to resample the audio and a custom implementation was used to change its \textit{Bitrate}.
 The library does not handle different \textit{Channel Counts}.
 The reason for this is the absence of a sufficient default behavior.
 While creating a two channel audio signal from a single channel is easily done by doubling it, how to convert a two channel signal with non-identical tracks into a three channel signal?
@@ -57,7 +57,7 @@ Alternatively they could be determined in a centralized manner, where a single m
 The later was the chosen course of action, which was motivated as follows:
 the main advantage of a distributed approach is that it does not rely on an additional program, as does the centralized approach.
 It does so however at a cost. 
-Due to the nature of the distributed approach each component taking part must have the same information as each other, that is to say each component must have information about at least each other component.
+Due to the nature of the distributed approach each component taking part must have the same information as every other.
 See for example figure \ref{pic:main:lib:central_vs_dist}.
 In this scenario of average complexity one can clearly see the centralized approach to introduce less overhead.
 While the communication between \texttt{c\_1} and \texttt{c\_2} is straight forward within the distributed approach, the communication between \texttt{c\_2}, \texttt{c\_3}, \texttt{c\_4} and \texttt{c\_5} becomes quite convoluted.
@@ -169,8 +169,8 @@ In any case, these must be published by the components to similarly standardized
 
 I will now illustrate the tasks handled by the library by means of typical actions taken by an example component in its life-cycle.
 My example will be that of a typical \gls{vad} component.
-As \gls{ros}is used as an underlying middleware, components within the proposed framework must also use \gls{ros} for a number of tasks.
-Thus it is necessary for the component to first initialize \gls{ros}.
+As \gls{ros} is used as an underlying middleware, components within the proposed framework must also use \gls{ros} for a number of tasks.
+Thus, it is necessary for the component to first initialize \gls{ros}.
 Following this, the proposed library will need to be initialized, which is done by first creating a handle.
 This handle keeps track of all relevant information the proposed library needs.
 
@@ -178,7 +178,7 @@ The example component may then declare its intention to output or request audio.
 In the example, the \gls{vad} component will first declare its intent to output audio and then to require audio.
 However, the library does not put a limit as to how many in- \& outputs a component can request, so an identifier is needed.
 The same identifier will later be internally used to generate the \gls{ros} topics with which the actual audio will be transmitted.
-Thus it also serves to map the audio between components.
+Thus, it also serves to map the audio between components.
 If the \gls{vad} component would use the input topic \texttt{''vad\_input''}, then a microphone component would be needed to output to the same topic, so that the audio could be correctly transmitted.
 Furthermore, to request an audio in- or output it is needed to specify the format in which the audio should arrive or will be given to the library respectively.
 
@@ -215,7 +215,7 @@ As previously discussed, this information must be published by their respective 
 However, as a special case for \gls{ssl} and \gls{vad} components, they should also enhance the audio information with them.
 The reasoning behind this is rather straight forward:
 most beamforming components will need \gls{ssl} information to work correctly.
-If these information are not transmitted with the audio signal, the beamformer would need to acquire these information by itself.
+If these information is not transmitted with the audio signal, the beamformer would need to acquire these information by itself.
 After this it would then need to synchronize the \gls{ssl} information with the audio signal.
 %This could most probably not be done with the help of the Orchestrator, as a beamformer enhances the audio signal for other components and the Orchestrator would aspire to fuse results by these components with the \gls{ssl} information before outputting them.
 Thus a component of the proposed framework would be tasked with the very goal of this thesis.
@@ -228,12 +228,12 @@ To receive these information, the component must provide the library with a call
 The receiving component will have all of its callback functions be called in the opposite order.
 This process can also be seen in figure \ref{pic:main:lib:ssl_vad_time}.
 To come back to the example component:
-the \gls{vad} component, upon receiving audio, first generate their \gls{vad} information, which it then publishes to the Orchestrator and simultaneously give this information to the library as meta information.
+the \gls{vad} component, upon receiving audio, first generates its \gls{vad} information, which it then publishes to the Orchestrator and simultaneously gives this information to the library as meta information.
 Afterwards it sends the audio signal it received via the library, which in turn enhances this audio with said \gls{vad} information.
 The \textit{Augmented Audio Message} then arrives in the library of e.g. an \gls{asr} component.
 Before anything else, the library first checks the ID of the message.
 If it was higher then expected, it stores this message and waits for more messages.
-When the expected message arrives, audio signal is resampled and converted from the internally used format to the externally used format.
+When the expected message arrives, the audio signal is resampled and converted from the internally used format to the externally used format.
 Then the input callback function of the component is called with the timestamps and audio signal of the message.
 This way the component can use the timestamps directly when publishing results, or just propagate them while outputting audio.
 Subsequently the library calls possible \gls{ssl} meta information callback functions first and then their \gls{vad} equivalents.
@@ -266,7 +266,7 @@ After the declarations of audio in- \& and outputs are done, the component will 
 Up until this point, no actual communication between the component and the Orchestrator has happened.
 Now however, the library will prepare all information necessary for the Orchestrator to register the component.
 The name of the component is needed, so the Orchestrator can differentiate components from one another, as well the designation of the node, which corresponds to the task the component will perform.
-I will go more into detail regarding this designation in the Orchestrator's chapter \ref{main:orc}, as it serves to easy synchronization of results.
+I will go into more detail regarding this designation in the Orchestrator's chapter \ref{main:orc}, as it serves to ease synchronization of results.
 
 Further information is needed regarding in- \& output topics of audio that were previously declared.
 The information about meta-information is not needed for the registration process, as they are handled internally by the library itself.

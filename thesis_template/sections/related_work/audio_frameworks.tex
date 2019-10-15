@@ -2,7 +2,7 @@
 
 \section{HARK}
 \label{related:frameworks}
-In this part \gls{hark} \cite{Nakadai_2017jrm} will be discussed, a modular framework with explicit focus on integrating beamforming and speech recognition solutions, developed by a team of researcher centered around Kyoto University.
+In this part \gls{hark} \cite{Nakadai_2017jrm} will be discussed, a modular framework with explicit focus on integrating beamforming and speech recognition solutions, developed by a team of researchers centered around Kyoto University.
 Its goal is to provide an all in one solution for audition in robots specifically.
 \gls{hark} is modular as it provides several algorithms (so called nodes) for each processing step.
 These are centered around \gls{ssl}, beamforming, filtering, and feature extraction nodes.
@@ -14,7 +14,7 @@ Naturally, it thus does not support the synchronization of results of any such c
 All the more, it does not support the synchronization of \gls{ssl} and \gls{asr} results, as results of \gls{asr} nodes lie outside its control.
 
 \gls{hark} will take care of transporting audio data in between processing steps, but mostly transfers them in a frequency based representation, not as raw audio data.
-This results in a quite stripped down nodes, as it reduces the number of fast Fourier transforms needed to flat one instead of one per node relying on them.
+This results in quite stripped down nodes, as it reduces the number of fast Fourier transforms needed to flat one instead of one per node relying on them.
 Nodes which rely on raw audio however, must either manually restore the signal or use a specially developed node for this task.
 Both variants results in a degrading signal however.
 

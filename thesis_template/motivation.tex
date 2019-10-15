@@ -48,27 +48,49 @@ Additionally, results will have different calculation times, based on what compo
 This must be considered as well, creating the need to synchronize results based on their occurrence in time.
 
 The problems just presented are clearly out of scope for robot behaviors an thus should be handled separately.
-We thus declare the main goal of this thesis to create a framework for the automatic generation of these synchronized audio analysis results.
+We thus declare the \textbf{main goal of this thesis} to create a \textbf{framework for the automatic generation of these synchronized audio analysis results}.
 
-Furthermore, a number of secondary goals can be declared.
+Furthermore, a number of \textbf{secondary goals} can be declared.
 Naturally any approach to synchronize audio results shall not have a negative impact on these results.
 This can be specified in two more concrete terms.
-First and foremost, the accuracy of the results shall not decrease by being incorporated in the proposed solution.
-Second, synchronizing the results shall not take significantly longer to compute than not synchronizing them.
-%todo elaborate
+First and foremost, the \textbf{accuracy of the results shall not decrease} by being incorporated in the proposed solution.
+Second, synchronizing the \textbf{results shall not take considerably longer to compute} than not synchronizing them.
+To put this into context: waiting for a result more than twice as long can not be deemed acceptable.
 
 %---------------------------------- modularity secnd goal
 
 Robotics is a field of intensive current research, and in the last years a number of leaps have been made.
 These include, but are no limited to OpenPose \cite{cao2018openpose}, YOLO \cite{yolov3} and DeepSpeech \cite{deepspeech}.
 Modularity and the ability to include such advances without the need to completely overhaul an existing system greatly decreases the time needed to incorporate such new technologies.
-In turn, research speed can greatly benefit.
-We can thus declare modularity a secondary goal, to increase the usability of the proposed framework.
+In turn, research speed can benefit.
+We can thus declare an additional \textbf{secondary goal} in the form of \textbf{modularity}, to increase the usability of the proposed framework.
 
 %-----------------------------------
 
 The remainder of this thesis is structured as follows:
-We will first introduce a number of concepts and frameworks in chapter \ref{basics:start}.
+I will first introduce concepts and frameworks in chapter \ref{basics:start}.
+These start with latency, which plays a big role in the computation times and is thus of particular interest with regards to the similar secondary goal.
+After this I will discuss and explain the concepts of \gls{asr}, \gls{ssl} and beamforming, as these can yield results of interest or be used to enhance audio signals, are partially incorporated in the later evaluation and will later present a number of challenges for the design of the proposed framework.
+Finally I will explain \gls{ros}, a middleware used in the later proposed framework.
+
+Thereafter I will present related work in chapter \ref{related:frameworks}, which will be divided in three parts.
+First, a brief overview of a framework which focuses on \gls{ssl} and beamforming will be given.
+Then I will discuss several fusion and synchronization approaches in preparation for my approach.
+Lastly an overview of current and former teams of the RoboCup@Home league, a prominent will be given, with special focus on their speech understanding and data fusion approaches.
+
 After this I will present my solution in chapter \ref{main:main}.
-We will then proceed to evaluate my proposed solution in chapter \ref{eval} based on two experiments.
+Based on the goals formulated above and fusion approaches discussed in chapter \ref{related:fusion}, and in consideration of the concepts of latency and beamforming discussed in chapter \ref{basics:latency}, I will then present my approach for synchronization and fusion of speech analysis data.
+This solution is a framework comprised of a library and a master component, the Orchestrator.
+This chapter will close with an overview of the components developed over the course of this thesis.
+
+I will then proceed to evaluate my proposed solution in chapter \ref{eval} based on two experiments.
+The first experiment is conducted with the help of a data set, and is intended to evaluate the performance of the developed framework with regards to computation time.
+The second experiment is heavily inspired by the ''Speech and Person Recognition'' Task of RoboCup@Home \cite{rulebook_2018}.
+It is intended to evaluate the accuracy of the proposed framework in comparison to a pre-existing solution.
+Both experiments will be able to show the main goal of this thesis to be achieved.
+The data set experiment in particular will show the requested modularity.
+
 Lastly I will summarize my findings and point out possible future work in chapter \ref{conclusion}.
+The central point of this chapter is that due to the findings of chapter \ref{eval}, more and better components can be developed and the next step can be taken, i.e. behaviors equipped to handle situations such as those seen in figure \ref{pic:moti:imustgonow} by utilizing synchronized data can be created.
+
+%In the appendix, I will detail the source code repositories as well as build and start instructions for the acrewed components.

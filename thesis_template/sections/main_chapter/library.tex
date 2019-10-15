@@ -52,10 +52,10 @@ Resampling and converting of audio signals should be minimized, so careful consi
 \subsubsection{Audio Format choosing}
 \label{main:lib:format_chooosing}
 It is however equally important where these formats are chosen, as it could be done in two ways:
-Either in a distributed manner, where all existing components must communicate with each other and come to a single conclusion.
+either in a distributed manner, where all existing components must communicate with each other and come to a single conclusion.
 Alternatively they could be determined in a centralized manner, where a single master program will collect information about each component and then based on this information will make a decision.
 The later was the chosen course of action, which was motivated as follows:
-The main advantage of a distributed approach is that it does not rely on an additional program, as does the centralized approach.
+the main advantage of a distributed approach is that it does not rely on an additional program, as does the centralized approach.
 It does so however at a cost. 
 Due to the nature of the distributed approach each component taking part must have the same information as each other, that is to say each component must have information about at least each other component.
 See for example figure \ref{pic:main:lib:central_vs_dist}.
@@ -214,7 +214,7 @@ These meta information can be \gls{ssl} or \gls{vad} information.
 As previously discussed, this information must be published by their respective nodes to the Orchestrator for synchronization purposes.
 However, as a special case for \gls{ssl} and \gls{vad} components, they should also enhance the audio information with them.
 The reasoning behind this is rather straight forward:
-Most beamforming components will need \gls{ssl} information to work correctly.
+most beamforming components will need \gls{ssl} information to work correctly.
 If these information are not transmitted with the audio signal, the beamformer would need to acquire these information by itself.
 After this it would then need to synchronize the \gls{ssl} information with the audio signal.
 %This could most probably not be done with the help of the Orchestrator, as a beamformer enhances the audio signal for other components and the Orchestrator would aspire to fuse results by these components with the \gls{ssl} information before outputting them.
@@ -228,7 +228,7 @@ To receive these information, the component must provide the library with a call
 The receiving component will have all of its callback functions be called in the opposite order.
 This process can also be seen in figure \ref{pic:main:lib:ssl_vad_time}.
 To come back to the example component:
-The \gls{vad} component, upon receiving audio, first generate their \gls{vad} information, which it then publishes to the Orchestrator and simultaneously give this information to the library as meta information.
+the \gls{vad} component, upon receiving audio, first generate their \gls{vad} information, which it then publishes to the Orchestrator and simultaneously give this information to the library as meta information.
 Afterwards it sends the audio signal it received via the library, which in turn enhances this audio with said \gls{vad} information.
 The \textit{Augmented Audio Message} then arrives in the library of e.g. an \gls{asr} component.
 Before anything else, the library first checks the ID of the message.
@@ -249,7 +249,7 @@ After all callback functions for a given message are called, the library will ch
 	\includegraphics[width=\textwidth]{bilder/rosmsg/augmented_audio.pdf}
 	\caption{Composition of Augmented Audio Messages.
 		The message can be divided into three parts:
-		Transmission information in green, synchronization information in blue, and Meta information in red.}
+		transmission information in green, synchronization information in blue, and Meta information in red.}
 	\label{pic:main:lib:augmented_audio}
 \end{figure}
 

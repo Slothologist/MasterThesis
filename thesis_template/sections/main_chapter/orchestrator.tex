@@ -210,7 +210,7 @@ If the configuration of the used pipelines have not changed too much with respec
 Lastly the latency introduced by synchronizing results is worth a look at.
 In a best case scenario, where the Orchestrator can make use of overlapping results (as shown in figure \ref{pic:main:orc:result_overlap}), the latency is simply the time of the slowest computing component, along with a calculation time the Orchestrator introduces.
 The worst case scenario can be seen in figure \ref{main:orc:latency:formula}.
-This latency $l_f$ is mostly determined by the exact factors discussed previously: The maximum of the average time to compute of all components and the factor $V_A$. 
+This latency $l_f$ is mostly determined by the exact factors discussed previously: the maximum of the average time to compute of all components and the factor $V_A$. 
 I consider this to be a worthwhile trade off, due to the most important anchor message types only being generated when an utterance or at least voice is present in the corresponding audio.
 I believe these important anchor message types to be that of the \gls{asr}-, emotion-, gender-, and voice-results.
 

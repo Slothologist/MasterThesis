@@ -11,12 +11,12 @@ The main goal of this thesis is to provide synchronized results of audio analysi
 To effectively provide these fused results, these results are first needed in a standardized separated form.
 Additionally, to be able to synchronize these separated results based on time, they need to be annotated with a timestamp.
 However, this timestamp needs to fulfill a number of requirements:
-As the first and most central requirement, the timestamp must not correspond to the time a given result was made available, but rather to the time when the audio of said result was recorded.
+as the first and most central requirement, the timestamp must not correspond to the time a given result was made available, but rather to the time when the audio of said result was recorded.
 This is fundamental, as each result providing component can not be expected to take the exact same time as any other.
 Additionally, as the audio this timestamp corresponds to is not a singular event, but a continuous stream, it must contain a start- \& an end-time to fully and accurately describe it.
 This is especially true since results may be generated on audio of vastly different length, consider for example a simple "yes" or "no" in contrast to a longer question, such as "Hey robot, where can I find the orange juice?".
 This directly leads to another problem:
-As each results now requires its annotation with timestamps, each component requires audio annotated with these timestamps.
+as each results now requires its annotation with timestamps, each component requires audio annotated with these timestamps.
 
 This in turn leads to a number of cases with a very high complexity in dependencies.
 Consider a setup of a \gls{ssl} component, a beamformer and an \gls{asr} component.

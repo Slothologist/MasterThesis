@@ -5,22 +5,49 @@
 \section{Source Code}
 The source code for this thesis lies in a rather vast number of git repositories.
 All of these repositories are open source.
-Following is a list of all repositories used in this thesis and their respective location:
-\begin{itemize}
-	\item[bla] blubb
-\end{itemize}
-
+Following is a list of all repositories used in this thesis along a short description:
+\captionsetup{labelformat=empty}
+\begin{figure}[h]
+	\begin{tabular}{ l | p{.6\textwidth} }
+		Repository 				& Description	 	\\\hline
+		
+		MasterThesis		& Contains the latex code of this thesis		\\ 
+		esiaf\_orchestrator		& Contains the source code of the Orchestrator described in chapter \ref{main:orc}		\\ 
+		esiaf\_ros				& Contains the source code of the library described in chapter \ref{main:lib}	\\ 
+		ma\_eval\_cost			& Contains the results of the data set experiment, the scripts used to save them and scripts to automate analysis		\\ 
+		esiaf\_hyperion\_configs			& Contains configuration files for system startup for both experiments		\\ 
+		esiaf\_gender\_rec		& Gender recognition component 		\\ 
+		esiaf\_eval\_dummy\_nodes 				& Test nodes used in the data set experiment	 	\\ 
+		AudioSegmenter					& \gls{vad} component		\\ 
+		esiaf\_wav\_player	 				& Component	to feed wav files into the framework		\\ 
+		rfeldhans-MA-master		& Contains general information such as User stories and raw data of RoboCup@Home experiment as well as analysis script and processed information (\texttt{eval\_raw\_data} branch)	\\ 
+		esiaf\_doa				& \gls{ssl} component	\\ 
+		ma\_baseline\_doa 	& \gls{ssl} component for the pre-existing pipeline used in the RoboCup@Home experiment	\\ 
+		esiaf\_pocketsphinx 				& \gls{asr} component	\\ 
+		esiaf\_channel\_utils				& Components for channel handling, used in the RoboCup@Home experiment	\\ 
+		esiaf\_speech\_emotion\_recognition				& Emotion recognition component	\\ 
+		speech-emotion-recognition				& Underlying library for the emotion and gender recognition components	\\ 
+		Presentation				& Contains the presentation for this masters thesis (under the \texttt{master\_thesis} tag)	\\ 
+	\end{tabular}
+	\caption{}
+\end{figure}\\
+All these Repositories can be found under \url{https://github.com/Slothologist/MasterThesis} where MasterThesis can be any of the above repository names.
 
 \section{Build instructions}
 Due to the number of components used in this thesis and the fact that each of them is embedded in their own git repository, building this source code can be a bit challenging.
-To alleviate this, we created a distribution in the RDTK (TODO cite + explain)
-To first bootstrap the RDTK, follow their tutorial\footnote{\url{https://toolkit.cit-ec.uni-bielefeld.de/tutorials/bootstrapping}}.
+To alleviate this, I created a distribution in the CITK \cite{7759508}.
+First, to bootstrap the CITK, follow their tutorial\footnote{\url{https://toolkit.cit-ec.uni-bielefeld.de/tutorials/bootstrapping}}.
 Afterwards you can install the distribution named ''speechrec-pipeline'', again following their tutorial\footnote{\url{https://toolkit.cit-ec.uni-bielefeld.de/tutorials/installing}}.
 
 
-Building is supported for Ubuntu 18.04 and 16.04, though under 16.04 an additional library has to be build from hand\footnote{This is documented within the README file of the project in question under \url{https://github.com/Slothologist/esiaf_ros/}}.
+Building is supported for Ubuntu 18.04 and 16.04, though under 16.04 an additional library has to be build from hand\footnote{This is documented within the README file of the relevant project under \url{https://github.com/Slothologist/esiaf_ros/}}.
 
 
 \section{Start instructions}
 
-Due to 
+Similar to building such a great number of components, it is equally challenging to start them.
+I thus created configuration files for the Hyperion component launch engine \cite{hyperion}.
+These and Hyperion itself are included in the CITK distribution.
+Several Hyperion configuration files are available, including those used for both experiments.
+After starting Hyperion itself, components can then be started at will through its GUI.
+I recommend starting the \gls{ros} core and the Orchestrator first, then the desired intermediate components and lastly the \texttt{Audio Grabber} or \texttt{Wav Player}.

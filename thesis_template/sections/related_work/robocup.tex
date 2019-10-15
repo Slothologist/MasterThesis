@@ -55,7 +55,7 @@ However, they gave no information about the interfacing of thusly acquired \gls{
 %https://raw.githubusercontent.com/wiki/RoboCupAtHome/AtHomeCommunityWiki/files/tdp/2019-dspl-hibikino-musashiathome.pdf
 The Hibikino-Musashi team of the Kyushu Institute of Technology also uses \gls{hark}, specifically its \textit{MUSIC} algorithm for \gls{ssl} \cite{hibikino}.
 Additionally, they employ an \gls{asr} solution in the form of \textit{Google SpeechRec} via its web API on the Chrome web browser.
-We could however find no information about how the results of those components were interfaced.
+However, I could find no information about how the results of those components were interfaced.
 
 \subsection{ToBi}
 The team of Bielefeld (ToBi) of Bielefeld University \cite{tobitdp} can be discussed in greater detail, as I am a former member of this team.
@@ -74,7 +74,7 @@ It segments audio based on a loudness threshold, which, if crossed long enough, 
 This segmentation is ended either if a certain time limit is exceeded or if the loudness of received audio chunks drops under a second, typically slightly lower threshold.
 Audio which is thus decided to contain speech will then be fed into \gls{ps}.
 After a segmentation is ended, \gls{ps} will produce a result, which is then published via a \gls{ros} message.
-We will use this component in later experiments (see chapters \ref{eval:dataset} and \ref{eval:task_start}).
+This component will be used in later experiments (see chapters \ref{eval:dataset} and \ref{eval:task_start}).
 
 One of these experiments will show the \gls{psa} to require considerably less time for recognitions than these 500ms.
 However, a number of factors make this a good approximation still.

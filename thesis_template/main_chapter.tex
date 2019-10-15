@@ -3,52 +3,57 @@
 \chapter{Resulting System}
 \label{main:main}
 In this chapter I will describe my solution to the problems presented in chapter \ref{motiv:start}.
-We will first give a broad overview how and where certain tasks are handled, before going more into detail in sections dedicated to the two major parts of this solution, namely the Orchestrator and library.
+I will first give a broad overview how and where certain tasks are handled, before going more into detail in sections dedicated to the two major parts of this solution, namely the Orchestrator and library.
 %After we discussed the problems tackled by the Orchestrator and the library in more detail and thus gained deeper insight into the workings of both, we will again revert to a higher level and describe their interaction with each other.
 Lastly I will present a number of components developed for my solution as a proof of concept and to introduce them, as most of them are later used in the evaluation of this thesis (see chapter \ref{eval}).
 
-The main goal of this theses is to provide synchronized results of audio analysis components, such as \gls{asr} and \gls{ssl} results.
+The main goal of this thesis is to provide synchronized results of audio analysis components, such as \gls{asr} and \gls{ssl} results.
 To effectively provide these fused results, these results are first needed in a standardized separated form.
 Additionally, to be able to synchronize these separated results based on time, they need to be annotated with a timestamp.
-This timestamp however needs to fulfill a number of requirements:
+However, this timestamp needs to fulfill a number of requirements:
 As the first and most central requirement, the timestamp must not correspond to the time a given result was made available, but rather to the time when the audio of said result was recorded.
 This is fundamental, as each result providing component can not be expected to take the exact same time as any other.
-Additionally, as the audio this timestamp corresponds to is not a singular event, but a continuous stream, it must contain a start \& an end-time to fully and accurately describe it.
-This is especially true since results may be generated on audio of vastly different length, consider for example a simple "yes" or "no" in contrast to a longer question, such as "Hey robot, where can i find the orange juice?".
+Additionally, as the audio this timestamp corresponds to is not a singular event, but a continuous stream, it must contain a start- \& an end-time to fully and accurately describe it.
+This is especially true since results may be generated on audio of vastly different length, consider for example a simple "yes" or "no" in contrast to a longer question, such as "Hey robot, where can I find the orange juice?".
 This directly leads to another problem:
-As each results now requires its annotation with timestamps, each component now requires audio annotated with these timestamps.
+As each results now requires its annotation with timestamps, each component requires audio annotated with these timestamps.
 
 This in turn leads to a number of cases with a very high complexity in dependencies.
 Consider a setup of a \gls{ssl} component, a beamformer and an \gls{asr} component.
 In this setup, the \gls{ssl} component would have to acquire audio data and annotate it with timestamps as discussed above and then provide its results.
-An independent beamformer would in turn also have to acquire audio and annotate it, and then match the \gls{ssl} results provided by the respective component to its audio data to then calculate the beamformed audio signal, which would also needed to be annotated with timestamps.
+An independent beamformer would in turn also have to acquire audio and annotate it, and then match the \gls{ssl} results provided by the respective component to its audio data to then calculate the beamformed audio signal, which would also required to be annotated with timestamps.
 Lastly, the \gls{asr} component would have to collect these timestamped audio signals, produce \gls{asr} results and then timestamp them.
-An additional dependency implicitly declared in this example is that the \gls{asr} component must be able to read the audio annotated with timestamps the beamformer outputs.
+An additional dependency implicitly declared in this example is that the \gls{asr} component must be able to read the audio annotated with timestamps the beamformer produces.
 %Most commonly used libraries for audio transmission, as we have shown in chapter \ref{related:frameworks}, do not support adding of meta-information such as timestamps, so either these components would need to be merged or must prepare a interface for communication.
 
 Most of these requirements could in theory be handled by the components themselves.
 However, I decided to outsource most of the work done by the components into a library, to allow them to focus on their respective goals.
 This provides a number of advantages:
 
-First, by outsourcing this work standards must inherently be defined, which, as they can easily be heeded by the components, provide benefits for the individual components and for the final synchronization of the results.
+First, by outsourcing this work standards must inherently be defined.
+As they can easily be heeded by the components, they provide benefits for the individual components and for the final synchronization of the results.
 More so, by defining these standards and providing a library to heed them, the fragmentation of speech recognition components is encouraged. 
 Take for example the \gls{psa} described in chapter \ref{related_work:psa}.
-It contains not only an \gls{asr}, but also an \gls{vad} component.
+Not only does it contain an \gls{asr} component, but also a \gls{vad} component.
 This makes sense from a developmental perspective, but impedes further development and replacing of its parts.
 Even when done correctly and iteratively, after a few exchanges new technologies may need different interfaces.
-By encouraging this melding of components to not occur, a typical speech recognition pipeline of the resulting framework becomes highly modular and enables fast prototyping.
-It also makes benchmarking individual components of such a pipeline quite easy, as I will later show with a number of experiments for evaluation (see chapter \ref{eval:dataset}).
+By encouraging this melding of components to not occur, the resulting framework becomes highly modular and enables fast prototyping.
+It also makes benchmarking individual components of such a pipeline easier, as I will later show with a number of experiments for evaluation (see chapter \ref{eval:dataset}).
 
 Furthermore, by providing a way to easily send properly timestamped audio between components, a elaborate amount of work is lifted off the individual components, which in turn ensures the correct transmission of audio timestamps.
-Additional, more technical benefits include the prevention of code duplication and the reduction of bugs, which provide more time for actual research.
+Additionally, more technical benefits include the prevention of code duplication and the reduction of bugs, which provide more time for actual research.
 
 By embedding each component into the framework provided by the library, the proposed solution for finally synchronizing the results is also provided with standardized interfaces.
-We called this solution the Orchestrator, as it not only synchronizes the results, but also keeps track of all components within the proposed pipeline.
+I called this solution the Orchestrator, as it not only synchronizes the results, but also keeps track of all components within the proposed pipeline.
 
 Both library and Orchestrator work in tandem and need to communicate with each other on several occasions.
-We chose \gls{ros} as an underlying middleware, see chapter \ref{intro:ros}.
+\gls{ros} was chosen as an underlying middleware, see chapter \ref{intro:ros}.
+There are several reasons for this.
+First, due to \gls{ros} relying on TCP, all communication can be expected to arrive, none will be lost.
+Additionally, pre-existing infrastructure, such as a behavior controller used in one of the evaluations experiments already depends on \gls{ros}.
+As such choosing \gls{ros} will prove beneficial for future work.
 
-We will now continue to discuss the Orchestrator and the proposed pipelines library in more detail in designated sections.
+I will now continue to discuss the Orchestrator and the proposed pipelines library in more detail in designated sections.
 
 
 \input{sections/main_chapter/library}

@@ -12,6 +12,7 @@ After this more technical details and explanations will follow.
 
 
 % audio transmission
+\subsubsection{Audio Formats}
 \label{main:lib:formats}
 One of the central tasks of the library involves transmitting audio from component to component.
 This includes some aspects not immediately obvious.
@@ -48,6 +49,7 @@ From the perspective of the library, it can then be divided between an externall
 Both of these can be identical, but must not be.
 Resampling and converting of audio signals should be minimized, so careful consideration is required when choosing the format with which to transmit audio between components.
 
+\subsubsection{Audio Format choosing}
 \label{main:lib:format_chooosing}
 It is however equally important where these formats are chosen, as it could be done in two ways:
 Either in a distributed manner, where all existing components must communicate with each other and come to a single conclusion.
@@ -62,6 +64,7 @@ While the communication between \texttt{c\_1} and \texttt{c\_2} is straight forw
 Additionally, the way in which each format is determined must be deterministic, as each component must come to the same conclusion.
 All this results in a not insignificant overhead in both computational load and inter-component communication.
 
+\subsubsection{General Requirements}
 However, as there is already always an additional program  employed to synchronize the results, namely the Orchestrator, the benefit of the distributed approach becomes negligible.
 We thus chose to implement the centralized approach with the Orchestrator as the master component, which determines each components internally used audio format.
 We will go into detail how the Orchestrator chooses these formats in the following section \ref{main:orc}.
@@ -82,6 +85,7 @@ This is what drove us to develop Python bindings for the library, using Boost Py
 It proved fruitful, as most the then developed components actually make use of these bindings rather then the original C++ library.
 Developing the library in Python in the first place was considered, but ultimately not chosen because of C++'s superior support with regards to sound libraries, such as \gls{sox} and \gls{soxr}.
 
+\subsubsection{Result Types}
 \label{main:lib:message_types}
 Another important task of the library is to provide standardized \gls{ros} messages of common results generated from raw audio.
 This is realized by a number of \gls{ros} messages, dedicated to speech-, emotion-, gender-, voice-, \gls{ssl}-, and \gls{vad}- information.
@@ -181,6 +185,7 @@ When declaring the output of audio, there are no further requirements.
 When requesting audio however, the component must present the library with a callback function.
 This function will later be invoked when audio was send to the component.
 
+\subsubsection{Raw Audio Transmission}
 \label{main:lib:augmented_audio_msg}
 Later, when the component is finished initializing the library and is working, % fomulierung
 the component will want to actually receive and output audio.
@@ -256,6 +261,7 @@ After all callback functions for a given message are called, the library will ch
 	\label{pic:main:lib:ssl_vad_time}
 \end{figure}
 
+\subsubsection{Coordination between Library and Orchestrator}
 After the declarations of audio in- \& and outputs are done, the component will signal the library to start.
 Up until this point, no actual communication between the component and the Orchestrator has happened.
 Now however, the library will prepare all information necessary for the Orchestrator to register the component.
@@ -264,7 +270,7 @@ We will go more into detail regarding this designation in the Orchestrator's cha
 
 Additionally needed are information about the in- \& output topics of audio that were previously declared.
 The information about meta-information are not needed for the registration process, as they are handled internally by the library itself.
-Registering the component is then done via a dedicated \gls{ros}-service, which has the library send these information
+Registering the component is then done via a dedicated \gls{ros}-service, which has the library send these information.
 Using a \gls{ros}-service in this instance instead of a simple \gls{ros}-message has the advantage, that it can be ensured that the Orchestrator is started and ready, which may not necessarily be the case when starting the Orchestrator and components of the framework in rapid succession.
 
 After this registration has finished, the components work may actually begin.

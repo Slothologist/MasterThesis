@@ -14,18 +14,19 @@ In this chapter, I will provide an overview of and describe concepts and technol
 \section{Latency}
 \label{basics:latency}
 Regardless of the method used, when transmitting any kind of information, this transmission will not be instantaneous, but instead happen with a delay.
-This delay is a universal effect and can be found in macro levels, e.g. light from distant galaxies reaching us after thousands of years, over a more intermediate level, e.g. sending a letter to a micro level, e.g. the sound of a spoken phrase to reach the ear of the recipient.
+This delay is a universal effect and can be found in macro levels, light from distant galaxies reaching us after thousands of years, over a more intermediate level, sending a letter to a micro level, the sound of a spoken phrase to reach the ear of the recipient.
 This delay is also known as \textit{latency}.
 
 However, while the laws of physics cannot be altered, one might be able to reduce latency when in control of the environment.
-To follow the previous example of sending a letter, one may opt for sending a intercontinental letter via plane instead of ship.
+To follow the previous example of sending a letter, one may opt for sending an intercontinental letter via plane instead of ship.
 
 In this work, latency will be discussed in the context of transmitting audio signals.
-As audio signals are not singular events, akin to e.g. a photon, but rather a continuous stream and most of the computations presented in this work are done by computers which can work way faster then audio signals typically occur, their latency behaves special in a number of ways. % todo formulierung
+As audio signals are not singular events, akin to e.g. a photon, but rather a continuous stream and most of the computations presented in this work are done by computers which can work faster then audio signals typically occur, their latency behaves differently in a number of ways. % todo formulierung
 One such special behavior for example can be observed when recording audio from a microphone.
-This is typically done in a iterative manner:
-The software will require a predetermined number of audio frames, singular data points of an audio stream.
-After it acquires it, it can process it and will then typically wait for the next batch of audio data to be available.
+This is typically done in an iterative manner:
+the software will require a predetermined number of audio frames, i.e. singular data points of an audio stream.
+After these frames are acquired, they can be processed.
+Then, it will typically wait for the next batch of available data.
 Through this procedure, the amount of frames requested can have a impact on the overall latency measured.
 Consider requesting audio with a length equivalent to one second.
 Even when the software introduces virtually no latency, the audio frames at the beginning of the acquired audio chunk had to be recorded a second prior.
@@ -39,8 +40,8 @@ This shows that finding an effective audio chunk size is important and not neces
 \gls{asr} is the general term for speech recognition typically performed by software.
 In general terms, an \gls{asr} program turns an audio signal into a written representation of the utterance encoded within this audio signal.
 A great variety of approaches are represented by \gls{asr}.
-Typical approaches calculate signal frequencies of the audio sample and then map them to the closest match of frequencies known to be produced by speech patterns via hidden Markov models.
-Other approaches make use of neural nets and deep learning.
+Typical approaches calculate signal frequencies of the audio sample and then map them to the closest match of frequencies known to be produced by speech patterns via hidden Markov models \cite{266524,GALES199875}.
+Other approaches make use of neural nets and deep learning \cite{6639344}.
 
 \section{Sound Source Localization}
 \label{basics:ssl}
@@ -59,7 +60,7 @@ Thus by observing similar excitations detected at different points in time by di
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/basics_ssl.pdf}
 	\caption{Runtime variances for \gls{ssl}.
-		A microphone array comprised of two microphones Mic 1 and Mic 2 receive an audio signal from a sound source.
+		A microphone array comprised of two microphones, Mic 1 and Mic 2, receive an audio signal from a sound source.
 		When the signal of a particular event reaches Mic 1 (pictured in red), it is still on its way to Mic 2.
 		When it reaches Mic 2 (pictured in blue), it has already passed Mic 1.}
 	\label{pic:basics:ssl}

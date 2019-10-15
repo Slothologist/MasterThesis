@@ -112,7 +112,6 @@ This also simplifies matching the recorded speech recognition results with the a
 The proposed pipeline was fed each sample individually, but three seconds of silence were similarly inserted into the audio.
 This difference was necessary, as the pre-existing solution had to be fed with a single wav file for reasons later discussed in detail.
 Feeding each sample individually into the proposed pipeline enabled us to keep track of which file was played at any given moment by publishing information about each wav file after it played, which in turn increased each results assignability to said wav file.
-
 The complete data sets playtime including the silence amounted to nearly two hours and fifty minutes.
 
 
@@ -158,7 +157,6 @@ Nonetheless, these data points are included despite their supposed inaccuracy be
 This is supported by the fact that identical components across various pipelines produce very similar CPU loads, as seen in figure 
 \ref{table:eval_dataset_detail}.
 Incidentally, a process producing the computational load of one CPU second over any timespan is equal to the process running on one core of a CPU under full load for one second.
-
 Speech recognition results were recorded by a ROS node which collected ROS messages published by the proposed pipeline's orchestrator and the \gls{psa} respectively.
 
 \subsubsection{Recording}
@@ -307,23 +305,11 @@ Regardless, as the results of the widened and elongated configurations of the pr
 }
 
 To sum up, a number of key insights could be gained by this experiment.
-TODO
-\begin{enumerate}
-	\item Our control variable showed us that our pipeline can not be compared to the pre-existing solution without restriction.
-\end{enumerate}
-We did nevertheless, as a number of factors (i.e. all components of our pipeline apart from the \gls{ps} speech recognizer) were independent from this control variable.
+The recognition rate as control variable showed us that our pipeline can not be compared to the pre-existing solution without restriction.
+As a number of factors, i.e. all components of my pipeline apart from the \gls{ps} speech recognizer, were independent from this control variable, I felt confident to compare them nevertheless.
 Furthermore, our pipeline provided better results, which may very well be caused 
-
-
-\begin{enumerate}
-	\item[2.] We showed our pipeline to have an overhead in CPU cost.
-\end{enumerate}
-We deemed this acceptable, as the overhead in CPU cost 
-
-\begin{enumerate}
-	\item[3.] 
-\end{enumerate}
-
+That being said, the proposed pipeline was shown to have an overhead in CPU cost and computation time.
+Future work may determine if this overhead has a negative impact on \gls{hri}, and if so, how much.
 
 
 

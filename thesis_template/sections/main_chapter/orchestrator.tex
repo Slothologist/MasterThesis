@@ -24,7 +24,7 @@ The first algorithm introduces a cost function which calculates the bandwidth of
 This algorithm is formalized in figure \ref{main:orc:resampling:formula:min_traffic}.
 It applies the aforementioned cost function $cost_{format}$ on each in- \& output format for a given topic and then chooses the minimum as the optimal.
 
-\begin{figure}
+\begin{figure}[b]
 	\begin{align*}
 	cost_{format} &= channel\_count \cdot bitrate_{signal} \cdot frequency\\
 	format_{optimal} &= min({bitrate_{i}\ |\ i \in formats_{input} \cup formats_{output}})

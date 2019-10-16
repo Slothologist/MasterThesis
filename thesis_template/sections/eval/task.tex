@@ -13,7 +13,7 @@ The evaluation will be conducted on the Pepper robot\footnote{\url{http://archiv
 \subsubsection{Software Setup}
 Two distinct solutions will be benchmarked:
 the existing RoboCup setup and a reimplementation of it within the proposed pipeline.
-Both will mainly be comprised of a sound source localization, a speech recognizer and a layer to combine the results of both these components.
+Both will mainly be comprised of an \gls{ssl}, a speech recognizer and a layer to combine the results of both these components.
 
 \begin{figure}[]
 	\centering
@@ -25,7 +25,7 @@ Both will mainly be comprised of a sound source localization, a speech recognize
 \end{figure}
 
 The proposed pipeline (see figure \ref{pic:eval_task_setup_new}) will consist mainly of the basic speech recognition setup established as the baseline for the data set evaluation (see chapter \ref{eval:dataset:pipeline:baseline}), i.e. an audio grabber to record audio from a microphone as well as the previously (see chapter \ref{eval:dataset:setup}) established \gls{vad}, \gls{ps} speech recognizer and Orchestrator.
-As sound source localization the component using \texttt{pyroomacoustics} described earlier in chapter \ref{main:components:ssl}, will be employed.
+As \gls{ssl] the component using \texttt{pyroomacoustics} described earlier in chapter \ref{main:components:ssl}, will be employed.
 Due to the robot providing four channel audio from its four microphones, which are all needed by the \gls{ssl}, but the speech recognition part of the pipeline requiring only one channel audio, an additional component is needed in the form of a channel splitter.
 Since one of the features of the proposed pipeline is synchronization of results, recorded speech recognition results will naturally be enriched with corresponding \gls{ssl} results.
 
@@ -40,7 +40,7 @@ Since one of the features of the proposed pipeline is synchronization of results
 \end{figure}
 
 For the existing solution (see figure \ref{pic:eval_task_setup_old}), the already established \gls{psa} will take the role of the speech recognizer.
-For sound source localization, a slightly modified variant of the proposed pipelines component will be employed, as elaborated earlier (see chapter \ref{main:components:ssl}).
+For \gls{ssl}, a slightly modified variant of the proposed pipelines component will be employed, as elaborated earlier (see chapter \ref{main:components:ssl}).
 To combine both results, a behavior controller called Bonsai \cite{bonsai} will be used.
 An channel splitter similar to the proposed pipeline is not necessary, as \gls{alsa} will assume this task for the \gls{psa}.
 Since result synchronization is not a feature of primary concern for Bonsai, its default behavior regarding this will be employed, which is to aggregate the \gls{ssl} results from two seconds to half a second before a speech recognition result was received.
@@ -80,8 +80,8 @@ To ease scoring of the task and provide documentation, the task was recorded by 
 The task was conducted eight times, but two of these runs were excluded from the evaluation, due to camera malfunctions.
 The recordings of the included runs were made available\footnote{\url{https://youtu.be/TrodNlUkQPM}}.
 
-To simulate the environment preset on most RoboCup events, which are typically conducted in a crowded convention center and to provide non optimal conditions for the sound source localization, extensive noise was generated in front of the robot by two speakers.
-This noise is intended to significantly increase the difficulty of \gls{ssl}, to provide more meaningful results.
+To simulate the environment preset on most RoboCup events, which are typically conducted in a crowded convention center and to provide non optimal conditions for the \gls{ssl}, extensive noise was generated in front of the robot by two speakers.
+This noise is intended to increase the difficulty of \gls{ssl}, to provide more meaningful results.
 A still image of the video recordings can be seen in figure \ref{pic:eval_task_setup_pepper}.
 The two speakers seen in the foreground were playing restaurant noises, which consisted mostly of human chatter.
 
@@ -135,8 +135,8 @@ The proposed pipeline provided slightly more correct \gls{ssl} results, which is
 Both factor in when comparing the actual scores of the RoboCup task, where the proposed pipeline outperforms the existing solution.
 However, I consider this score to not be very meaningful, as most of it is caused by the proposed pipeline's speech recognizer performing better.
 
-Additionally, information about the average error of the \gls{ssl} results were generated, as I consider these in this particular case to be more significant to the evaluation due to the score results being very close to one another.
-When comparing them, the proposed pipeline outperforms the existing solution in all runs but one, oftentimes by a significant margin.
+Additionally, information about the average error of the \gls{ssl} results were generated, as I consider these in this particular case to be more conclusive to the evaluation due to the score results being very close to one another.
+When comparing them, the proposed pipeline outperforms the existing solution in all runs but one.
 In run seven and two it (nearly) halves the error.
 Overall, the proposed pipeline reduces the error in angle by around 30$^\circ$ in comparison to the existing solution.
 I believe this to be the case due to the proposed pipelines enhanced synchronization abilities.

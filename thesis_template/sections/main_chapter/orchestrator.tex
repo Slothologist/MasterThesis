@@ -5,7 +5,7 @@
 
 \section{Orchestrator}
 \label{main:orc}
-In this section the Orchestrator as part of the proposed framework will discussed.
+In this section the Orchestrator as part of the proposed framework will be discussed.
 The Orchestrator has to fulfill two major tasks, synchronizing results and determining the formats used to transmit audio, as discussed in the previous chapter \ref{main:lib:format_chooosing}.
 
 \subsubsection{Determining Audio Formats}
@@ -39,7 +39,7 @@ It is formalized in figure \ref{main:orc:resampling:formula:min_cpu}.
 As such, it calculates for each format on a given topic the number of resamplings that would occur, if that format was chosen for this topic.
 Then the format which has the fewest resamplings is chosen as the optimal format.
 However, there may be several formats which fulfill this condition.
-If this is the case, it comes naturally to mind to choose the format which requires the least amount of bandwidth, so the algorithm formalized in figure \ref{main:orc:resampling:formula:min_traffic} is used to choose the optimal format of the formats which require the least amount of resampling.
+If this is the case, it comes naturally to mind to choose the format which requires the least amount of bandwidth, so the algorithm formalized in figure \ref{main:orc:resampling:formula:min_traffic} is used to choose the optimal format out of the formats which require the least amount of resampling.
 
 \begin{figure}
 	\begin{align*}
@@ -59,13 +59,13 @@ If this is the case, it comes naturally to mind to choose the format which requi
 After the Orchestrator determined the transmission format for each topic, it will inform all registered components about their respective internally used audio formats via a \gls{ros}-message.
 The library part of each component will listen to these messages and then store and use these formats as discussed in chapter \ref{main:lib:format_chooosing}.
 It is important to note at which points in time the Orchestrator will determine the audio formats.
-Since it cannot conclusively determine if all components that are going to be started have already registered, as it lacks a list of such components, whenever a component registers the formats of all topics are determined anew.
+Since it cannot conclusively determine if all components that are going to be started have already registered, as it lacks a list of such components, whenever a component registers, the formats of all topics are determined anew.
 Additionally, a component may die or shut down at any point in time.
 When this is detected, all formats are determined as well, since the Orchestrator cannot foretell how long the pipeline will still run in the current configuration.
 More convenient audio formats may save a lot of bandwidth or computation time, or improve the quality of the transmission, by not unnecessarily resampling and converting audio.  
 
 Determining whether a component has shut down must be conducted by the Orchestrator.
-For this reason it will routinely ping all components via \gls{ros} inbuild \gls{ros}-node pinging functionality.
+For this reason it will routinely ping all components via \gls{ros}'s inbuild \gls{ros}-node pinging functionality.
 Should \gls{ros} not find a node in question, or should the node be non-responding, the Orchestrator will remove it from its internally kept list of active nodes and terminate all communication with it.
 Such nodes will furthermore not be considered for fusion of results anymore. 
 
@@ -73,7 +73,7 @@ Such nodes will furthermore not be considered for fusion of results anymore.
 
 When synchronizing results, a few key circumstances need to be kept in mind.
 The first and probably most important one is that because of the library and the efforts to annotate the audio and in turn results with timestamps, the synchronization of the results itself is rather trivial.
-There are however still a few possible pitfalls.
+However, there are still a few possible pitfalls.
 Most importantly, the Orchestrator can not know with certainty when results are arriving, or -more precisely- when all of the results that need to be synchronized will have arrived.
 This is rather unfortunate, as it is of utmost importance to relay all information as soon as possible.
 This is to keep further programs reliant on the synchronized results, such as natural language processors or robot behavior controllers, not waiting and thus keep latency down to a minimum.
@@ -111,7 +111,7 @@ Unlike \cite{10.1117/12.138164} however, in my approach batching happens dynamic
 Initially it was planned to only use speech utterances as anchor.
 However, as time moved on, I realized that this may not be the only interesting type for synchronization.
 Programs for tracking persons for example could be very interested in obtaining data on which particular person was speaking at a given moment, synchronized with their position provided by \gls{ssl} information.
-Therefore the algorithms of the Orchestrator would quickly be adapted to not only use every result type as anchor type, but to do so concurrently.
+Therefore the algorithms of the Orchestrator would quickly be adapted to not only be able to use every result type as anchor type, but to do so concurrently.
 Thus any result type of particular interest can be provided without giving up synchronization with other results.
 
 In chapter \ref{main:lib}, the fact that each component will register itself giving a designation was discussed.
@@ -176,7 +176,7 @@ A component may also struggle to calculate one specific result, due to it being 
 
 \subsubsection{Fusion Timeouts}
 To counter this problem a timeout is needed that will tell the Orchestrator to abandon any results not yet received.
-This is somewhat contrary to the previously discussed goal of ensuring the synchronization of all results, but is crucial to ensure all results to be actually relayed to further components and arrive there with a minimal latency.
+This is somewhat contrary to the previously discussed goal of ensuring the synchronization of all results, but is crucial to ensure all results to be actually relayed to further components and arrive there with minimum latency.
 Finding a feasible value for this timeout is not trivial, as very broad circumstances can have an impact on it.
 Consider for example a setup running over a slow, but very stable network connection, or a number of components running on very weak hardware.
 In both cases the timeout should be bigger than normal.

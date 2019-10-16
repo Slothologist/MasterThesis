@@ -10,8 +10,8 @@ The goal of this evaluation is to take a closer look at the performance of the p
 Recognition percentage will be used as control variable, to ensure equivalence between pipelines.
 
 Based on the additional features the proposed pipeline introduces, most prominently synchronization of speech results and the modular nature of the pipeline (see chapters \ref{motiv:start} and \ref{main:lib:formats}), the proposed pipeline is expected to consume more CPU power as well as taking longer to compute results in comparison to the pre-existing solution.
-To further examine the cost, in particular the cost different additional components will add to the pipeline will be inspected to determine the scaling of the proposed pipeline.
-Due to the pre-existing solution being based on \gls{ps} and the increase in available CPU power since its first release (which in 2012), I consider a steep increase in CPU power to about five to ten times as a success.
+For further examination, the cost different additional components will add to the pipeline will be inspected to determine the scaling of the proposed pipeline.
+Due to the pre-existing solution being based on \gls{ps} and the increase in available CPU power since its first release (which was in 2012), I consider a steep increase in CPU power to about five to ten times as a success.
 
 
 I will lastly discuss if this additional cost renders the pipeline unsuitable for real world applications or if the benefits outweigh these costs.
@@ -22,8 +22,8 @@ I will lastly discuss if this additional cost renders the pipeline unsuitable fo
 \subsubsection{Pre-Existing Solution}
 
 The pre-existing solution only consists of the \gls{psa}, see figure \ref{pic:eval_p1_diag}.
-The \gls{psa} grabs audio from a microphone using ALSA, filters the audio using an integrated voice activity detection and finally uses, as its name suggests, \gls{ps} to recognize speech.
-Results are then published via ROS.
+The \gls{psa} grabs audio from a microphone using \gls{alsa}, filters the audio using an integrated \gls{vad} and finally uses, as its name suggests, \gls{ps} to recognize speech.
+Results are then published via \gls{ros}.
 
 The \gls{psa} is and was used extensively for several years in the RoboCup@Home setup of Team ToBi \cite{ToBi}.
 In this evaluation, it is primarily used to provide a baseline for the proposed pipeline and context for the acquired results.
@@ -32,7 +32,7 @@ In this evaluation, it is primarily used to provide a baseline for the proposed 
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_1.pdf}
 	\caption{Test scenario for existing pipeline.
-		The \gls{psa} acquires audio data from ALSA and provides speech recognitions.
+		The \gls{psa} acquires audio data from \gls{alsa} and provides speech recognitions.
 		A CPU and result watchdog monitor and log its CPU usage and results respectively.}
 	\label{pic:eval_p1_diag}
 \end{figure}
@@ -40,14 +40,14 @@ In this evaluation, it is primarily used to provide a baseline for the proposed 
 \subsubsection{Basic Pipeline}
 \label{eval:dataset:pipeline:baseline}
 This configuration of the proposed pipeline is intended to reassemble the \gls{psa} as closely as possible.
-As seen in figure \ref{pic:eval_p2_diag}, it consists of a voice activity detection, a speech recognizer (using \gls{ps}), the Orchestrator and a Wav file player to feed audio into the pipeline.
-Recognition results are gathered by the Orchestrator and then communicated via ROS.
+As seen in figure \ref{pic:eval_p2_diag}, it consists of a \gls{vad}, a speech recognizer (using \gls{ps}), the Orchestrator and a Wav file player to feed audio into the pipeline.
+Recognition results are gathered by the Orchestrator and then communicated via \gls{ros}.
 
 \begin{figure}[]
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_2.pdf}
 	\caption{Test scenario for proposed pipelines baseline.
-		It consists of a wav player, which provides audio data.
+		It consists of a WAV player, which provides audio data.
 		The audio is then processed by a \gls{vad} and a speech recognizer.
 		The Orchestrator gathers the speech recognizers data and provides it to a result watchdog, which then saves the results.
 		A CPU watchdog monitors and logs CPU usage of all components.}
@@ -63,7 +63,7 @@ As indicated in figure \ref{pic:eval_p4_diag} and by its name, the dummy node do
 	\centering
 	\includegraphics[width=0.66\textwidth]{diagrams/eval_pipeline_4.pdf}
 	\caption{Test scenario for an elongated configuration of the proposed pipeline.
-		In comparison to the baseline of the proposed pipeline, it encompasses an additional dummy node which is placed in between the wav player and the \gls{vad}.
+		In comparison to the baseline of the proposed pipeline, it encompasses an additional dummy node which is placed in between the WAV player and the \gls{vad}.
 		It does not alter the audio in any way, but is monitored by the CPU watchdog as well.}
 	\label{pic:eval_p4_diag}
 \end{figure}
@@ -88,7 +88,7 @@ This configuration of the proposed pipeline resembles its baseline, but includes
 One provides information on the gender of the speaking person while the other provides information about their emotional state.
 As shown in figure \ref{pic:eval_p5_diag}, both additional components run in parallel to the speech recognition and provide the Orchestrator with their information.
 
-This configuration of the pipeline is intended to resemble a realistic use case of the proposed pipeline, in that several speech information need to be synchronized.
+This configuration of the pipeline is intended to resemble a realistic use case of the proposed pipeline, in that several audio analysis results need to be synchronized.
 
 \begin{figure}[]
 	\centering
@@ -107,11 +107,11 @@ It incorporates twelve speakers (male and female) speaking 24 phrases.
 Individual samples were recorded using two microphone types, omni directional and cardioid.
 They were recorded in two rooms, some of them with noise, others without.
 
-To more easily feed all samples into the pre-existing solution, the wav files containing the samples were concatenated into one big wav file, with three seconds of silence added in between the individual samples, to easily distinguish the samples from one another.
+To more easily feed all samples into the pre-existing solution, the WAV files containing the samples were concatenated into one big WAV file, with three seconds of silence added in between the individual samples, to easily distinguish the samples from one another.
 This also simplifies matching the recorded speech recognition results with the actual utterances.
 The proposed pipeline was fed each sample individually, but three seconds of silence were similarly inserted into the audio.
-This difference was necessary, as the pre-existing solution had to be fed with a single wav file for reasons later discussed in detail.
-Feeding each sample individually into the proposed pipeline enabled us to keep track of which file was played at any given moment by publishing information about each wav file after it played, which in turn increased each results assignability to said wav file.
+This difference was necessary, as the pre-existing solution had to be fed with a single WAV file for reasons later discussed in detail.
+Feeding each sample individually into the proposed pipeline enabled us to keep track of which file was played at any given moment by publishing information about each WAV file after it played, which in turn increased each results assignability to said WAV file.
 The complete data sets playtime including the silence amounted to nearly two hours and fifty minutes.
 
 
@@ -140,10 +140,10 @@ The complete data sets playtime including the silence amounted to nearly two hou
 \label{eval:dataset:setup}
 
 Two slightly different setups were used for the various configurations of the proposed pipeline and the existing solution, due to differences in acquiring audio data.
-What they have in common is that all pipelines were tested on the same computer, a Thinkpad Carbon X1 Gen with a Intel(R) Core(TM) i7-7500U, to ensure equal CPU performance.
+What they have in common is that all pipelines were tested on the same computer, a Thinkpad Carbon X1 with a Intel(R) Core(TM) i7-7500U, to ensure equal CPU performance.
 
 All setups were comprised of equivalent components. 
-If not otherwise stated, all variations of the proposed pipeline used the exact same components with identical configurations (safe for some minor details, e.g. a modified path for the audio between the wav player, dummy node and \gls{vad} in the elongated version of the proposed pipeline, see figure \ref{pic:eval_p2_diag} and \ref{pic:eval_p4_diag}).
+If not otherwise stated, all variations of the proposed pipeline used the exact same components with identical configurations (safe for some minor details, e.g. a modified path for the audio between the WAV player, dummy node and \gls{vad} in the elongated version of the proposed pipeline, see figure \ref{pic:eval_p2_diag} and \ref{pic:eval_p4_diag}).
 
 The existing pipeline's \gls{psa} internally incorporates a \gls{vad}, which was reimplemented and used as the \gls{vad} of the proposed pipelines.
 It uses \gls{ps} for speech recognition, as does the speech recognizer used in the proposed pipeline. 
@@ -157,7 +157,7 @@ Nonetheless, these data points are included despite their supposed inaccuracy be
 This is supported by the fact that identical components across various pipelines produce very similar CPU loads, as seen in figure 
 \ref{table:eval_dataset_detail}.
 Incidentally, a process producing the computational load of one CPU second over any timespan is equal to the process running on one core of a CPU under full load for one second.
-Speech recognition results were recorded by a ROS node which collected ROS messages published by the proposed pipeline's orchestrator and the \gls{psa} respectively.
+Speech recognition results were recorded by a \gls{ros} node which collected \gls{ros} messages published by the proposed pipeline's Orchestrator and the \gls{psa} respectively.
 
 \subsubsection{Recording}
 
@@ -167,17 +167,17 @@ One can simply subtract the time when the analyzed audio signal ended from the t
 To be precise, this way the time from when the segmentation ends to the point where the recording node received the recognized speech result is measured.
 
 The method of feeding audio into the proposed pipeline does not matter as long as the timestamps of the audio are correct.
-So instead of grabbing the audio via a microphone a wav-file player was used to feed the data set directly into the pipeline.
+So instead of grabbing the audio via a microphone a WAV file player was used to feed the data set directly into the pipeline.
 
 The existing solution however was in need of a small workaround to work on audio files rather than audio directly grabbed by a real microphone.
 A virtual microphone was needed to feed the data set into the \gls{psa}.
-This virtual microphone provided access to a wav file containing the data set. 
-As information about singular utterances inside the data set could not be propagated through ALSA and the \gls{psa}, a timestamp is recorded with the start of feeding the wav file into the virtual microphone and thus in turn into the \gls{psa}.
-Speech recognition results were then recorded along timestamps acquired when these results were received in the dedicated ROS node.
-Supplementary, while concatenating the data set into the singular wav file, annotations were created to keep track of when each sample ended and which phrase it contained.
+This virtual microphone provided access to a WAV file containing the data set. 
+As information about singular utterances inside the data set could not be propagated through \gls{alsa} and the \gls{psa}, a timestamp is recorded with the start of feeding the WAV file into the virtual microphone and thus in turn into the \gls{psa}.
+Speech recognition results were then recorded along timestamps acquired when these results were received in the dedicated \gls{ros} node.
+Supplementary, while concatenating the data set into the singular WAV file, annotations were created to keep track of when each sample ended and which phrase it contained.
 To achieve comparable results, slight modifications to the internal segmenter of the \gls{psa} were made, i.e. timestamps on each successful segmentation would be recorded.
 
-By combining the information provided by these annotations, the timestamp created during the start of feeding the wav file, the timestamps recorded when recording the speech recognition results and after each successful segmentation, the absolute time needed by this solution could be computed. 
+By combining the information provided by 1. the timestamp created during the start of feeding the WAV file, 2. the timestamps recorded when recording the speech recognition results and 3. the timestamps after each successful segmentation, the absolute time needed by this solution could be computed. 
 This is mostly done by subtracting the timestamps, collected after successful segmentation, from the corresponding timestamps, recorded when the results were received.
 Thus, the time from the segmentations end to receiving the results is recorded, as previously with the proposed pipeline.
 % anmerkung johannes: Noch gerade so n gedanke. Ne graphic oben wie die zeit berechnet wird wäre noch sehr nice. Sonst ist das ein bisschen wall of text. also vlt einfach so n flowchart mit beispiel timestamps und was damit gerechnet wird
@@ -225,9 +225,10 @@ Afterwards, these raw results could be processed and evaluated with the help of 
 % Pipeline 1 & 2 ----------------------------------------------------------
 
 { % 10 
-If one compares the recognition rate of all the pipelines in figure \ref{table:eval_dataset_results}, the various configurations of the proposed pipeline all share virtually identical results, which however differ significantly from the \gls{psa}'s result.
+If one compares the recognition rate of all the pipelines in figure \ref{table:eval_dataset_results}, the various configurations of the proposed pipeline all share virtually identical results, which however differ from the \gls{psa}'s result.
 This is somewhat unexpected, as special care was taken to ensure both speech recognizers use not only \gls{ps}, but also equal configuration files, including speech model, dictionary and grammar.
-As the audio segmentation for the proposed pipeline is a reimplementation of the one used internally in the \gls{psa}, and was furthermore basically bypassed in that the silence in between samples enabled the usage of very lenient \gls{vad} configurations.
+The audio segmentation for the proposed pipeline is a reimplementation of the one used internally in the \gls{psa}, thus they should provide equal results.
+Furthermore, they were basically bypassed in that the silence in between samples enabled the usage of very lenient \gls{vad} configurations.
 
 The proposed pipeline's \gls{ps} component is written in Python and uses its \gls{ps} wrapper, which in turn makes use of the same C++ libraries as the \gls{psa}, so it would be difficult to claim this as the determining difference responsible for this discrepancy.
 Clearly more testing is needed to produce substantiated assumptions about the difference in recognition results.
@@ -241,7 +242,7 @@ The increase in CPU cost is virtually completely due to the additional dummy com
 
 The slight increase of 15ms in absolute recognition time was, as discussed before, expected.
 Considering a very elaborate configuration, where audio would be transmitted through audio grabbing, sound source localization, beamforming, audio enhancement, \gls{vad} and speech recognition, the latency introduced by using the proposed pipeline could be estimated to have an upper bound of $15\cdot6=90$ms.
-This would barely be humanly noticeable and depending on the time taken by the components themselves probably be just a fraction of the absolute recognition time needed.
+Depending on the time taken by the components themselves probably be just a fraction of the absolute recognition time needed.
 %Considering the \gls{vad}, which utilizes a computationally very inexpensive algorithm to segment the audio and should introduce only a slightly larger latency into the pipeline.
 }
 
@@ -260,11 +261,11 @@ However, further tests could be carried out to investigate the scaling of this p
 
 % pipeline 5
 { % 40
-Regarding the realistic pipeline, the absolute time for recognition saw a significant increase in comparison to the baseline of the proposed pipeline, as can be seen in figure \ref{table:eval_dataset_results}.
+Regarding the realistic pipeline, the absolute time for recognition saw a increase in comparison to the baseline of the proposed pipeline, as can be seen in figure \ref{table:eval_dataset_results}.
 Thanks to the Orchestrator saving all received information inside its database, as described in chapter \ref{main:orc:database}, it was possible to inspect the latencies of each component individually.
 The emotion and gender recognizers latency proved to be three and thirteen times as large as the speech recognizers, which can be supported by inspecting their CPU cost in figure \ref{table:eval_dataset_detail}.
 This leads to the assumption that the defining factor for the increase in time needed for recognition is actually the result of these components needing more time to compute their results.
-As this is a expected feature of the proposed pipeline, the longer time for recognition is a trade-off for having synchronized results.
+As this is an expected feature of the proposed pipeline, the longer time for recognition is a trade-off for having synchronized results.
 }
 % old stuff
 
@@ -305,9 +306,8 @@ Regardless, as the results of the widened and elongated configurations of the pr
 }
 
 To sum up, a number of key insights could be gained by this experiment.
-The recognition rate as control variable showed us that our pipeline can not be compared to the pre-existing solution without restriction.
-As a number of factors, i.e. all components of my pipeline apart from the \gls{ps} speech recognizer, were independent from this control variable, I felt confident to compare them nevertheless.
-Furthermore, our pipeline provided better results, which may very well be caused 
+The recognition rate as control variable showed that the pipeline can not be compared to the pre-existing solution without restriction.
+As a number of factors, i.e. all components of the pipeline apart from the \gls{ps} speech recognizer, were independent from this control variable, I felt confident to compare them nevertheless.
 That being said, the proposed pipeline was shown to have an overhead in CPU cost and computation time.
 Future work may determine if this overhead has a negative impact on \gls{hri}, and if so, how much.
 

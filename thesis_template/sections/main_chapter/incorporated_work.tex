@@ -22,11 +22,11 @@ These components are:
 	As such, it is mostly used for debugging purposes and to enable quick auditory microphone checks.
 
 	\item[\textit{Channel Splitter}] As discussed in section \ref{main:lib:formats}, the proposed pipeline's library does not support mixing of channels.
-	The \textit{Channel Splitter} is used to mitigate this absence by receiving a multichannel audio signal and produces a corresponding number of single channel outputs.
+	The \textit{Channel Splitter} is used to mitigate this absence by receiving a multichannel audio signal and producing a corresponding number of single channel outputs.
 	One possible use case is to split a multichannel audio needed for \gls{ssl} into single channel audio usable for speech recognition, when no beamforming is desired.
 
 	\item[\textit{Recorder}] The \textit{Recorder} is able to write audio it receives via the proposed pipeline to a file.
-	Its foremost usage is to save audio it receives via the proposed pipeline to a file for later inspection or analysis.
+	Its foremost usage is to save audio it receives for later inspection or analysis.
 	This can either be done for documentation purposes or, as was mostly done during development, to check if the pipeline transmitted and resampled audio correctly.
 \end{itemize}
 Additional components not included in the libraries repository cover the topics of:
@@ -69,7 +69,7 @@ Whenever a result is produced, it is sent to the Orchestrator via published \gls
 \label{main:components:emotion}
 The emotion recognition component I developed\footnote{\url{https://github.com/Slothologist/esiaf_speech_emotion_recognition}} makes use of \texttt{Speech Emotion Recognition} \cite{speech-em-rec}.
 \texttt{Speech Emotion Recognition} uses a neural net to extract the emotional state of a person based on their speech.
-As such, it is capable to categorize speech into three emotions: angry, happy, sad.
+As such, it is capable to categorize speech into three emotions: angry, happy, and sad.
 Additionally, speech can be categorized as neutral.
 Small changes were required for it to meet all the proposed framework's expectations, so I changed it to include a probability for each result. %TODO
 Each sound chunk this component acquires will be fed into \texttt{Speech Emotion Recognition} which will return an emotion and probability for each of these sound chunks.
